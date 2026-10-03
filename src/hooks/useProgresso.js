@@ -1,42 +1,50 @@
 import { useCallback, useState } from 'react'
 
 const CHAVE = 'autolab:progresso'
+const VERSAO = 2
+
+function estadoVazio() {
+  return { versao: VERSAO, salaAtual: 0, lidos: [], quizzes: [] }
+}
 
 function lerStorage() {
   try {
     const bruto = window.localStorage.getItem(CHAVE)
-    if (!bruto) return []
+    if (!bruto) return estadoVazio()
     const dados = JSON.parse(bruto)
-    return Array.isArray(dados) ? dados : []
+    if (!dados || dados.versao !== VERSAO) return estadoVazio()
+    return {
+      versao: VERSAO,
+      salaAtual: typeof dados.salaAtual === 'number' ? dados.salaAtual : 0,
+      lidos: Array.isArray(dados.lidos) ? dados.lidos : [],
+      quizzes: Array.isArray(dados.quizzes) ? dados.quizzes : [],
+    }
   } catch {
-    return []
+    return estadoVazio()
   }
 }
 
-function gravarStorage(concluidas) {
+function gravarStorage(progresso) {
   try {
-    window.localStorage.setItem(CHAVE, JSON.stringify(concluidas))
+    window.localStorage.setItem(CHAVE, JSON.stringify(progresso))
   } catch {
     // localStorage indisponível (modo privado, cota excedida etc.) — progresso segue só em memória
   }
 }
 
 export function useProgresso() {
-  const [concluidas, setConcluidas] = useState(lerStorage)
+  const [progresso, setProgresso] = useState(lerStorage)
 
-  const concluirEstacao = useCallback((id) => {
-    setConcluidas((atual) => {
-      if (atual.includes(id)) return atual
-      const proximo = [...atual, id]
-      gravarStorage(proximo)
-      return proximo
-    })
+  const salvar = useCallback((proximo) => {
+    setProgresso(proximo)
+    gravarStorage(proximo)
   }, [])
 
   const reiniciar = useCallback(() => {
-    gravarStorage([])
-    setConcluidas([])
+    const vazio = estadoVazio()
+    setProgresso(vazio)
+    gravarStorage(vazio)
   }, [])
 
-  return { concluidas, concluirEstacao, reiniciar }
+  return { progresso, salvar, reiniciar }
 }
