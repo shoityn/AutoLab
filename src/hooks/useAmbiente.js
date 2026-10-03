@@ -1,8 +1,4 @@
-import { useEffect } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export const AMBIENTES = {
   1: { '--bg': '#1e222a', '--card': '#2a2f3b', '--titulo': '#fbbf24', '--texto': '#e7e5e2', '--acento': '#b45309' },
@@ -14,6 +10,7 @@ function prefereMovimentoReduzido() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
+/** Aplica os tokens de cor do ambiente da estação. Chamado a cada troca de sala. */
 export function aplicarAmbiente(ambiente, { animado = false } = {}) {
   const vars = AMBIENTES[ambiente]
   if (!vars) return
@@ -25,36 +22,5 @@ export function aplicarAmbiente(ambiente, { animado = false } = {}) {
     return
   }
 
-  gsap.to(document.documentElement, { ...vars, duration: 0.6, ease: 'power1.inOut', overwrite: 'auto' })
-}
-
-/**
- * Liga cada seção (estação) da esteira à troca de tokens do ambiente correspondente
- * conforme o scroll entra/sai dela.
- * @param {{ ref: import('react').RefObject<HTMLElement>, ambiente: number }[]} secoes
- * @param {(ambiente: number) => void} [aoMudarAmbiente] opcional, para refletir o ambiente atual em estado React (ex.: cor de fundo da cena 3D)
- */
-export function useAmbienteScroll(secoes, aoMudarAmbiente) {
-  useEffect(() => {
-    const triggers = secoes
-      .filter(({ ref }) => ref.current)
-      .map(({ ref, ambiente }) =>
-        ScrollTrigger.create({
-          trigger: ref.current,
-          start: 'top center',
-          end: 'bottom center',
-          onEnter: () => {
-            aplicarAmbiente(ambiente, { animado: true })
-            aoMudarAmbiente?.(ambiente)
-          },
-          onEnterBack: () => {
-            aplicarAmbiente(ambiente, { animado: true })
-            aoMudarAmbiente?.(ambiente)
-          },
-        }),
-      )
-
-    return () => triggers.forEach((trigger) => trigger.kill())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [secoes.length])
+  gsap.to(document.documentElement, { ...vars, duration: 0.5, ease: 'power1.inOut', overwrite: 'auto' })
 }

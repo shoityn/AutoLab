@@ -14,7 +14,7 @@ function Recepcao({ temProgresso, onIniciar, onContinuar, onRecomecar }) {
   }, [])
 
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center text-[var(--texto)]">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center text-[var(--texto)]">
       <h1 className="text-3xl font-bold text-[var(--titulo)]">AutoLab</h1>
       <p className="max-w-md text-balance opacity-90">
         Você é o novo operador da AutoLab, a fábrica onde se constrói um modelo de inteligência
@@ -48,7 +48,7 @@ function Recepcao({ temProgresso, onIniciar, onContinuar, onRecomecar }) {
           Iniciar turno
         </button>
       )}
-    </section>
+    </main>
   )
 }
 

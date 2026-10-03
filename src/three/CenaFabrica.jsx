@@ -1,12 +1,11 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { PerformanceMonitor } from '@react-three/drei'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { AMBIENTES } from '../hooks/useAmbiente'
 import RoboModelo3D from './RoboModelo3D'
 
-gsap.registerPlugin(ScrollTrigger)
+const DISTANCIA_ENTRE_SALAS = 3
 
 // Esteira em formas básicas (orçamento: poucas dezenas de objetos, sem texturas/sombras).
 function Esteira({ cor }) {
@@ -28,35 +27,40 @@ function Esteira({ cor }) {
   )
 }
 
-// A câmera "percorre" a esteira acompanhando o progresso do scroll da página inteira.
-function ControladorCamera() {
+// A câmera se move de uma sala para a próxima (mesmo espaçamento usado pela esteira),
+// acompanhando a troca de estação em vez do scroll da página.
+function ControladorCamera({ indiceSala }) {
   const { camera, invalidate } = useThree()
+  const primeiraVezRef = useRef(true)
 
   useEffect(() => {
-    camera.position.set(0, 1.2, 6)
-    camera.lookAt(0, 0.2, 0)
-    invalidate()
+    const z = 6 - indiceSala * DISTANCIA_ENTRE_SALAS
 
-    const trigger = ScrollTrigger.create({
-      trigger: document.body,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: true,
-      onUpdate: (self) => {
-        const z = 6 - self.progress * 12
-        camera.position.z = z
+    if (primeiraVezRef.current) {
+      camera.position.set(0, 1.2, z)
+      camera.lookAt(0, 0.2, z - 6)
+      invalidate()
+      primeiraVezRef.current = false
+      return undefined
+    }
+
+    const tween = gsap.to(camera.position, {
+      z,
+      duration: 0.8,
+      ease: 'power2.inOut',
+      onUpdate: () => {
         camera.lookAt(0, 0.2, z - 6)
         invalidate()
       },
     })
 
-    return () => trigger.kill()
-  }, [camera, invalidate])
+    return () => tween.kill()
+  }, [indiceSala, camera, invalidate])
 
   return null
 }
 
-function CenaFabrica({ ambiente, pecas, onDesempenhoBaixo }) {
+function CenaFabrica({ ambiente, indiceSala, pecas, onDesempenhoBaixo }) {
   const cores = AMBIENTES[ambiente] ?? AMBIENTES[1]
 
   return (
@@ -79,7 +83,7 @@ function CenaFabrica({ ambiente, pecas, onDesempenhoBaixo }) {
           <Esteira cor={cores['--acento']} />
           <RoboModelo3D pecas={pecas} corAcento={cores['--acento']} corTitulo={cores['--titulo']} />
         </Suspense>
-        <ControladorCamera />
+        <ControladorCamera indiceSala={indiceSala} />
       </Canvas>
     </div>
   )
