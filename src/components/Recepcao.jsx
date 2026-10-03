@@ -1,9 +1,16 @@
 import { useEffect } from 'react'
 import { aplicarAmbiente } from '../hooks/useAmbiente'
+import { suporta3D } from '../three/suporte3D'
 
 function Recepcao({ temProgresso, onIniciar, onContinuar, onRecomecar }) {
   useEffect(() => {
     aplicarAmbiente(1)
+
+    // Pré-carrega o bundle da cena 3D em segundo plano assim que a Recepção aparece,
+    // para já estar pronto quando o turno começar (sem baixar em dispositivos sem suporte).
+    if (suporta3D()) {
+      import('../three/CenaFabrica')
+    }
   }, [])
 
   return (
