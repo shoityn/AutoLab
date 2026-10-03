@@ -1,0 +1,15 @@
+/* Tokens dos 3 ambientes da fábrica. Valores iniciais = Ambiente 1 (Galpão Rústico).
+   O restante é interpolado em tempo real pelo GSAP (ver src/hooks/useAmbiente.js). */
+:root {
+  --bg: #1e222a;
+  --card: #2a2f3b;
+  --titulo: #fbbf24;
+  --texto: #e7e5e2;
+  --acento: #b45309;
+}
+
+body {
+  background: var(--bg);
+  color: var(--texto);
+  min-height: 100vh;
+}
