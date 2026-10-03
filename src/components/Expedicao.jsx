@@ -21,7 +21,10 @@ function Expedicao({ onRecomecar }) {
   }, [])
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center text-[var(--texto)]">
+    <main
+      className="flex flex-col items-center justify-center gap-6 overflow-hidden p-6 text-center text-[var(--texto)]"
+      style={{ height: '100dvh' }}
+    >
       <h1 className="text-3xl font-bold text-[var(--titulo)]">Turno concluído! 🤖</h1>
 
       <Robo pecas={PECAS_COMPLETAS} flutuante={false} />

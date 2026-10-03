@@ -7,12 +7,15 @@ function Recepcao({ temProgresso, onIniciar, onContinuar, onRecomecar }) {
   }, [])
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center text-[var(--texto)]">
+    <main
+      className="flex flex-col items-center justify-center gap-6 overflow-hidden p-6 text-center text-[var(--texto)]"
+      style={{ height: '100dvh' }}
+    >
       <h1 className="text-3xl font-bold text-[var(--titulo)]">AutoLab</h1>
       <p className="max-w-md text-balance opacity-90">
         Você é o novo operador da AutoLab, a fábrica onde se constrói um modelo de inteligência
-        artificial do zero. Percorra as estações da esteira, responda ao quiz de cada uma e monte
-        o robô até a expedição.
+        artificial do zero. Explore cada sala, toque nos pontos de interesse, responda ao quiz e
+        monte o robô até a expedição.
       </p>
 
       {temProgresso ? (
