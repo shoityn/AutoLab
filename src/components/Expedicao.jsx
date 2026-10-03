@@ -1,5 +1,10 @@
+import { useEffect } from 'react'
+import { aplicarAmbiente } from '../hooks/useAmbiente'
+import Robo from './Robo'
+
 const URL_SITE = 'https://shoityn.github.io/AutoLab/'
 const MENSAGEM_COMPARTILHAR = 'Acabei de montar meu robô na fábrica da AutoLab! Testa aí:'
+const PECAS_COMPLETAS = ['base', 'tronco', 'nucleo', 'olhos', 'antena']
 
 function compartilhar() {
   if (navigator.share) {
@@ -11,9 +16,16 @@ function compartilhar() {
 }
 
 function Expedicao({ onRecomecar }) {
+  useEffect(() => {
+    aplicarAmbiente(3)
+  }, [])
+
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center">
-      <h1 className="text-3xl font-bold">Turno concluído! 🤖</h1>
+    <section className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center text-[var(--texto)]">
+      <h1 className="text-3xl font-bold text-[var(--titulo)]">Turno concluído! 🤖</h1>
+
+      <Robo pecas={PECAS_COMPLETAS} flutuante={false} />
+
       <p className="max-w-md opacity-90">
         Seu robô saiu da linha de montagem completo. Obrigado por percorrer a fábrica da AutoLab.
       </p>
@@ -29,7 +41,7 @@ function Expedicao({ onRecomecar }) {
         <button
           type="button"
           onClick={onRecomecar}
-          className="min-h-11 rounded-md border border-white/30 px-6 py-2 font-semibold"
+          className="min-h-11 rounded-md border border-[var(--acento)]/40 px-6 py-2 font-semibold"
         >
           Recomeçar turno
         </button>
