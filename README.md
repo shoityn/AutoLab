@@ -2,7 +2,7 @@
 
 Site-jogo estático sobre Machine Learning, ambientado numa fábrica com esteira. Quem escaneia o QR code do cartaz percorre 5 estações com cards e um quiz em cada uma, e vê um robô sendo montado a cada acerto até a expedição.
 
-🔗 **Acesse:** https://glaubershoity.github.io/AutoLab/
+🔗 **Acesse:** https://shoityn.github.io/AutoLab/
 
 ## Equipe
 
