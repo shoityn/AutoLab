@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-function Robo({ pecas, flutuante = true }) {
+function Robo({ pecas, flutuante = true, className }) {
   const refsPecas = useRef({})
   const anterioresRef = useRef([])
 
@@ -32,9 +32,10 @@ function Robo({ pecas, flutuante = true }) {
     <div
       aria-hidden="true"
       className={
-        flutuante
+        className ??
+        (flutuante
           ? 'fixed bottom-4 right-4 z-10 h-24 w-24 rounded-full border border-[var(--acento)]/30 bg-[var(--card)]/90 p-2 backdrop-blur-sm'
-          : 'mx-auto h-48 w-48'
+          : 'mx-auto h-48 w-48')
       }
     >
       <svg viewBox="0 0 100 100" className="h-full w-full">
