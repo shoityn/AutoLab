@@ -21,7 +21,7 @@ function Expedicao({ onRecomecar }) {
   }, [])
 
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center text-[var(--texto)]">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-6 text-center text-[var(--texto)]">
       <h1 className="text-3xl font-bold text-[var(--titulo)]">Turno concluído! 🤖</h1>
 
       <Robo pecas={PECAS_COMPLETAS} flutuante={false} />
@@ -47,11 +47,11 @@ function Expedicao({ onRecomecar }) {
         </button>
       </div>
 
-      <footer className="mt-6 text-xs opacity-60">
+      <footer className="mt-6 text-xs opacity-80">
         <p>Equipe: Glauber Shoity Nakai, Kamilla Barros Silva e Wellington Henrique da Silva Lima</p>
         <p>Estágio Supervisionado (PACEX VIII) — UNIPAR, prof. Elyssandro Piffer</p>
       </footer>
-    </section>
+    </main>
   )
 }
 

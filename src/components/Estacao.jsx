@@ -7,7 +7,8 @@ const Estacao = forwardRef(function Estacao({ estacao, desbloqueada, concluida, 
     return (
       <section
         ref={ref}
-        className="flex min-h-[60vh] flex-col items-center justify-center gap-2 p-6 text-center text-[var(--texto)] opacity-40"
+        aria-disabled="true"
+        className="flex min-h-[60vh] flex-col items-center justify-center gap-2 p-6 text-center text-[var(--texto)] opacity-70"
       >
         <h2 className="text-xl font-bold">
           {estacao.ordem}. {estacao.titulo}
