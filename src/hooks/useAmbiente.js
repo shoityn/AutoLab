@@ -32,8 +32,9 @@ export function aplicarAmbiente(ambiente, { animado = false } = {}) {
  * Liga cada seção (estação) da esteira à troca de tokens do ambiente correspondente
  * conforme o scroll entra/sai dela.
  * @param {{ ref: import('react').RefObject<HTMLElement>, ambiente: number }[]} secoes
+ * @param {(ambiente: number) => void} [aoMudarAmbiente] opcional, para refletir o ambiente atual em estado React (ex.: cor de fundo da cena 3D)
  */
-export function useAmbienteScroll(secoes) {
+export function useAmbienteScroll(secoes, aoMudarAmbiente) {
   useEffect(() => {
     const triggers = secoes
       .filter(({ ref }) => ref.current)
@@ -42,8 +43,14 @@ export function useAmbienteScroll(secoes) {
           trigger: ref.current,
           start: 'top center',
           end: 'bottom center',
-          onEnter: () => aplicarAmbiente(ambiente, { animado: true }),
-          onEnterBack: () => aplicarAmbiente(ambiente, { animado: true }),
+          onEnter: () => {
+            aplicarAmbiente(ambiente, { animado: true })
+            aoMudarAmbiente?.(ambiente)
+          },
+          onEnterBack: () => {
+            aplicarAmbiente(ambiente, { animado: true })
+            aoMudarAmbiente?.(ambiente)
+          },
         }),
       )
 
