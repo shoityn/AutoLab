@@ -1,0 +1,191 @@
+[
+  {
+    "id": "ingestao",
+    "ordem": 1,
+    "titulo": "Recebimento & Ingestão",
+    "ambiente": 1,
+    "peca": "base",
+    "cards": [
+      {
+        "titulo": "Dados são a matéria-prima",
+        "texto": "Todo modelo de machine learning nasce de dados brutos: planilhas, imagens, textos, sensores. Sem matéria-prima de qualidade, nenhuma linha de produção entrega um produto confiável — o mesmo vale para IA."
+      },
+      {
+        "titulo": "Fontes e formatos",
+        "texto": "Os dados chegam de bancos relacionais, APIs, arquivos CSV/JSON, logs e dispositivos IoT. Cada fonte tem seu próprio formato, frequência de atualização e nível de confiabilidade, por isso precisa ser catalogada antes de entrar na linha."
+      },
+      {
+        "titulo": "Qualidade antes de quantidade",
+        "texto": "Um grande volume de dados inconsistentes gera modelos piores do que um volume menor, porém bem curado. Avaliar completude, consistência e representatividade é a primeira inspeção da esteira."
+      },
+      {
+        "titulo": "Viés já começa aqui",
+        "texto": "Se os dados coletados não representam toda a população de interesse, o modelo herda esse desequilíbrio. Garantir diversidade na amostra evita retrabalho (e problemas éticos) nas estações seguintes."
+      }
+    ],
+    "quiz": {
+      "pergunta": "Por que a qualidade dos dados de entrada é tão crítica em um projeto de machine learning?",
+      "alternativas": [
+        "Porque dados maiores sempre geram modelos melhores, independente da qualidade",
+        "Porque erros e vieses presentes na coleta se propagam para todas as etapas seguintes do modelo",
+        "Porque a qualidade dos dados só importa depois que o modelo já foi treinado",
+        "Porque o formato do arquivo (CSV, JSON) determina sozinho a precisão do modelo"
+      ],
+      "correta": 1,
+      "dica": "Pense na esteira de produção: um defeito na matéria-prima aparece lá na frente, no produto final.",
+      "explicacao": "Dados com erros, lacunas ou vieses de coleta contaminam todo o restante do pipeline — por isso a inspeção de qualidade começa antes mesmo do treinamento."
+    }
+  },
+  {
+    "id": "processamento",
+    "ordem": 2,
+    "titulo": "Linha de Processamento",
+    "ambiente": 1,
+    "peca": "tronco",
+    "cards": [
+      {
+        "titulo": "Limpeza de dados",
+        "texto": "Remover duplicatas, tratar valores ausentes e corrigir inconsistências de tipo são tarefas básicas, mas consomem a maior parte do tempo de um projeto de dados — geralmente mais de 60% do esforço total."
+      },
+      {
+        "titulo": "Normalização e padronização",
+        "texto": "Colocar variáveis numéricas em escalas comparáveis (como 0 a 1) evita que atributos com valores muito grandes dominem o aprendizado do modelo, especialmente em algoritmos sensíveis à escala."
+      },
+      {
+        "titulo": "Engenharia de atributos",
+        "texto": "Criar novas variáveis a partir das originais (como extrair o dia da semana de uma data) pode revelar padrões que o modelo não enxergaria nos dados crus, melhorando o desempenho final."
+      },
+      {
+        "titulo": "Divisão treino/teste",
+        "texto": "Separar uma parte dos dados para teste, nunca vista durante o treinamento, é o que permite avaliar se o modelo realmente aprendeu padrões gerais, e não apenas decorou os exemplos."
+      }
+    ],
+    "quiz": {
+      "pergunta": "Qual é o principal objetivo de separar os dados em conjuntos de treino e teste?",
+      "alternativas": [
+        "Reduzir o tamanho do arquivo de dados para acelerar o processamento",
+        "Avaliar se o modelo generaliza para dados que ele nunca viu durante o treinamento",
+        "Garantir que o modelo memorize perfeitamente todos os exemplos disponíveis",
+        "Eliminar a necessidade de normalizar as variáveis numéricas"
+      ],
+      "correta": 1,
+      "dica": "Pense em um teste de prova: o aluno precisa responder perguntas que não estavam no material de estudo.",
+      "explicacao": "O conjunto de teste simula dados novos do mundo real. Se o modelo vai bem só no treino, ele decorou (overfitting) em vez de aprender um padrão generalizável."
+    }
+  },
+  {
+    "id": "neural",
+    "ordem": 3,
+    "titulo": "Processamento Neural",
+    "ambiente": 2,
+    "peca": "nucleo",
+    "cards": [
+      {
+        "titulo": "O perceptron",
+        "texto": "A unidade mais simples de uma rede neural recebe entradas, multiplica cada uma por um peso, soma tudo e aplica uma função de ativação. É inspirado (de forma bem simplificada) no neurônio biológico."
+      },
+      {
+        "titulo": "Pesos e bias",
+        "texto": "Os pesos definem a importância de cada entrada; o bias desloca o resultado, permitindo que o neurônio ative mesmo quando todas as entradas são próximas de zero. Ambos são ajustados durante o treinamento."
+      },
+      {
+        "titulo": "Função de ativação",
+        "texto": "Funções como ReLU e sigmoide introduzem não linearidade na rede. Sem elas, empilhar camadas seria equivalente a uma única operação linear, incapaz de aprender padrões complexos."
+      },
+      {
+        "titulo": "Backpropagation",
+        "texto": "O erro da previsão é propagado de volta pela rede, camada a camada, ajustando pesos e bias na direção que reduz esse erro. É o motor que faz a rede 'aprender' ao longo de muitas iterações."
+      },
+      {
+        "titulo": "Camadas e profundidade",
+        "texto": "Redes com várias camadas escondidas (deep learning) conseguem representar padrões cada vez mais abstratos, mas exigem mais dados e poder computacional para treinar sem overfitting."
+      }
+    ],
+    "quiz": {
+      "pergunta": "Qual é a função da função de ativação em um neurônio artificial?",
+      "alternativas": [
+        "Armazenar os dados de treinamento para uso posterior",
+        "Introduzir não linearidade, permitindo que a rede aprenda padrões complexos",
+        "Dividir os dados em conjuntos de treino e teste",
+        "Substituir a necessidade de ajustar pesos durante o treinamento"
+      ],
+      "correta": 1,
+      "dica": "Sem ela, empilhar camadas seria matematicamente o mesmo que ter uma única camada.",
+      "explicacao": "Funções de ativação como ReLU e sigmoide quebram a linearidade, o que é o que permite que redes profundas modelem relações complexas entre os dados."
+    }
+  },
+  {
+    "id": "qualidade",
+    "ordem": 4,
+    "titulo": "Inspeção de Qualidade",
+    "ambiente": 3,
+    "peca": "olhos",
+    "cards": [
+      {
+        "titulo": "Acurácia não é tudo",
+        "texto": "Em bases desbalanceadas, um modelo que sempre prevê a classe majoritária pode ter 95% de acurácia e ser inútil. É preciso olhar métricas que considerem erros por classe."
+      },
+      {
+        "titulo": "Precisão (precision)",
+        "texto": "De tudo que o modelo classificou como positivo, quantos realmente eram positivos? Métrica essencial quando o custo de um falso positivo é alto, como em um filtro de spam."
+      },
+      {
+        "titulo": "Revocação (recall)",
+        "texto": "De tudo que realmente era positivo, quantos o modelo conseguiu identificar? Importante quando deixar passar um caso positivo é mais grave, como em diagnósticos médicos."
+      },
+      {
+        "titulo": "Seleção e gerações de modelos",
+        "texto": "Assim como numa seleção artificial, diferentes versões de um modelo são testadas e comparadas por métricas; apenas as melhores combinações de hiperparâmetros seguem para a próxima geração de testes."
+      }
+    ],
+    "quiz": {
+      "pergunta": "Em um sistema que detecta uma doença rara, por que o recall costuma ser mais importante do que a acurácia?",
+      "alternativas": [
+        "Porque a acurácia é impossível de calcular em bases desbalanceadas",
+        "Porque deixar de identificar um caso positivo real (falso negativo) pode ter consequências graves",
+        "Porque o recall é sempre maior que a acurácia matematicamente",
+        "Porque a precisão e o recall são exatamente a mesma métrica"
+      ],
+      "correta": 1,
+      "dica": "Pense no custo de um falso negativo: um paciente doente que o modelo classifica como saudável.",
+      "explicacao": "Com classes desbalanceadas, a acurácia pode esconder um modelo que ignora a classe rara. O recall mede diretamente quantos casos positivos reais foram capturados."
+    }
+  },
+  {
+    "id": "expedicao",
+    "ordem": 5,
+    "titulo": "Expedição & Análise",
+    "ambiente": 3,
+    "peca": "antena",
+    "cards": [
+      {
+        "titulo": "Nenhum modelo é perfeito",
+        "texto": "Todo modelo tem limitações: desempenho pior em dados fora da distribuição de treino, sensibilidade a ruído e risco de se tornar obsoleto quando o mundo real muda (data drift)."
+      },
+      {
+        "titulo": "Explicabilidade (XAI)",
+        "texto": "Modelos complexos como redes neurais profundas costumam ser 'caixas-pretas'. Técnicas de XAI, como SHAP e LIME, ajudam a entender por que o modelo tomou determinada decisão."
+      },
+      {
+        "titulo": "Por que XAI importa",
+        "texto": "Em setores como saúde, crédito e justiça, decisões automatizadas sem explicação geram desconfiança e riscos legais. Explicar o 'porquê' é tão importante quanto acertar o 'o quê'."
+      },
+      {
+        "titulo": "Do laboratório para o mundo",
+        "texto": "Depois de validado, o modelo é empacotado e disponibilizado para uso real. Mas o trabalho não termina aí: monitoramento contínuo garante que ele continue confiável com o tempo."
+      }
+    ],
+    "quiz": {
+      "pergunta": "Qual é o principal objetivo das técnicas de explicabilidade (XAI) em machine learning?",
+      "alternativas": [
+        "Aumentar artificialmente a acurácia do modelo",
+        "Tornar compreensível por que um modelo chegou a determinada decisão",
+        "Substituir a necessidade de testar o modelo antes de usá-lo",
+        "Reduzir o tamanho do conjunto de dados de treinamento"
+      ],
+      "correta": 1,
+      "dica": "Pense em decisões automatizadas sobre crédito ou saúde: a pessoa afetada tem o direito de entender o motivo.",
+      "explicacao": "XAI (Explainable AI) busca abrir a 'caixa-preta' dos modelos, mostrando quais fatores mais pesaram numa decisão — essencial para confiança, auditoria e conformidade legal."
+    }
+  }
+]
