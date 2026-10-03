@@ -16,8 +16,8 @@ function Quiz({ quiz, acertou, onAcerto }) {
   }
 
   return (
-    <div className="rounded-lg border border-white/10 bg-black/20 p-4">
-      <p className="mb-3 font-semibold">{quiz.pergunta}</p>
+    <div className="rounded-lg border border-[var(--acento)]/30 bg-[var(--card)] p-4 text-[var(--texto)]">
+      <p className="mb-3 font-semibold text-[var(--titulo)]">{quiz.pergunta}</p>
       <div className="flex flex-col gap-2" role="radiogroup" aria-label={quiz.pergunta}>
         {quiz.alternativas.map((alternativa, indice) => {
           const ehSelecionada = selecionada === indice
@@ -36,7 +36,7 @@ function Quiz({ quiz, acertou, onAcerto }) {
                   ? 'border-emerald-400 bg-emerald-500/20'
                   : ehSelecionada
                     ? 'border-amber-400 bg-amber-500/10'
-                    : 'border-white/15 bg-white/5 hover:bg-white/10',
+                    : 'border-[var(--acento)]/20 bg-[var(--card)] hover:bg-[var(--acento)]/10',
               ].join(' ')}
             >
               {alternativa}
@@ -46,13 +46,11 @@ function Quiz({ quiz, acertou, onAcerto }) {
       </div>
 
       {errou && !acertou && (
-        <p className="mt-3 rounded-md bg-amber-500/10 p-3 text-sm text-amber-200">
-          💡 {quiz.dica}
-        </p>
+        <p className="mt-3 rounded-md bg-amber-100 p-3 text-sm text-amber-900">💡 {quiz.dica}</p>
       )}
 
       {acertou && (
-        <p className="mt-3 rounded-md bg-emerald-500/10 p-3 text-sm text-emerald-200">
+        <p className="mt-3 rounded-md bg-emerald-100 p-3 text-sm text-emerald-900">
           ✅ {quiz.explicacao}
         </p>
       )}

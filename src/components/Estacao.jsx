@@ -1,10 +1,14 @@
+import { forwardRef } from 'react'
 import Card from './Card'
 import Quiz from './Quiz'
 
-function Estacao({ estacao, desbloqueada, concluida, onConcluir }) {
+const Estacao = forwardRef(function Estacao({ estacao, desbloqueada, concluida, onConcluir }, ref) {
   if (!desbloqueada) {
     return (
-      <section className="flex min-h-[60vh] flex-col items-center justify-center gap-2 p-6 text-center opacity-40">
+      <section
+        ref={ref}
+        className="flex min-h-[60vh] flex-col items-center justify-center gap-2 p-6 text-center text-[var(--texto)] opacity-40"
+      >
         <h2 className="text-xl font-bold">
           {estacao.ordem}. {estacao.titulo}
         </h2>
@@ -14,8 +18,8 @@ function Estacao({ estacao, desbloqueada, concluida, onConcluir }) {
   }
 
   return (
-    <section id={estacao.id} className="flex min-h-screen flex-col justify-center gap-4 p-6">
-      <h2 className="text-2xl font-bold">
+    <section id={estacao.id} ref={ref} className="flex min-h-screen flex-col justify-center gap-4 p-6">
+      <h2 className="text-2xl font-bold text-[var(--titulo)]">
         {estacao.ordem}. {estacao.titulo}
       </h2>
 
@@ -27,9 +31,13 @@ function Estacao({ estacao, desbloqueada, concluida, onConcluir }) {
 
       <Quiz quiz={estacao.quiz} acertou={concluida} onAcerto={() => onConcluir(estacao.id)} />
 
-      {concluida && <p className="text-sm font-medium opacity-80">✅ Estação concluída — role para a próxima.</p>}
+      {concluida && (
+        <p className="text-sm font-medium text-[var(--texto)] opacity-80">
+          ✅ Estação concluída — role para a próxima.
+        </p>
+      )}
     </section>
   )
-}
+})
 
 export default Estacao
