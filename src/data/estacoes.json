@@ -111,7 +111,7 @@
       ],
       "correta": 1,
       "dica": "Sem ela, empilhar camadas seria matematicamente o mesmo que ter uma única camada.",
-      "explicacao": "Funções de ativação como ReLU e sigmoide quebram a linearidade, o que é o que permite que redes profundas modelem relações complexas entre os dados."
+      "explicacao": "Funções de ativação como ReLU e sigmoide quebram a linearidade — é isso que permite que redes profundas modelem relações complexas entre os dados."
     }
   },
   {
