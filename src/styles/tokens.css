@@ -77,3 +77,71 @@ body {
     opacity: 0.5;
   }
 }
+
+/* Fumaça da chaminé da fachada. */
+@keyframes autolab-fumaca {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-46px, -210px) scale(1.9);
+    opacity: 0;
+  }
+}
+
+.fumaca {
+  animation: autolab-fumaca 5.4s linear infinite;
+}
+
+/* Zinos flutuando de leve na calçada. */
+@keyframes autolab-flutua {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.zinos-flutua {
+  animation: autolab-flutua 3.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fumaca,
+  .zinos-flutua {
+    animation: none;
+  }
+  .fumaca {
+    opacity: 0;
+  }
+}
+
+/* Dica de girar o aparelho. */
+@keyframes autolab-girar {
+  0%,
+  55%,
+  100% {
+    transform: rotate(0deg);
+  }
+  75%,
+  92% {
+    transform: rotate(-90deg);
+  }
+}
+
+.girar-dica {
+  animation: autolab-girar 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .girar-dica {
+    animation: none;
+    transform: rotate(-90deg);
+  }
+}
