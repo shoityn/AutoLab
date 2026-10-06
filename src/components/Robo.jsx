@@ -1,90 +1,73 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import { CABECA_LIGADA, PECAS } from '../lib/assets'
 
-function Robo({ pecas, flutuante = true, className }) {
-  const refsPecas = useRef({})
-  const anterioresRef = useRef([])
+const ORDEM = PECAS.map((p) => p.id)
+
+/**
+ * O robô montado a partir das 5 peças entregues em public/mascote/pecas/.
+ * Todas compartilham o viewBox 240x320, então basta empilhá-las no mesmo quadro.
+ * A peça nova de cada sala entra com `bounce.out` (PLANO.md seção 4.3).
+ *
+ * `completo` troca a cabeça apagada pela cabeça ligada (rosto feliz) — é o
+ * momento em que o robô "acorda", na Expedição.
+ */
+function Robo({ pecas = [], completo = false, className = '' }) {
+  const refs = useRef({})
+  const anterioresRef = useRef(null)
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduzido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    // Na primeira renderização não anima (pode estar só restaurando o progresso salvo).
+    if (anterioresRef.current === null) {
+      anterioresRef.current = pecas
+      return
+    }
+
     const novas = pecas.filter((peca) => !anterioresRef.current.includes(peca))
+    anterioresRef.current = pecas
 
     novas.forEach((peca) => {
-      const el = refsPecas.current[peca]
+      const el = refs.current[peca]
       if (!el) return
-      if (prefersReduced) {
-        gsap.set(el, { opacity: 1, scale: 1 })
-      } else {
-        gsap.fromTo(
-          el,
-          { opacity: 0, scale: 0, transformOrigin: '50% 50%' },
-          { opacity: 1, scale: 1, duration: 0.7, ease: 'bounce.out' },
-        )
+      if (reduzido) {
+        gsap.set(el, { opacity: 1, scale: 1, y: 0 })
+        return
       }
+      gsap.fromTo(
+        el,
+        { opacity: 0, scale: 0.35, y: -28, transformOrigin: '50% 50%' },
+        { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'bounce.out' },
+      )
     })
-
-    anterioresRef.current = pecas
   }, [pecas])
 
-  const temPeca = (peca) => pecas.includes(peca)
+  const nomes = PECAS.filter((p) => pecas.includes(p.id)).map((p) => p.nome)
+  const descricao = nomes.length
+    ? `Robô em montagem: ${nomes.join(', ')}. ${pecas.length} de ${ORDEM.length} peças.`
+    : 'Robô ainda sem peças.'
 
   return (
-    <div
-      aria-hidden="true"
-      className={
-        className ??
-        (flutuante
-          ? 'fixed bottom-4 right-4 z-10 h-24 w-24 rounded-full border border-[var(--acento)]/30 bg-[var(--card)]/90 p-2 backdrop-blur-sm'
-          : 'mx-auto h-48 w-48')
-      }
-    >
-      <svg viewBox="0 0 100 100" className="h-full w-full">
-        {/* base/chassi — estação 1 */}
-        <rect
-          ref={(el) => (refsPecas.current.base = el)}
-          x="30"
-          y="72"
-          width="40"
-          height="18"
-          rx="4"
-          fill="var(--acento)"
-          style={{ opacity: temPeca('base') ? 1 : 0 }}
-        />
-
-        {/* tronco/estrutura — estação 2 */}
-        <rect
-          ref={(el) => (refsPecas.current.tronco = el)}
-          x="36"
-          y="42"
-          width="28"
-          height="32"
-          rx="5"
-          fill="var(--titulo)"
-          style={{ opacity: temPeca('tronco') ? 1 : 0 }}
-        />
-
-        {/* núcleo/cérebro — estação 3 */}
-        <circle
-          ref={(el) => (refsPecas.current.nucleo = el)}
-          cx="50"
-          cy="30"
-          r="13"
-          fill="var(--acento)"
-          style={{ opacity: temPeca('nucleo') ? 1 : 0 }}
-        />
-
-        {/* olhos/sensores — estação 4 */}
-        <g ref={(el) => (refsPecas.current.olhos = el)} style={{ opacity: temPeca('olhos') ? 1 : 0 }}>
-          <circle cx="44" cy="29" r="2.5" fill="#ffffff" />
-          <circle cx="56" cy="29" r="2.5" fill="#ffffff" />
-        </g>
-
-        {/* antena + selo de aprovado — estação 5 */}
-        <g ref={(el) => (refsPecas.current.antena = el)} style={{ opacity: temPeca('antena') ? 1 : 0 }}>
-          <line x1="50" y1="17" x2="50" y2="7" stroke="var(--titulo)" strokeWidth="2" />
-          <circle cx="50" cy="6" r="3" fill="var(--titulo)" />
-        </g>
-      </svg>
+    <div className={`relative ${className}`} role="img" aria-label={descricao}>
+      {PECAS.map((peca) => {
+        const presente = pecas.includes(peca.id)
+        const arquivo = peca.id === 'cabeca' && completo ? CABECA_LIGADA : peca.arquivo
+        return (
+          <img
+            key={peca.id}
+            ref={(el) => {
+              refs.current[peca.id] = el
+            }}
+            src={arquivo}
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            className="absolute inset-0 h-full w-full select-none object-contain"
+            style={{ opacity: presente ? 1 : 0, willChange: 'transform' }}
+          />
+        )
+      })}
     </div>
   )
 }
