@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" role="img" aria-label="Peça da cópia — 1-base">
+<title>Peça da cópia — 1-base</title>
+<defs>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="2.2" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="blur6" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+
+  <g id="peca-base">
+    <ellipse cx="120" cy="290" rx="38" ry="7" fill="#67E8F9" opacity=".45" filter="url(#blur6)"/>
+    <ellipse cx="120" cy="270" rx="16" ry="5" fill="#67E8F9" opacity=".6" filter="url(#blur6)"/>
+    <path d="M84 238 H156 Q166 238 161 247 L153 257 Q150 262 143 262 H97 Q90 262 87 257 L79 247 Q74 238 84 238 Z"
+          fill="#7C8794" stroke="#2B2F36" stroke-width="4"/>
+    <rect x="98" y="250" width="44" height="5" rx="2.5" fill="#67E8F9" filter="url(#glow)"/>
+  </g>
+</svg>

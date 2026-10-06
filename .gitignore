@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# pasta de entrega de assets (duplicada em public/)
+tt/

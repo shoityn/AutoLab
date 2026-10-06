@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" role="img" aria-label="Peça da cópia — 4-bracos">
+<title>Peça da cópia — 4-bracos</title>
+<defs>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="2.2" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="blur6" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+
+  <g id="peca-bracos">
+    <path d="M74 184 Q52 190 48 214" stroke="#2B2F36" stroke-width="15" stroke-linecap="round" fill="none"/>
+    <path d="M74 184 Q52 190 48 214" stroke="#7C8794" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M48 222 Q30 230 37 250 M48 222 Q66 230 59 250" stroke="#2B2F36" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <path d="M48 222 Q30 230 37 250 M48 222 Q66 230 59 250" stroke="#7C8794" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <circle cx="48" cy="218" r="10" fill="#F1EBDD" stroke="#2B2F36" stroke-width="4"/>
+    <circle cx="74" cy="183" r="8" fill="#F1EBDD" stroke="#2B2F36" stroke-width="4"/>
+    <path d="M166 184 Q188 190 192 214" stroke="#2B2F36" stroke-width="15" stroke-linecap="round" fill="none"/>
+    <path d="M166 184 Q188 190 192 214" stroke="#7C8794" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M192 222 Q210 230 203 250 M192 222 Q174 230 181 250" stroke="#2B2F36" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <path d="M192 222 Q210 230 203 250 M192 222 Q174 230 181 250" stroke="#7C8794" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <circle cx="192" cy="218" r="10" fill="#F1EBDD" stroke="#2B2F36" stroke-width="4"/>
+    <circle cx="166" cy="183" r="8" fill="#F1EBDD" stroke="#2B2F36" stroke-width="4"/>
+  </g>
+</svg>
