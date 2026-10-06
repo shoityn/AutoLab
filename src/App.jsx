@@ -308,6 +308,7 @@ function Jogo({ jogo }) {
             y={pontoParaTela(sala.saida, geral, tela.vw, tela.vh).top}
             rotulo={sala.saida.rotulo}
             estadoVisual={saidaLiberada ? 'saida' : 'trancado'}
+            motivoTrancado="Responda ao registro final desta sala antes de seguir."
             oculto={!overlayVisivel}
             onClick={tocarSaida}
           />

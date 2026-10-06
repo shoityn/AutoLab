@@ -60,7 +60,10 @@ function Icone({ nome }) {
   }
 }
 
-const Hotspot = forwardRef(function Hotspot({ x, y, rotulo, estadoVisual, onClick, oculto = false }, ref) {
+const Hotspot = forwardRef(function Hotspot(
+  { x, y, rotulo, estadoVisual, onClick, oculto = false, motivoTrancado },
+  ref,
+) {
   const trancado = estadoVisual === 'trancado'
   const pulsa = estadoVisual === 'novo' || estadoVisual === 'liberado' || estadoVisual === 'saida'
 
@@ -77,7 +80,7 @@ const Hotspot = forwardRef(function Hotspot({ x, y, rotulo, estadoVisual, onClic
       : 'color-mix(in srgb, var(--marca-tela) 70%, transparent)'
 
   const descricao = trancado
-    ? `${rotulo} — trancado. Leia todos os registros desta sala primeiro.`
+    ? `${rotulo} — trancado. ${motivoTrancado ?? 'Leia todos os registros desta sala primeiro.'}`
     : estadoVisual === 'lido'
       ? `${rotulo} — já lido. Abrir novamente.`
       : rotulo

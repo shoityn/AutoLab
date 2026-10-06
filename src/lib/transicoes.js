@@ -13,14 +13,14 @@ export function abrirPainel(origem, painelEl) {
   if (!painelEl) return gsap.timeline()
 
   if (reduzido()) {
-    return gsap.fromTo(painelEl, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 })
+    return gsap.fromTo(painelEl, { opacity: 0 }, { opacity: 1, duration: 0.01 })
   }
 
   if (!origem) {
     return gsap.fromTo(
       painelEl,
-      { autoAlpha: 0, scale: 0.9 },
-      { autoAlpha: 1, scale: 1, duration: 0.4, ease: 'power3.out' },
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.4, ease: 'power3.out' },
     )
   }
 
@@ -36,9 +36,9 @@ export function abrirPainel(origem, painelEl) {
       x: origemCentroX - painelCentroX,
       y: origemCentroY - painelCentroY,
       scale: Math.min(1, Math.max(origem.width / c.width, 0.1)),
-      autoAlpha: 0,
+      opacity: 0,
     },
-    { x: 0, y: 0, scale: 1, autoAlpha: 1, duration: 0.5, ease: 'power3.out' },
+    { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out' },
   )
 }
 
@@ -48,7 +48,7 @@ export function fecharPainel(painelEl, aoTerminar) {
     aoTerminar()
     return
   }
-  gsap.to(painelEl, { autoAlpha: 0, scale: 0.92, duration: 0.25, ease: 'power2.in', onComplete: aoTerminar })
+  gsap.to(painelEl, { opacity: 0, scale: 0.92, duration: 0.25, ease: 'power2.in', onComplete: aoTerminar })
 }
 
 /**
