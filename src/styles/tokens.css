@@ -1,15 +1,79 @@
-/* Tokens dos 3 ambientes da fábrica. Valores iniciais = Ambiente 1 (Galpão Rústico).
-   O restante é interpolado em tempo real pelo GSAP (ver src/hooks/useAmbiente.js). */
+/* ---------------------------------------------------------------------------
+   Tokens do AutoLab.
+
+   1. Marca — cores fixas, extraídas dos SVGs de public/marca/ e do mascote Zinos.
+      Nunca mudam, em nenhum ambiente.
+   2. Ambientes — os 3 climas da fábrica (PLANO.md seção 10). Os valores iniciais
+      são os do Ambiente 1 (Galpão Rústico); o GSAP interpola o resto em tempo
+      real na troca de sala (src/hooks/useAmbiente.js).
+--------------------------------------------------------------------------- */
 :root {
+  /* 1. Marca */
+  --marca-grafite: #2b2f36; /* contorno/moldura do símbolo */
+  --marca-creme: #f1ebdd; /* corpo do Zinos e bezel do símbolo */
+  --marca-tela: #0b1118; /* "tela" preta do rosto */
+  --marca-ciano: #67e8f9; /* olhos do Zinos, acento da marca */
+  --marca-aco: #7c8794; /* metal/antena/braços */
+  --marca-tinta: #1e293b; /* texto do logotipo sobre fundo claro */
+
+  /* 2. Ambiente (interpolado) */
   --bg: #1e222a;
   --card: #2a2f3b;
   --titulo: #fbbf24;
   --texto: #e7e5e2;
   --acento: #b45309;
+
+  /* Sinalização de interação: sempre o ciano da marca, em todos os ambientes.
+     É a cor do Zinos — "o robô está apontando" — e é a que mais contrasta com
+     a luz quente do galpão. Ver DECISOES.md. */
+  --hotspot: var(--marca-ciano);
+  --hotspot-escuro: #0e7490;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overscroll-behavior: none;
 }
 
 body {
   background: var(--bg);
   color: var(--texto);
-  min-height: 100vh;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A página nunca rola: a navegação é por câmera (PLANO.md seção 0). */
+#root {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Anel pulsante dos hotspots. Em `prefers-reduced-motion` o anel fica parado,
+   mas continua visível (a sinalização não pode depender da animação). */
+@keyframes autolab-pulso {
+  0% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  70% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+.anel-pulso {
+  animation: autolab-pulso 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anel-pulso {
+    animation: none;
+    opacity: 0.5;
+  }
 }

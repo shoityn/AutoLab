@@ -2,53 +2,49 @@
   {
     "id": "ingestao",
     "ordem": 1,
+    "rotuloSala": "Sala 1",
     "titulo": "Recebimento & Ingestão",
     "ambiente": 1,
     "peca": "base",
-    "camadas": {
-      "fundo": "salas/1/fundo.svg",
-      "meio": "salas/1/meio.svg",
-      "objetos": "salas/1/objetos.svg",
-      "frente": "salas/1/frente.svg"
-    },
-    "saida": { "x": 500, "y": 1500, "zoom": 1.6, "rotulo": "Seguir pela esteira" },
+    "cena": "salas/1/cena.webp",
+    "saida": { "x": 1760, "y": 680, "zoom": 2, "rotulo": "Seguir pela esteira" },
     "hotspots": [
       {
         "id": "ingestao-caixas",
         "tipo": "card",
-        "x": 260,
-        "y": 1050,
-        "zoom": 2.4,
+        "x": 240,
+        "y": 600,
+        "zoom": 1.5,
         "rotulo": "Caixas de dados",
         "titulo": "Fontes e formatos",
         "texto": "Os dados chegam de bancos relacionais, APIs, arquivos CSV/JSON, logs e dispositivos IoT. Cada fonte tem seu próprio formato, frequência de atualização e nível de confiabilidade, por isso precisa ser catalogada antes de entrar na linha."
       },
       {
-        "id": "ingestao-balanca",
-        "tipo": "card",
-        "x": 700,
-        "y": 1050,
-        "zoom": 2.4,
-        "rotulo": "Balança de qualidade",
-        "titulo": "Qualidade antes de quantidade",
-        "texto": "Um grande volume de dados inconsistentes gera modelos piores do que um volume menor, porém bem curado. Avaliar completude, consistência e representatividade é a primeira inspeção da esteira."
-      },
-      {
         "id": "ingestao-etiqueta",
         "tipo": "card",
-        "x": 180,
-        "y": 700,
-        "zoom": 2.6,
+        "x": 460,
+        "y": 712,
+        "zoom": 1.8,
         "rotulo": "Etiqueta rasgada",
         "titulo": "Dados faltantes",
-        "texto": "Uma etiqueta rasgada ou ilegível é como um valor nulo escondido na mercadoria: ninguém percebe até o pedido errado chegar na outra ponta. Valores ausentes ou duplicados exigem tratamento explícito — ignorá-los distorce médias e propaga erro silencioso pela linha inteira."
+        "texto": "Uma etiqueta rasgada é como um valor nulo escondido na mercadoria: ninguém percebe até o pedido errado chegar na outra ponta. Valores ausentes ou duplicados exigem tratamento explícito — ignorá-los distorce médias e propaga erro silencioso pela linha inteira."
+      },
+      {
+        "id": "ingestao-balanca",
+        "tipo": "card",
+        "x": 690,
+        "y": 640,
+        "zoom": 1.6,
+        "rotulo": "Balança de qualidade",
+        "titulo": "Qualidade antes de quantidade",
+        "texto": "Um grande volume de dados inconsistentes gera modelos piores do que um volume menor, porém bem curado. Avaliar completude, consistência e representatividade é a primeira inspeção da esteira, e é ela que define o teto de desempenho do modelo."
       },
       {
         "id": "ingestao-contador",
         "tipo": "card",
-        "x": 800,
-        "y": 650,
-        "zoom": 2.6,
+        "x": 655,
+        "y": 355,
+        "zoom": 1.8,
         "rotulo": "Contador de volume",
         "titulo": "Volume não substitui curadoria",
         "texto": "Mais dados não significa automaticamente um modelo melhor. O contador de volume lembra que escala sem controle de qualidade só acelera a produção de erros. O equilíbrio ideal pesa quantidade, diversidade e custo de rotulagem."
@@ -56,9 +52,9 @@
       {
         "id": "ingestao-quiz",
         "tipo": "quiz",
-        "x": 500,
-        "y": 420,
-        "zoom": 2.2,
+        "x": 1455,
+        "y": 505,
+        "zoom": 1.6,
         "rotulo": "Prancheta do supervisor",
         "pergunta": "Por que a qualidade dos dados de entrada é tão crítica em um projeto de machine learning?",
         "alternativas": [
@@ -70,6 +66,282 @@
         "correta": 1,
         "dica": "Pense na esteira de produção: um defeito na matéria-prima aparece lá na frente, no produto final.",
         "explicacao": "Dados com erros, lacunas ou vieses de coleta contaminam todo o restante do pipeline — por isso a inspeção de qualidade começa antes mesmo do treinamento."
+      }
+    ]
+  },
+  {
+    "id": "processamento",
+    "ordem": 2,
+    "rotuloSala": "Sala 2",
+    "titulo": "Linha de Processamento",
+    "ambiente": 1,
+    "peca": "tronco",
+    "saida": { "x": 1770, "y": 620, "zoom": 2, "rotulo": "Subir pelo elevador de carga" },
+    "hotspots": [
+      {
+        "id": "processamento-lavadora",
+        "tipo": "card",
+        "x": 320,
+        "y": 600,
+        "zoom": 1.5,
+        "rotulo": "Lavadora da linha",
+        "titulo": "Limpeza de dados",
+        "texto": "Antes de treinar qualquer coisa é preciso lavar a matéria-prima: corrigir tipos errados, padronizar datas e unidades, remover duplicatas e resolver registros inconsistentes. Essa etapa costuma consumir a maior parte do tempo de um projeto e é a que mais muda o resultado final."
+      },
+      {
+        "id": "processamento-peneira",
+        "tipo": "card",
+        "x": 700,
+        "y": 560,
+        "zoom": 1.5,
+        "rotulo": "Peneira",
+        "titulo": "Outliers",
+        "texto": "Outliers são valores muito distantes do resto da amostra. Alguns são erro de medição e devem sair; outros são raros, mas legítimos, e jogá-los fora apaga justamente o que interessa. A peneira exige critério: analisar a origem do valor antes de descartar."
+      },
+      {
+        "id": "processamento-painel",
+        "tipo": "card",
+        "x": 1100,
+        "y": 480,
+        "zoom": 1.5,
+        "rotulo": "Painel de ajustes",
+        "titulo": "Normalização e escala",
+        "texto": "Idade em anos e renda em reais vivem em escalas incompatíveis. Normalizar (0 a 1) ou padronizar (média 0, desvio 1) coloca todos os atributos na mesma régua, evitando que uma variável domine o treinamento só por ter números maiores."
+      },
+      {
+        "id": "processamento-lixeira",
+        "tipo": "card",
+        "x": 500,
+        "y": 790,
+        "zoom": 1.6,
+        "rotulo": "Lixeira de rejeitos",
+        "titulo": "Seleção de atributos",
+        "texto": "Nem tudo que foi coletado serve. Atributos irrelevantes, redundantes ou que vazam a resposta (data leakage) atrapalham o modelo e aumentam o custo de treino. Descartar com registro do motivo é parte do processo — a lixeira também é documentação."
+      },
+      {
+        "id": "processamento-quiz",
+        "tipo": "quiz",
+        "x": 1420,
+        "y": 560,
+        "zoom": 1.5,
+        "rotulo": "Painel de controle da linha",
+        "pergunta": "Qual é o principal objetivo do pré-processamento de dados?",
+        "alternativas": [
+          "Aumentar o número de linhas do conjunto de dados a qualquer custo",
+          "Deixar os dados consistentes, comparáveis e no formato que o algoritmo espera",
+          "Escolher o algoritmo de aprendizado que será usado no treinamento",
+          "Substituir a necessidade de avaliar o modelo depois do treino"
+        ],
+        "correta": 1,
+        "dica": "A linha de processamento não cria mercadoria nova: ela deixa a que chegou pronta para a próxima máquina.",
+        "explicacao": "Pré-processar é padronizar, limpar e transformar os dados para que o algoritmo consiga aprender — não é aumentar volume nem escolher o modelo."
+      }
+    ]
+  },
+  {
+    "id": "neural",
+    "ordem": 3,
+    "rotuloSala": "Sala 3",
+    "titulo": "Processamento Neural",
+    "ambiente": 2,
+    "peca": "nucleo",
+    "saida": { "x": 1780, "y": 600, "zoom": 2, "rotulo": "Atravessar a porta pressurizada" },
+    "hotspots": [
+      {
+        "id": "neural-quadro",
+        "tipo": "card",
+        "x": 330,
+        "y": 480,
+        "zoom": 1.5,
+        "rotulo": "Quadro técnico",
+        "titulo": "O perceptron",
+        "texto": "O perceptron é a unidade mais simples de uma rede neural: recebe várias entradas, multiplica cada uma por um peso, soma tudo, acrescenta um viés e passa o resultado por uma função de ativação. Uma rede profunda é essa mesma peça repetida em camadas."
+      },
+      {
+        "id": "neural-mostradores",
+        "tipo": "card",
+        "x": 760,
+        "y": 430,
+        "zoom": 1.5,
+        "rotulo": "Mostradores",
+        "titulo": "Pesos",
+        "texto": "Os pesos dizem o quanto cada entrada importa para a decisão. Começam aleatórios e são corrigidos a cada erro pelo backpropagation, que mede a contribuição de cada peso para a perda. Treinar um modelo é, na prática, girar esses mostradores milhões de vezes."
+      },
+      {
+        "id": "neural-valvula",
+        "tipo": "card",
+        "x": 1140,
+        "y": 520,
+        "zoom": 1.5,
+        "rotulo": "Válvula de viés",
+        "titulo": "Bias",
+        "texto": "O viés (bias) é um valor somado à combinação das entradas, deslocando o ponto em que o neurônio dispara. Sem ele, a fronteira de decisão seria sempre obrigada a passar pela origem, e a rede perderia boa parte da sua flexibilidade."
+      },
+      {
+        "id": "neural-chave",
+        "tipo": "card",
+        "x": 560,
+        "y": 770,
+        "zoom": 1.6,
+        "rotulo": "Chave de limiar",
+        "titulo": "Função de ativação",
+        "texto": "A ativação decide se o sinal segue adiante e com qual intensidade. ReLU, sigmoide e tanh introduzem não linearidade — sem ela, empilhar camadas seria equivalente a uma única conta linear e a rede não aprenderia padrões complexos."
+      },
+      {
+        "id": "neural-quiz",
+        "tipo": "quiz",
+        "x": 1440,
+        "y": 540,
+        "zoom": 1.5,
+        "rotulo": "Terminal central",
+        "pergunta": "Durante o treinamento de uma rede neural, o que de fato é ajustado a cada iteração?",
+        "alternativas": [
+          "Os dados de entrada, que são reescritos para caber no modelo",
+          "Os pesos e os vieses das conexões entre os neurônios",
+          "A quantidade de camadas da rede, escolhida automaticamente",
+          "A função de ativação, trocada a cada erro cometido"
+        ],
+        "correta": 1,
+        "dica": "O que gira nos mostradores da sala não são os dados, é o quanto cada entrada pesa na decisão.",
+        "explicacao": "O treinamento ajusta pesos e vieses para reduzir a função de perda. Arquitetura e função de ativação são escolhas do projeto, definidas antes do treino."
+      }
+    ]
+  },
+  {
+    "id": "qualidade",
+    "ordem": 4,
+    "rotuloSala": "Sala 4",
+    "titulo": "Inspeção de Qualidade",
+    "ambiente": 3,
+    "peca": "bracos",
+    "saida": { "x": 1775, "y": 610, "zoom": 2, "rotulo": "Passar pela porta de vidro" },
+    "hotspots": [
+      {
+        "id": "qualidade-monitor",
+        "tipo": "card",
+        "x": 350,
+        "y": 450,
+        "zoom": 1.5,
+        "rotulo": "Monitor de inspeção",
+        "titulo": "Matriz de confusão",
+        "texto": "A matriz de confusão cruza o que o modelo previu com o que era verdade, separando acertos e erros em verdadeiros/falsos positivos e negativos. É a partir dela que todas as outras métricas são calculadas — e é ela que mostra qual tipo de erro o modelo comete."
+      },
+      {
+        "id": "qualidade-lupa",
+        "tipo": "card",
+        "x": 720,
+        "y": 560,
+        "zoom": 1.6,
+        "rotulo": "Lupa",
+        "titulo": "Precisão (precision)",
+        "texto": "Precisão responde: entre tudo o que o modelo aprovou, quanto realmente prestava? É a métrica que importa quando um falso positivo é caro — aprovar uma peça defeituosa, bloquear uma transação legítima, acusar alguém à toa."
+      },
+      {
+        "id": "qualidade-gavetas",
+        "tipo": "card",
+        "x": 1110,
+        "y": 620,
+        "zoom": 1.5,
+        "rotulo": "Gavetas de amostras",
+        "titulo": "Revocação (recall)",
+        "texto": "Revocação responde: entre tudo o que era de fato relevante, quanto o modelo encontrou? É o que importa quando deixar passar é caro — não detectar uma fraude ou uma doença. Precisão e revocação se puxam em sentidos opostos, e o F1-score resume o equilíbrio entre as duas."
+      },
+      {
+        "id": "qualidade-estufa",
+        "tipo": "card",
+        "x": 1420,
+        "y": 430,
+        "zoom": 1.5,
+        "rotulo": "Estufa de gerações",
+        "titulo": "Seleção entre gerações",
+        "texto": "Cada versão treinada é uma geração. Comparando-as em um conjunto de validação separado, mantém-se a que generaliza melhor e descarta-se a que apenas decorou o treino (overfitting). Avaliar sempre em dados nunca vistos é o que torna a seleção honesta."
+      },
+      {
+        "id": "qualidade-quiz",
+        "tipo": "quiz",
+        "x": 960,
+        "y": 820,
+        "zoom": 1.5,
+        "rotulo": "Prancheta de laudo",
+        "pergunta": "Em um modelo que detecta fraudes, deixar uma fraude passar custa muito mais do que revisar um caso legítimo à toa. Qual métrica priorizar?",
+        "alternativas": [
+          "Precisão, para reduzir o número de alertas falsos",
+          "Revocação, para reduzir o número de fraudes não detectadas",
+          "Acurácia, por ser sempre a métrica mais completa",
+          "Nenhuma: basta olhar o erro no conjunto de treino"
+        ],
+        "correta": 1,
+        "dica": "Pergunte qual erro dói mais: aprovar o que não prestava, ou deixar escapar o que importava?",
+        "explicacao": "Quando o custo de não detectar é alto, prioriza-se a revocação (recall). A acurácia engana em bases desbalanceadas, nas quais a classe rara é justamente a que interessa."
+      }
+    ]
+  },
+  {
+    "id": "entrega",
+    "ordem": 5,
+    "rotuloSala": "Sala 5",
+    "titulo": "Expedição & Análise",
+    "ambiente": 3,
+    "peca": "cabeca",
+    "saida": { "x": 1770, "y": 630, "zoom": 2, "rotulo": "Liberar o lote na doca de saída" },
+    "hotspots": [
+      {
+        "id": "entrega-quadro",
+        "tipo": "card",
+        "x": 330,
+        "y": 470,
+        "zoom": 1.5,
+        "rotulo": "Quadro de avisos",
+        "titulo": "Onde isso já roda",
+        "texto": "Machine learning já decide crédito, prioriza laudos médicos, recomenda conteúdo, detecta fraude e prevê manutenção de máquinas. Em todos esses casos o modelo não substitui a decisão humana: ele ordena e filtra o que chega até ela."
+      },
+      {
+        "id": "entrega-caixa",
+        "tipo": "card",
+        "x": 700,
+        "y": 660,
+        "zoom": 1.6,
+        "rotulo": "Caixa lacrada",
+        "titulo": "Limitações e vieses",
+        "texto": "Um modelo aprende o que estava nos dados, inclusive os vieses históricos. Ele também não entende causa e efeito, erra fora da distribuição em que foi treinado e envelhece quando a realidade muda. Reconhecer esses limites faz parte da entrega."
+      },
+      {
+        "id": "entrega-painel",
+        "tipo": "card",
+        "x": 1120,
+        "y": 500,
+        "zoom": 1.5,
+        "rotulo": "Painel Por quê?",
+        "titulo": "Explicabilidade (XAI)",
+        "texto": "Quando um modelo nega um crédito, alguém precisa saber por quê. Técnicas de explicabilidade como SHAP e LIME mostram quais atributos pesaram em cada decisão, permitindo auditar o modelo, contestar um resultado e atender exigências legais."
+      },
+      {
+        "id": "entrega-certificado",
+        "tipo": "card",
+        "x": 1450,
+        "y": 700,
+        "zoom": 1.6,
+        "rotulo": "Certificado do lote",
+        "titulo": "O ciclo não termina aqui",
+        "texto": "Depois de publicado, o modelo precisa de monitoramento: o desempenho cai quando os dados em produção mudam (data drift). Métricas, novos exemplos e retreinamento fecham o ciclo — a fábrica não para quando o lote sai pela doca."
+      },
+      {
+        "id": "entrega-quiz",
+        "tipo": "quiz",
+        "x": 960,
+        "y": 840,
+        "zoom": 1.5,
+        "rotulo": "Terminal de liberação",
+        "pergunta": "Por que a explicabilidade (XAI) é considerada essencial em aplicações críticas de machine learning?",
+        "alternativas": [
+          "Porque deixa o modelo mais rápido durante o treinamento",
+          "Porque permite auditar, contestar e responsabilizar as decisões tomadas pelo modelo",
+          "Porque substitui a necessidade de avaliar métricas como precisão e revocação",
+          "Porque garante que o modelo nunca mais vai errar depois de publicado"
+        ],
+        "correta": 1,
+        "dica": "Pense em quem recebeu um não do sistema e tem o direito de saber o motivo.",
+        "explicacao": "Explicabilidade não melhora o desempenho: ela torna a decisão auditável e contestável, o que é exigência em crédito, saúde e seleção de pessoas."
       }
     ]
   }
