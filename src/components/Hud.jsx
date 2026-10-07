@@ -67,7 +67,7 @@ function Hud({
             type="button"
             onClick={onRecomecar}
             aria-label="Recomeçar turno do início"
-            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-black/35 text-white backdrop-blur-sm active:scale-95"
+            className="btn-icone pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-black/35 text-white backdrop-blur-sm active:scale-95"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path

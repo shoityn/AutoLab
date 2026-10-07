@@ -45,7 +45,7 @@ function AvisoOrientacao({ onContinuar }) {
       <button
         type="button"
         onClick={onContinuar}
-        className="min-h-11 rounded-xl border border-white/25 px-5 text-sm font-semibold active:scale-[.98]"
+        className="btn-contorno min-h-11 rounded-xl border border-white/25 px-5 text-sm font-semibold active:scale-[.98]"
       >
         {ABERTURA.orientacao.continuar}
       </button>

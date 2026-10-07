@@ -142,7 +142,7 @@ function Expedicao({ serie, onRecomecar }) {
               <button
                 type="button"
                 onClick={onRecomecar}
-                className="min-h-11 flex-1 rounded-xl px-4 text-sm font-semibold"
+                className="btn-primario min-h-11 flex-1 rounded-xl px-4 text-sm font-semibold active:scale-[.98]"
                 style={{ background: 'var(--acento)', color: '#fff' }}
               >
                 Sim, recomeçar
@@ -150,7 +150,7 @@ function Expedicao({ serie, onRecomecar }) {
               <button
                 type="button"
                 onClick={() => setConfirmando(false)}
-                className="min-h-11 rounded-xl border border-white/25 px-4 text-sm font-semibold"
+                className="btn-contorno min-h-11 rounded-xl border border-white/25 px-4 text-sm font-semibold active:scale-[.98]"
               >
                 Cancelar
               </button>
@@ -161,7 +161,7 @@ function Expedicao({ serie, onRecomecar }) {
             <button
               type="button"
               onClick={compartilhar}
-              className="min-h-11 rounded-xl px-6 font-semibold active:scale-[.98]"
+              className="btn-primario min-h-11 rounded-xl px-6 font-semibold active:scale-[.98]"
               style={{ background: 'var(--marca-ciano)', color: 'var(--marca-tela)' }}
             >
               {t.compartilhar}
@@ -169,7 +169,7 @@ function Expedicao({ serie, onRecomecar }) {
             <button
               type="button"
               onClick={() => setConfirmando(true)}
-              className="min-h-11 rounded-xl border border-white/30 px-6 font-semibold active:scale-[.98]"
+              className="btn-contorno min-h-11 rounded-xl border border-white/30 px-6 font-semibold active:scale-[.98]"
             >
               {t.recomecar}
             </button>

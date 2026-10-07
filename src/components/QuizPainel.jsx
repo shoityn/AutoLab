@@ -101,7 +101,7 @@ function QuizPainel({ hotspot, salaId, origem, lateral, lado, jaConcluido, onAce
                   aria-checked={ehSelecionada}
                   disabled={acertou}
                   onClick={() => responder(indice)}
-                  className="flex min-h-11 items-start gap-2 rounded-xl border px-3 py-2 text-left text-[12.5px] leading-snug transition-colors"
+                  className="btn-opcao flex min-h-11 items-start gap-2 rounded-xl border px-3 py-2 text-left text-[12.5px] leading-snug"
                   style={{
                     borderColor: ehCorreta
                       ? 'var(--hotspot)'
@@ -142,7 +142,7 @@ function QuizPainel({ hotspot, salaId, origem, lateral, lado, jaConcluido, onAce
             <button
               type="button"
               onClick={() => fechar(onFechar)}
-              className="min-h-11 rounded-xl px-3 text-sm underline opacity-70"
+              className="btn-fantasma min-h-11 rounded-xl px-3 text-sm underline opacity-70 active:scale-[.98]"
             >
               Voltar para a sala
             </button>
@@ -150,7 +150,7 @@ function QuizPainel({ hotspot, salaId, origem, lateral, lado, jaConcluido, onAce
             <button
               type="button"
               onClick={() => fechar(() => onAcertou(salaId))}
-              className="min-h-11 rounded-xl px-5 font-semibold active:scale-[.98]"
+              className="btn-primario min-h-11 rounded-xl px-5 font-semibold active:scale-[.98]"
               style={{ background: 'var(--hotspot)', color: 'var(--marca-tela)' }}
             >
               {jaConcluido ? 'Voltar para a sala' : 'Montar a peça'}

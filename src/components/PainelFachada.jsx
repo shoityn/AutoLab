@@ -74,7 +74,7 @@ function PainelFachada({ temProgresso, pecas, serie, onIniciar, onContinuar, onR
                   setConfirmando(false)
                   onRecomecar()
                 }}
-                className="min-h-11 flex-1 rounded-xl px-4 text-sm font-semibold active:scale-[.98]"
+                className="btn-primario min-h-11 flex-1 rounded-xl px-4 text-sm font-semibold active:scale-[.98]"
                 style={{ background: 'var(--acento)', color: '#fff' }}
               >
                 {t.confirmarSim}
@@ -82,7 +82,7 @@ function PainelFachada({ temProgresso, pecas, serie, onIniciar, onContinuar, onR
               <button
                 type="button"
                 onClick={() => setConfirmando(false)}
-                className="min-h-11 rounded-xl border border-white/25 px-4 text-sm font-semibold text-white active:scale-[.98]"
+                className="btn-contorno min-h-11 rounded-xl border border-white/25 px-4 text-sm font-semibold text-white active:scale-[.98]"
               >
                 {t.confirmarNao}
               </button>
@@ -95,7 +95,7 @@ function PainelFachada({ temProgresso, pecas, serie, onIniciar, onContinuar, onR
                 <button
                   type="button"
                   onClick={onContinuar}
-                  className="min-h-11 flex-1 rounded-xl px-5 font-semibold active:scale-[.98]"
+                  className="btn-primario min-h-11 flex-1 rounded-xl px-5 font-semibold active:scale-[.98]"
                   style={{ background: 'var(--marca-ciano)', color: 'var(--marca-tela)' }}
                 >
                   {t.continuar}
@@ -103,7 +103,7 @@ function PainelFachada({ temProgresso, pecas, serie, onIniciar, onContinuar, onR
                 <button
                   type="button"
                   onClick={() => setConfirmando(true)}
-                  className="min-h-11 rounded-xl border border-white/25 px-4 font-semibold text-white active:scale-[.98]"
+                  className="btn-contorno min-h-11 rounded-xl border border-white/25 px-4 font-semibold text-white active:scale-[.98]"
                 >
                   {t.recomecar}
                 </button>
@@ -112,7 +112,7 @@ function PainelFachada({ temProgresso, pecas, serie, onIniciar, onContinuar, onR
               <button
                 type="button"
                 onClick={onIniciar}
-                className="min-h-11 w-full rounded-xl px-6 font-semibold active:scale-[.98]"
+                className="btn-primario min-h-11 w-full rounded-xl px-6 font-semibold active:scale-[.98]"
                 style={{ background: 'var(--marca-ciano)', color: 'var(--marca-tela)' }}
               >
                 {t.iniciar}

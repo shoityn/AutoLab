@@ -55,7 +55,7 @@ function BalaoFala({
             type="button"
             onClick={aoFechar}
             aria-label="Dispensar a fala do Zinos"
-            className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border text-[11px] leading-none"
+            className="btn-icone absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border text-[11px] leading-none active:scale-90"
             style={{
               background: 'var(--marca-tela)',
               borderColor: 'var(--marca-grafite)',

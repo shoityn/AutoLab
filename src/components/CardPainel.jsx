@@ -71,14 +71,14 @@ function CardPainel({ hotspot, origem, lateral, lado, jaLido, onEntendi, onFecha
           <button
             type="button"
             onClick={() => fechar(onFechar)}
-            className="min-h-11 rounded-xl px-3 text-sm underline opacity-70"
+            className="btn-fantasma min-h-11 rounded-xl px-3 text-sm underline opacity-70 active:scale-[.98]"
           >
             Fechar
           </button>
           <button
             type="button"
             onClick={() => fechar(() => onEntendi(hotspot.id))}
-            className="min-h-11 rounded-xl px-5 font-semibold active:scale-[.98]"
+            className="btn-primario min-h-11 rounded-xl px-5 font-semibold active:scale-[.98]"
             style={{ background: 'var(--hotspot)', color: 'var(--marca-tela)' }}
           >
             {jaLido ? 'Fechar registro' : 'Entendi'}

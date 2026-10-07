@@ -13,7 +13,7 @@ function BotaoSom({ className = '', variante = 'hud' }) {
   const { ligado, alternar } = useSom()
 
   const base =
-    'pointer-events-auto flex items-center justify-center rounded-full border text-white active:scale-95 transition-colors'
+    'btn-icone pointer-events-auto flex items-center justify-center rounded-full border text-white active:scale-95'
   const estilo =
     variante === 'hud'
       ? 'h-11 w-11 border-white/25 bg-black/35 backdrop-blur-sm'
