@@ -37,6 +37,102 @@ body {
   overscroll-behavior: none;
 }
 
+/* ---------------------------------------------------------------------------
+   Estados de interação.
+
+   O jogo é de toque, mas também é jogado no PC e navegado por teclado — e até
+   agora só o hotspot reagia ao mouse. As classes abaixo dão o mesmo vocabulário
+   a todos os botões.
+
+   `@media (hover: hover)` é o que impede o estado de "colar" depois do toque no
+   celular. O Tailwind v4 já faz isso sozinho nas variantes `hover:`; aqui é
+   explícito porque são classes nossas.
+
+   Pressionar continua com `active:scale-*` do Tailwind, que no v4 escreve na
+   propriedade `scale` — não conflita com o `transform` usado aqui.
+--------------------------------------------------------------------------- */
+.btn-primario,
+.btn-contorno,
+.btn-fantasma,
+.btn-icone,
+.btn-opcao {
+  transition:
+    transform 0.11s cubic-bezier(0.2, 0, 0, 1),
+    filter 0.11s linear,
+    background-color 0.11s linear,
+    border-color 0.11s linear,
+    opacity 0.11s linear,
+    box-shadow 0.16s cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* Botão cheio (Entendi, Iniciar turno, Montar a peça): sobe 1 px e ganha brilho. */
+  .btn-primario:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.07);
+    box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--hotspot) 55%, transparent);
+  }
+
+  /* Botão de contorno (Recomeçar): a borda acende. */
+  .btn-contorno:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--hotspot) 70%, transparent);
+    background-color: color-mix(in srgb, var(--hotspot) 12%, transparent);
+  }
+
+  /* Botão discreto (Fechar): sai da opacidade baixa e ganha um fundo de apoio. */
+  .btn-fantasma:hover {
+    opacity: 1;
+    background-color: color-mix(in srgb, currentColor 11%, transparent);
+  }
+
+  /* Ícone redondo (som, recomeçar no HUD, dispensar a fala). */
+  .btn-icone:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--hotspot) 75%, transparent);
+    background-color: color-mix(in srgb, var(--marca-tela) 55%, transparent);
+  }
+
+  /* Alternativa do quiz: só o contorno responde, para não competir com a cor
+     que marca certo/errado. O `:disabled` sai fora — depois de acertar, as
+     alternativas congelam. */
+  .btn-opcao:not(:disabled):hover {
+    border-color: color-mix(in srgb, var(--hotspot) 55%, transparent);
+    background-color: color-mix(in srgb, var(--hotspot) 8%, transparent);
+  }
+}
+
+/* Foco do teclado.
+
+   O anel é ciano, como toda sinalização de interação. Mas ciano puro sobre o
+   laboratório claro das Salas 4 e 5 (--bg #f8fafc) dá ~1,3:1 de contraste —
+   invisível, e a WCAG 2.2 pede 3:1 no indicador de foco. Por isso o anel vem
+   com um halo escuro por fora e por dentro: no galpão escuro quem garante o
+   contraste é o ciano, no laboratório claro é o halo. Assim funciona nos três
+   ambientes sem depender de qual está ativo. */
+:focus-visible {
+  outline: 3px solid var(--marca-ciano);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 8px rgba(11, 17, 24, 0.9);
+  border-radius: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primario,
+  .btn-contorno,
+  .btn-fantasma,
+  .btn-icone,
+  .btn-opcao {
+    transition-property: filter, background-color, border-color, opacity;
+  }
+  .btn-primario:hover,
+  .btn-contorno:hover,
+  .btn-icone:hover {
+    /* A cor continua respondendo; o deslocamento, não. */
+    transform: none;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--texto);
