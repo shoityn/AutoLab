@@ -4,8 +4,8 @@
 
 - **Disciplina:** Estágio Supervisionado (PACEX VIII), UNIPAR, prof. Elyssandro Piffer
 - **Equipe:** Glauber Shoity Nakai (desenvolvimento), Kamilla Barros Silva e Wellington Henrique da Silva Lima, 8º período de Sistemas de Informação
-- **Repositório:** github.com/glaubershoity/AutoLab
-- **Publicação:** GitHub Pages (`https://glaubershoity.github.io/AutoLab/`)
+- **Repositório:** github.com/shoityn/AutoLab
+- **Publicação:** GitHub Pages (`https://shoityn.github.io/AutoLab/`)
 - **Prazo final:** site no ar e cartazes distribuídos até **07/11/2026**
 - **Versão:** 2.0 (03/10/2026). **Substitui integralmente** a seção de fluxo por rolagem do plano v1.
 

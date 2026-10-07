@@ -5,12 +5,16 @@
 |---|---|
 | Formato | **A3 colorido** (297 × 420 mm) |
 | Chamada | **"Como uma máquina aprende?"** + "Entre na fábrica e monte uma IA em 5 estações." (igual à fachada) |
-| QR | **Um só**, para `https://glaubershoity.github.io/AutoLab/`, correção de erro **H** (30%), sem rastreio por local |
+| QR | **Um só**, para `https://shoityn.github.io/AutoLab/`, correção de erro **H** (30%), sem rastreio por local |
 | Instruções | 1 Aponte a câmera · 2 Gire o celular (modo deitado) · 3 ~10 minutos |
 | Link escrito | Sim, em Plex Mono, abaixo das instruções |
 | Rodapé | Projeto de extensão PACEX VIII · Estágio Supervisionado · Sistemas de Informação · UNIPAR · nomes da equipe |
 | UNIPAR | **Área reservada** no rodapé (80 × 30 mm). Shoity monta com os arquivos e as regras oficiais da marca |
 | Layouts | **A — Fachada:** cena da fábrica no topo, chamada, QR com borda ciano e os 3 passos. **B — Zinos:** o QR fica dentro da tela do Zinos ("Escaneia meu rosto!") |
+
+> **Correção de 07/10 — a URL do QR.** Este documento dizia `glaubershoity.github.io`, endereço que **não existe**; o certo é `shoityn.github.io` (ver `PERGUNTAS-ABERTAS.md`, item 1.1). A linha do QR acima já está corrigida.
+>
+> Os QRs que estão no repositório (`cartaz/qrcode.svg`, `cartaz/qrcode.png`, `cartaz/qr-autolab.svg`) foram **decodificados em 07/10 e todos devolvem a URL certa**. O `qr-autolab.png` citado na seção "Arquivos" não está no repositório, então não pôde ser conferido — se houver uma cópia dele fora daqui, escaneie antes de usar. Para montar o flyer, use `cartaz/qr-autolab.svg`.
 
 ## Arquivos
 - `cartazes-A3.pdf`: os 2 layouts em tamanho real (página 1 = A, página 2 = B)

@@ -4,8 +4,9 @@
 
 - **Disciplina:** Estágio Supervisionado (PACEX VIII), UNIPAR, prof. Elyssandro Piffer
 - **Equipe:** Glauber Shoity Nakai (desenvolvimento), Kamilla Barros Silva e Wellington Henrique da Silva Lima, 8º período de Sistemas de Informação
-- **Repositório:** github.com/glaubershoity/AutoLab
-- **Publicação:** GitHub Pages (`https://glaubershoity.github.io/AutoLab/`)
+- **Repositório:** github.com/shoityn/AutoLab
+- **Publicação:** GitHub Pages (`https://shoityn.github.io/AutoLab/`)
+  > Corrigido em 07/10: o endereço anotado aqui era `glaubershoity`, que **não existe** — é a origem do erro que se espalhou para a discussão 06. Ver `PERGUNTAS-ABERTAS.md`, item 1.1.
 - **Prazo final:** site no ar e cartazes distribuídos até **07/11/2026**
 - **Versão:** 2.1 (03/10/2026). **Substitui o plano v2.** O que não for citado aqui como alterado continua valendo da v2 (máquina de estados, regra "o reducer decide, a animação reage", acessibilidade).
 
