@@ -1,348 +1,443 @@
-[
-  {
-    "id": "ingestao",
-    "ordem": 1,
-    "rotuloSala": "Sala 1",
-    "titulo": "Recebimento & Ingestão",
-    "ambiente": 1,
-    "peca": "base",
-    "cena": "salas/1/cena.webp",
-    "saida": { "x": 1760, "y": 680, "zoom": 2, "rotulo": "Seguir pela esteira" },
-    "hotspots": [
-      {
-        "id": "ingestao-caixas",
-        "tipo": "card",
-        "x": 240,
-        "y": 600,
-        "zoom": 1.5,
-        "rotulo": "Caixas de dados",
-        "titulo": "Fontes e formatos",
-        "texto": "Os dados chegam de bancos relacionais, APIs, arquivos CSV/JSON, logs e dispositivos IoT. Cada fonte tem seu próprio formato, frequência de atualização e nível de confiabilidade, por isso precisa ser catalogada antes de entrar na linha."
-      },
-      {
-        "id": "ingestao-etiqueta",
-        "tipo": "card",
-        "x": 460,
-        "y": 712,
-        "zoom": 1.8,
-        "rotulo": "Etiqueta rasgada",
-        "titulo": "Dados faltantes",
-        "texto": "Uma etiqueta rasgada é como um valor nulo escondido na mercadoria: ninguém percebe até o pedido errado chegar na outra ponta. Valores ausentes ou duplicados exigem tratamento explícito — ignorá-los distorce médias e propaga erro silencioso pela linha inteira."
-      },
-      {
-        "id": "ingestao-balanca",
-        "tipo": "card",
-        "x": 690,
-        "y": 640,
-        "zoom": 1.6,
-        "rotulo": "Balança de qualidade",
-        "titulo": "Qualidade antes de quantidade",
-        "texto": "Um grande volume de dados inconsistentes gera modelos piores do que um volume menor, porém bem curado. Avaliar completude, consistência e representatividade é a primeira inspeção da esteira, e é ela que define o teto de desempenho do modelo."
-      },
-      {
-        "id": "ingestao-contador",
-        "tipo": "card",
-        "x": 655,
-        "y": 355,
-        "zoom": 1.8,
-        "rotulo": "Contador de volume",
-        "titulo": "Volume não substitui curadoria",
-        "texto": "Mais dados não significa automaticamente um modelo melhor. O contador de volume lembra que escala sem controle de qualidade só acelera a produção de erros. O equilíbrio ideal pesa quantidade, diversidade e custo de rotulagem."
-      },
-      {
-        "id": "ingestao-quiz",
-        "tipo": "quiz",
-        "x": 1455,
-        "y": 505,
-        "zoom": 1.6,
-        "rotulo": "Prancheta do supervisor",
-        "pergunta": "Por que a qualidade dos dados de entrada é tão crítica em um projeto de machine learning?",
-        "alternativas": [
-          "Porque dados maiores sempre geram modelos melhores, independente da qualidade",
-          "Porque erros e vieses presentes na coleta se propagam para todas as etapas seguintes do modelo",
-          "Porque a qualidade dos dados só importa depois que o modelo já foi treinado",
-          "Porque o formato do arquivo (CSV, JSON) determina sozinho a precisão do modelo"
-        ],
-        "correta": 1,
-        "dica": "Pense na esteira de produção: um defeito na matéria-prima aparece lá na frente, no produto final.",
-        "explicacao": "Dados com erros, lacunas ou vieses de coleta contaminam todo o restante do pipeline — por isso a inspeção de qualidade começa antes mesmo do treinamento."
-      }
-    ]
+{
+  "versao": 3,
+  "mundo": {
+    "largura": 1920,
+    "altura": 1080
   },
-  {
-    "id": "processamento",
-    "ordem": 2,
-    "rotuloSala": "Sala 2",
-    "titulo": "Linha de Processamento",
-    "ambiente": 1,
-    "peca": "tronco",
-    "saida": { "x": 1770, "y": 620, "zoom": 2, "rotulo": "Subir pelo elevador de carga" },
-    "hotspots": [
-      {
-        "id": "processamento-lavadora",
-        "tipo": "card",
-        "x": 320,
-        "y": 600,
-        "zoom": 1.5,
-        "rotulo": "Lavadora da linha",
-        "titulo": "Limpeza de dados",
-        "texto": "Antes de treinar qualquer coisa é preciso lavar a matéria-prima: corrigir tipos errados, padronizar datas e unidades, remover duplicatas e resolver registros inconsistentes. Essa etapa costuma consumir a maior parte do tempo de um projeto e é a que mais muda o resultado final."
+  "abertura": {
+    "preloader": {
+      "pronto": "Sistema pronto!",
+      "aria": "Carregando a fábrica"
+    },
+    "fachada": {
+      "chamada": "Como uma máquina aprende?",
+      "subtitulo": "Entre na fábrica e monte uma IA em 5 estações.",
+      "iniciar": "Iniciar turno",
+      "continuar": "Continuar turno",
+      "recomecar": "Recomeçar",
+      "confirmarRecomecar": "Apagar seu progresso e começar do zero?",
+      "confirmarSim": "Sim, recomeçar",
+      "confirmarNao": "Cancelar",
+      "rotuloCopia": "Sua cópia: {serie}",
+      "camadas": {
+        "vao": {
+          "x": 838,
+          "y": 600,
+          "largura": 240,
+          "altura": 294,
+          "imagem": "salas/1/cena.webp"
+        },
+        "cena": "fachada/cena.webp",
+        "portao": "fachada/portao.webp",
+        "logo": {
+          "arquivo": "marca/autolab-horizontal-claro.svg",
+          "x": 832,
+          "y": 486,
+          "largura": 254
+        },
+        "zinos": {
+          "arquivo": "mascote/corpo-acenando.webp",
+          "x": 1180,
+          "y": 640,
+          "altura": 255
+        },
+        "chamineTopo": {
+          "x": 650,
+          "y": 308
+        }
       },
-      {
-        "id": "processamento-peneira",
-        "tipo": "card",
-        "x": 700,
+      "saida": {
+        "x": 958,
+        "y": 747,
+        "aproximacao": 3.8
+      }
+    },
+    "orientacao": {
+      "titulo": "Gire o celular para ver a fábrica",
+      "continuar": "Continuar assim mesmo"
+    }
+  },
+  "salas": [
+    {
+      "id": "ingestao",
+      "ordem": 1,
+      "titulo": "Recebimento & Ingestão",
+      "ambiente": 1,
+      "peca": "base",
+      "fala": "Bem-vindo à doca! Todo modelo começa aqui: nos dados. E já aviso: lixo que entra, lixo que sai.",
+      "camadas": {
+        "cena": "salas/1/cena.webp"
+      },
+      "rotulos": [],
+      "saida": {
+        "x": 1760,
+        "y": 680,
+        "aproximacao": 2.0,
+        "rotulo": "Seguir pela esteira",
+        "passagem": "tunel"
+      },
+      "hotspots": [
+        {
+          "id": "ingestao-caixas",
+          "tipo": "card",
+          "x": 240,
+          "y": 600,
+          "aproximacao": 2.5,
+          "rotulo": "Caixas de dados",
+          "titulo": "Fontes de dados",
+          "texto": "Todo modelo de Machine Learning aprende a partir de exemplos, e eles chegam de muitas fontes: bancos de dados, planilhas CSV, APIs em JSON, sensores, imagens e textos coletados da web. Cada fonte tem formato, frequência e confiabilidade diferentes. Antes de treinar qualquer coisa, é preciso saber de onde o dado veio, quem o produziu e se há permissão para usá-lo."
+        },
+        {
+          "id": "ingestao-balanca",
+          "tipo": "card",
+          "x": 690,
+          "y": 640,
+          "aproximacao": 2.5,
+          "rotulo": "Balança",
+          "titulo": "Qualidade pesa mais que quantidade",
+          "texto": "Um dado de qualidade é preciso, consistente, atual e representativo do problema real. Se a base só tem exemplos de um grupo, o modelo aprende um mundo distorcido: isso é viés de amostragem. Rótulos errados também são perigosos, porque o modelo aprende o erro como se fosse verdade. Medir a qualidade antes de treinar evita muito retrabalho depois."
+        },
+        {
+          "id": "ingestao-etiqueta",
+          "tipo": "card",
+          "x": 460,
+          "y": 712,
+          "aproximacao": 2.5,
+          "rotulo": "Etiqueta rasgada",
+          "titulo": "Dados faltantes",
+          "texto": "Quase toda base tem buracos: campos vazios, sensores que falharam, formulários incompletos. Há três caminhos comuns: remover os registros incompletos, preencher (imputar) com média, mediana ou um valor previsto, ou marcar a ausência como uma informação em si. A escolha depende de quantos dados faltam e do porquê. Apagar demais pode jogar fora padrões importantes."
+        },
+        {
+          "id": "ingestao-contador",
+          "tipo": "card",
+          "x": 655,
+          "y": 355,
+          "aproximacao": 2.5,
+          "rotulo": "Contador",
+          "titulo": "Volume",
+          "texto": "Modelos simples podem funcionar com centenas de exemplos; redes neurais profundas costumam exigir milhares ou milhões. Com pouco dado, o modelo tende ao overfitting: decora o treino e erra em casos novos. Por isso a base é dividida em treino, validação e teste. Mais volume ajuda, mas só se os dados forem bons: um milhão de registros enviesados continua enviesado."
+        },
+        {
+          "id": "ingestao-quiz",
+          "tipo": "quiz",
+          "x": 1455,
+          "y": 505,
+          "aproximacao": 2.6,
+          "rotulo": "Prancheta do supervisor",
+          "pergunta": "Uma equipe treina um modelo de aprovação de crédito só com dados de clientes da capital. Nas cidades do interior, o modelo erra muito. Qual é o problema principal?",
+          "alternativas": [
+            "Faltou volume: bastava treinar com mais registros da capital",
+            "Viés de amostragem: os dados não representam toda a população atendida",
+            "Havia dados faltantes demais nos registros da capital",
+            "A rede neural tinha poucas camadas"
+          ],
+          "correta": 1,
+          "dica": "Pensa assim: se eu só conhecesse este galpão, ia achar que o mundo inteiro tem cheiro de óleo. O modelo também só conhece o que viu.",
+          "explicacao": "Os dados vinham de um único perfil de cliente. Mais volume da mesma fonte não corrige isso: é preciso coletar exemplos que representem todo mundo que o modelo vai atender."
+        }
+      ]
+    },
+    {
+      "id": "processamento",
+      "ordem": 2,
+      "titulo": "Linha de Processamento",
+      "ambiente": 1,
+      "peca": "tronco",
+      "fala": "Aqui o dado bruto vira dado útil. Parece faxina? E é. Cientista de dados passa boa parte do dia limpando.",
+      "camadas": {
+        "cena": "salas/2/cena.webp"
+      },
+      "rotulos": [],
+      "saida": {
+        "x": 1730,
         "y": 560,
-        "zoom": 1.5,
-        "rotulo": "Peneira",
-        "titulo": "Outliers",
-        "texto": "Outliers são valores muito distantes do resto da amostra. Alguns são erro de medição e devem sair; outros são raros, mas legítimos, e jogá-los fora apaga justamente o que interessa. A peneira exige critério: analisar a origem do valor antes de descartar."
+        "aproximacao": 2.0,
+        "rotulo": "Subir pelo elevador",
+        "passagem": "elevador"
       },
-      {
-        "id": "processamento-painel",
-        "tipo": "card",
-        "x": 1100,
-        "y": 480,
-        "zoom": 1.5,
-        "rotulo": "Painel de ajustes",
-        "titulo": "Normalização e escala",
-        "texto": "Idade em anos e renda em reais vivem em escalas incompatíveis. Normalizar (0 a 1) ou padronizar (média 0, desvio 1) coloca todos os atributos na mesma régua, evitando que uma variável domine o treinamento só por ter números maiores."
+      "hotspots": [
+        {
+          "id": "processamento-lavadora",
+          "tipo": "card",
+          "x": 350,
+          "y": 575,
+          "aproximacao": 2.5,
+          "rotulo": "Lavadora",
+          "titulo": "Limpeza",
+          "texto": "Dados brutos chegam sujos: duplicatas, erros de digitação, datas em formatos diferentes, e “SP”, “São Paulo” e “sao paulo” contados como três cidades. A limpeza padroniza tipos e categorias, remove registros repetidos e corrige inconsistências. É a etapa menos glamourosa e uma das que mais influenciam o resultado: boa parte do tempo de um projeto de ML vai para ela."
+        },
+        {
+          "id": "processamento-peneira",
+          "tipo": "card",
+          "x": 710,
+          "y": 560,
+          "aproximacao": 2.5,
+          "rotulo": "Peneira",
+          "titulo": "Outliers",
+          "texto": "Outliers são valores muito distantes do resto, como um cliente de 230 anos ou uma compra de um milhão de reais numa padaria. Podem ser erro de digitação ou um caso raro e verdadeiro. Técnicas como o intervalo interquartil (IQR) e o z-score ajudam a encontrá-los. Antes de remover, pergunte: é erro, ou é exatamente o evento que quero detectar, como uma fraude?"
+        },
+        {
+          "id": "processamento-alavancas",
+          "tipo": "card",
+          "x": 1010,
+          "y": 350,
+          "aproximacao": 2.5,
+          "rotulo": "Alavancas de ajuste",
+          "titulo": "Normalização",
+          "texto": "Atributos em escalas diferentes atrapalham o aprendizado: salário vai a milhares, idade até cem. Sem ajuste, o algoritmo pode dar peso demais ao número maior. A normalização min-max leva tudo para o intervalo de 0 a 1; a padronização (z-score) centraliza os valores em média 0 e desvio padrão 1. Redes neurais e algoritmos baseados em distância são os mais sensíveis a isso."
+        },
+        {
+          "id": "processamento-lixeira",
+          "tipo": "card",
+          "x": 1285,
+          "y": 680,
+          "aproximacao": 2.5,
+          "rotulo": "Lixeira de rejeitos",
+          "titulo": "Descarte",
+          "texto": "Nem todo atributo ajuda. Colunas constantes, identificadores como CPF e variáveis que “vazam” a resposta devem sair. Vazamento de dados acontece quando o modelo recebe uma informação que não existiria no momento da previsão, como a data de cancelamento num modelo que prevê cancelamentos. O resultado parece ótimo no teste e desaba quando o modelo vai para produção."
+        },
+        {
+          "id": "processamento-quiz",
+          "tipo": "quiz",
+          "x": 1465,
+          "y": 410,
+          "aproximacao": 2.6,
+          "rotulo": "Painel de controle",
+          "pergunta": "Um modelo que prevê se um paciente será internado acerta 99% no teste, mas falha no hospital. Revisando a base, a equipe encontra a coluna “número do leito”. O que aconteceu?",
+          "alternativas": [
+            "Os dados não foram normalizados",
+            "Vazamento de dados: essa coluna só existe depois da internação",
+            "Havia outliers na idade dos pacientes",
+            "Faltaram exemplos para treinar"
+          ],
+          "correta": 1,
+          "dica": "Desconfie quando o resultado for bom demais. Se uma coluna já entrega a resposta, o modelo não aprendeu nada: só colou da prova.",
+          "explicacao": "O número do leito só é preenchido quando o paciente já foi internado. O modelo usou essa pista, que não existe no momento da previsão real. Isso é vazamento de dados: a coluna deveria ter ido para a lixeira."
+        }
+      ]
+    },
+    {
+      "id": "neural",
+      "ordem": 3,
+      "titulo": "Processamento Neural",
+      "ambiente": 2,
+      "peca": "nucleo",
+      "fala": "Bem-vindo ao cérebro da fábrica. Relaxa, não tem mágica aqui dentro: só muita multiplicação e soma.",
+      "camadas": {
+        "cena": "salas/3/cena.webp"
       },
-      {
-        "id": "processamento-lixeira",
-        "tipo": "card",
-        "x": 500,
-        "y": 790,
-        "zoom": 1.6,
-        "rotulo": "Lixeira de rejeitos",
-        "titulo": "Seleção de atributos",
-        "texto": "Nem tudo que foi coletado serve. Atributos irrelevantes, redundantes ou que vazam a resposta (data leakage) atrapalham o modelo e aumentam o custo de treino. Descartar com registro do motivo é parte do processo — a lixeira também é documentação."
+      "rotulos": [],
+      "saida": {
+        "x": 1600,
+        "y": 545,
+        "aproximacao": 2.0,
+        "rotulo": "Abrir a porta pressurizada",
+        "passagem": "portaDupla"
       },
-      {
-        "id": "processamento-quiz",
-        "tipo": "quiz",
-        "x": 1420,
-        "y": 560,
-        "zoom": 1.5,
-        "rotulo": "Painel de controle da linha",
-        "pergunta": "Qual é o principal objetivo do pré-processamento de dados?",
-        "alternativas": [
-          "Aumentar o número de linhas do conjunto de dados a qualquer custo",
-          "Deixar os dados consistentes, comparáveis e no formato que o algoritmo espera",
-          "Escolher o algoritmo de aprendizado que será usado no treinamento",
-          "Substituir a necessidade de avaliar o modelo depois do treino"
-        ],
-        "correta": 1,
-        "dica": "A linha de processamento não cria mercadoria nova: ela deixa a que chegou pronta para a próxima máquina.",
-        "explicacao": "Pré-processar é padronizar, limpar e transformar os dados para que o algoritmo consiga aprender — não é aumentar volume nem escolher o modelo."
-      }
-    ]
-  },
-  {
-    "id": "neural",
-    "ordem": 3,
-    "rotuloSala": "Sala 3",
-    "titulo": "Processamento Neural",
-    "ambiente": 2,
-    "peca": "nucleo",
-    "saida": { "x": 1780, "y": 600, "zoom": 2, "rotulo": "Atravessar a porta pressurizada" },
-    "hotspots": [
-      {
-        "id": "neural-quadro",
-        "tipo": "card",
-        "x": 330,
-        "y": 480,
-        "zoom": 1.5,
-        "rotulo": "Quadro técnico",
-        "titulo": "O perceptron",
-        "texto": "O perceptron é a unidade mais simples de uma rede neural: recebe várias entradas, multiplica cada uma por um peso, soma tudo, acrescenta um viés e passa o resultado por uma função de ativação. Uma rede profunda é essa mesma peça repetida em camadas."
+      "hotspots": [
+        {
+          "id": "neural-quadro",
+          "tipo": "card",
+          "x": 340,
+          "y": 370,
+          "aproximacao": 2.5,
+          "rotulo": "Quadro técnico",
+          "titulo": "Perceptron",
+          "texto": "O perceptron é o neurônio artificial mais simples, proposto por Frank Rosenblatt em 1958. Ele recebe várias entradas, multiplica cada uma por um peso, soma tudo com um bias e passa o resultado por uma função de ativação, que decide a saída. Sozinho, só separa classes com uma linha reta. Empilhado em camadas, forma as redes neurais modernas."
+        },
+        {
+          "id": "neural-mostradores",
+          "tipo": "card",
+          "x": 860,
+          "y": 660,
+          "aproximacao": 2.5,
+          "rotulo": "Mostradores",
+          "titulo": "Pesos",
+          "texto": "Cada conexão tem um peso que indica a importância daquela entrada. No início, os pesos são aleatórios. No treino, o modelo compara a previsão com a resposta certa, mede o erro com uma função de perda e ajusta os pesos na direção que reduz esse erro: é o gradiente descendente, com o backpropagation distribuindo a culpa entre as camadas. Aprender é ajustar esses mostradores."
+        },
+        {
+          "id": "neural-valvula",
+          "tipo": "card",
+          "x": 1270,
+          "y": 510,
+          "aproximacao": 2.5,
+          "rotulo": "Válvula",
+          "titulo": "Bias e função de ativação",
+          "texto": "O bias é um valor somado antes da ativação: ele desloca o limiar e deixa o neurônio disparar mesmo com entradas zeradas. A função de ativação traz a não linearidade. Sem ela, uma rede de dez camadas equivale a uma única conta linear. As mais usadas são a ReLU, que zera os negativos, a sigmoide, com saída entre 0 e 1, e a tanh, entre −1 e 1."
+        },
+        {
+          "id": "neural-quiz",
+          "tipo": "quiz",
+          "x": 370,
+          "y": 690,
+          "aproximacao": 2.6,
+          "rotulo": "Terminal central",
+          "pergunta": "Uma equipe empilhou 20 camadas numa rede neural, mas esqueceu as funções de ativação. O desempenho ficou igual ao de um modelo linear simples. Por quê?",
+          "alternativas": [
+            "Faltou bias em cada neurônio",
+            "Sem ativação não linear, as 20 camadas se reduzem a uma única transformação linear",
+            "20 camadas ainda é pouco para aprender padrões",
+            "Os pesos iniciais não eram aleatórios"
+          ],
+          "correta": 1,
+          "dica": "Junta várias multiplicações e somas em sequência... o que sai no fim? Outra multiplicação e soma. Falta alguma peça que dobre essa linha.",
+          "explicacao": "A composição de funções lineares continua sendo linear. É a função de ativação (ReLU, sigmoide, tanh) que permite à rede aprender curvas e padrões complexos."
+        }
+      ]
+    },
+    {
+      "id": "inspecao",
+      "ordem": 4,
+      "titulo": "Inspeção de Qualidade",
+      "ambiente": 3,
+      "peca": "bracos",
+      "fala": "Hora da inspeção. Acertar 95% parece ótimo, até alguém perguntar: 95% de quê?",
+      "camadas": {
+        "cena": "salas/4/cena.webp"
       },
-      {
-        "id": "neural-mostradores",
-        "tipo": "card",
-        "x": 760,
-        "y": 430,
-        "zoom": 1.5,
-        "rotulo": "Mostradores",
-        "titulo": "Pesos",
-        "texto": "Os pesos dizem o quanto cada entrada importa para a decisão. Começam aleatórios e são corrigidos a cada erro pelo backpropagation, que mede a contribuição de cada peso para a perda. Treinar um modelo é, na prática, girar esses mostradores milhões de vezes."
+      "rotulos": [],
+      "saida": {
+        "x": 1625,
+        "y": 535,
+        "aproximacao": 2.0,
+        "rotulo": "Passar pela porta de vidro",
+        "passagem": "vidro"
       },
-      {
-        "id": "neural-valvula",
-        "tipo": "card",
-        "x": 1140,
-        "y": 520,
-        "zoom": 1.5,
-        "rotulo": "Válvula de viés",
-        "titulo": "Bias",
-        "texto": "O viés (bias) é um valor somado à combinação das entradas, deslocando o ponto em que o neurônio dispara. Sem ele, a fronteira de decisão seria sempre obrigada a passar pela origem, e a rede perderia boa parte da sua flexibilidade."
+      "hotspots": [
+        {
+          "id": "inspecao-monitor",
+          "tipo": "card",
+          "x": 960,
+          "y": 340,
+          "aproximacao": 2.5,
+          "rotulo": "Monitor",
+          "titulo": "Matriz de confusão",
+          "texto": "A matriz de confusão compara as previsões com a realidade em quatro casas: verdadeiros positivos (VP), verdadeiros negativos (VN), falsos positivos (FP, o alarme falso) e falsos negativos (FN, o que escapou). A acurácia junta tudo e pode enganar: se só 1% das transações é fraude, um modelo que diz “nunca é fraude” acerta 99% e não serve para nada."
+        },
+        {
+          "id": "inspecao-lupa",
+          "tipo": "card",
+          "x": 630,
+          "y": 340,
+          "aproximacao": 2.5,
+          "rotulo": "Lupa",
+          "titulo": "Precision",
+          "texto": "Precision responde: de tudo que o modelo marcou como positivo, quanto era positivo de verdade? A fórmula é VP ÷ (VP + FP). Ela importa quando o alarme falso custa caro, como num filtro de spam que manda e-mails importantes para a lixeira ou num sistema que bloqueia o cartão de clientes legítimos. Precision alta quer dizer: quando o modelo acusa, dá para confiar."
+        },
+        {
+          "id": "inspecao-gavetas",
+          "tipo": "card",
+          "x": 270,
+          "y": 610,
+          "aproximacao": 2.5,
+          "rotulo": "Gavetas de amostras",
+          "titulo": "Recall, seleção e gerações",
+          "texto": "Recall pergunta: de todos os positivos reais, quantos o modelo encontrou? É VP ÷ (VP + FN), e importa quando deixar passar é grave, como num diagnóstico de câncer. Para chegar a bons modelos, algoritmos genéticos imitam a seleção artificial: geram variações, avaliam cada uma com métricas como essas, mantêm as melhores e as cruzam e mutam, geração após geração."
+        },
+        {
+          "id": "inspecao-quiz",
+          "tipo": "quiz",
+          "x": 1350,
+          "y": 430,
+          "aproximacao": 2.6,
+          "rotulo": "Prancheta de laudo",
+          "pergunta": "Um modelo de triagem de câncer tem precision de 95% e recall de 40%. O que isso significa na prática?",
+          "alternativas": [
+            "Quase todo alerta é correto, mas ele deixa passar 60% dos casos reais",
+            "Ele acusa câncer em quase todo mundo",
+            "Ele acerta o diagnóstico de 95% dos pacientes",
+            "Ele encontra 95% dos casos reais"
+          ],
+          "correta": 0,
+          "dica": "Lupa: quando eu aponto, acerto? Gavetas: de tudo que existia, quanto eu achei? Aqui uma está ótima e a outra... nem tanto.",
+          "explicacao": "Precision de 95%: quando o modelo diz “câncer”, quase sempre acerta. Recall de 40%: ele só encontra 4 de cada 10 casos reais. Em triagem médica, esse recall baixo é perigoso."
+        }
+      ]
+    },
+    {
+      "id": "expedicao",
+      "ordem": 5,
+      "titulo": "Expedição & Análise",
+      "ambiente": 3,
+      "peca": "cabeca",
+      "fala": "Último setor! Antes de despachar um modelo, a gente precisa admitir o que ele não sabe fazer.",
+      "camadas": {
+        "cena": "salas/5/cena-provisoria.png"
       },
-      {
-        "id": "neural-chave",
-        "tipo": "card",
-        "x": 560,
-        "y": 770,
-        "zoom": 1.6,
-        "rotulo": "Chave de limiar",
-        "titulo": "Função de ativação",
-        "texto": "A ativação decide se o sinal segue adiante e com qual intensidade. ReLU, sigmoide e tanh introduzem não linearidade — sem ela, empilhar camadas seria equivalente a uma única conta linear e a rede não aprenderia padrões complexos."
+      "rotulos": [
+        {
+          "texto": "Por quê?",
+          "x": 960,
+          "y": 320,
+          "estilo": "tela"
+        }
+      ],
+      "saida": {
+        "x": 1600,
+        "y": 545,
+        "aproximacao": 2.0,
+        "rotulo": "Despachar pela doca",
+        "passagem": "luz"
       },
-      {
-        "id": "neural-quiz",
-        "tipo": "quiz",
-        "x": 1440,
-        "y": 540,
-        "zoom": 1.5,
-        "rotulo": "Terminal central",
-        "pergunta": "Durante o treinamento de uma rede neural, o que de fato é ajustado a cada iteração?",
-        "alternativas": [
-          "Os dados de entrada, que são reescritos para caber no modelo",
-          "Os pesos e os vieses das conexões entre os neurônios",
-          "A quantidade de camadas da rede, escolhida automaticamente",
-          "A função de ativação, trocada a cada erro cometido"
-        ],
-        "correta": 1,
-        "dica": "O que gira nos mostradores da sala não são os dados, é o quanto cada entrada pesa na decisão.",
-        "explicacao": "O treinamento ajusta pesos e vieses para reduzir a função de perda. Arquitetura e função de ativação são escolhas do projeto, definidas antes do treino."
-      }
-    ]
-  },
-  {
-    "id": "qualidade",
-    "ordem": 4,
-    "rotuloSala": "Sala 4",
-    "titulo": "Inspeção de Qualidade",
-    "ambiente": 3,
-    "peca": "bracos",
-    "saida": { "x": 1775, "y": 610, "zoom": 2, "rotulo": "Passar pela porta de vidro" },
-    "hotspots": [
-      {
-        "id": "qualidade-monitor",
-        "tipo": "card",
-        "x": 350,
-        "y": 450,
-        "zoom": 1.5,
-        "rotulo": "Monitor de inspeção",
-        "titulo": "Matriz de confusão",
-        "texto": "A matriz de confusão cruza o que o modelo previu com o que era verdade, separando acertos e erros em verdadeiros/falsos positivos e negativos. É a partir dela que todas as outras métricas são calculadas — e é ela que mostra qual tipo de erro o modelo comete."
-      },
-      {
-        "id": "qualidade-lupa",
-        "tipo": "card",
-        "x": 720,
-        "y": 560,
-        "zoom": 1.6,
-        "rotulo": "Lupa",
-        "titulo": "Precisão (precision)",
-        "texto": "Precisão responde: entre tudo o que o modelo aprovou, quanto realmente prestava? É a métrica que importa quando um falso positivo é caro — aprovar uma peça defeituosa, bloquear uma transação legítima, acusar alguém à toa."
-      },
-      {
-        "id": "qualidade-gavetas",
-        "tipo": "card",
-        "x": 1110,
-        "y": 620,
-        "zoom": 1.5,
-        "rotulo": "Gavetas de amostras",
-        "titulo": "Revocação (recall)",
-        "texto": "Revocação responde: entre tudo o que era de fato relevante, quanto o modelo encontrou? É o que importa quando deixar passar é caro — não detectar uma fraude ou uma doença. Precisão e revocação se puxam em sentidos opostos, e o F1-score resume o equilíbrio entre as duas."
-      },
-      {
-        "id": "qualidade-estufa",
-        "tipo": "card",
-        "x": 1420,
-        "y": 430,
-        "zoom": 1.5,
-        "rotulo": "Estufa de gerações",
-        "titulo": "Seleção entre gerações",
-        "texto": "Cada versão treinada é uma geração. Comparando-as em um conjunto de validação separado, mantém-se a que generaliza melhor e descarta-se a que apenas decorou o treino (overfitting). Avaliar sempre em dados nunca vistos é o que torna a seleção honesta."
-      },
-      {
-        "id": "qualidade-quiz",
-        "tipo": "quiz",
-        "x": 960,
-        "y": 820,
-        "zoom": 1.5,
-        "rotulo": "Prancheta de laudo",
-        "pergunta": "Em um modelo que detecta fraudes, deixar uma fraude passar custa muito mais do que revisar um caso legítimo à toa. Qual métrica priorizar?",
-        "alternativas": [
-          "Precisão, para reduzir o número de alertas falsos",
-          "Revocação, para reduzir o número de fraudes não detectadas",
-          "Acurácia, por ser sempre a métrica mais completa",
-          "Nenhuma: basta olhar o erro no conjunto de treino"
-        ],
-        "correta": 1,
-        "dica": "Pergunte qual erro dói mais: aprovar o que não prestava, ou deixar escapar o que importava?",
-        "explicacao": "Quando o custo de não detectar é alto, prioriza-se a revocação (recall). A acurácia engana em bases desbalanceadas, nas quais a classe rara é justamente a que interessa."
-      }
-    ]
-  },
-  {
-    "id": "entrega",
-    "ordem": 5,
-    "rotuloSala": "Sala 5",
-    "titulo": "Expedição & Análise",
-    "ambiente": 3,
-    "peca": "cabeca",
-    "saida": { "x": 1770, "y": 630, "zoom": 2, "rotulo": "Liberar o lote na doca de saída" },
-    "hotspots": [
-      {
-        "id": "entrega-quadro",
-        "tipo": "card",
-        "x": 330,
-        "y": 470,
-        "zoom": 1.5,
-        "rotulo": "Quadro de avisos",
-        "titulo": "Onde isso já roda",
-        "texto": "Machine learning já decide crédito, prioriza laudos médicos, recomenda conteúdo, detecta fraude e prevê manutenção de máquinas. Em todos esses casos o modelo não substitui a decisão humana: ele ordena e filtra o que chega até ela."
-      },
-      {
-        "id": "entrega-caixa",
-        "tipo": "card",
-        "x": 700,
-        "y": 660,
-        "zoom": 1.6,
-        "rotulo": "Caixa lacrada",
-        "titulo": "Limitações e vieses",
-        "texto": "Um modelo aprende o que estava nos dados, inclusive os vieses históricos. Ele também não entende causa e efeito, erra fora da distribuição em que foi treinado e envelhece quando a realidade muda. Reconhecer esses limites faz parte da entrega."
-      },
-      {
-        "id": "entrega-painel",
-        "tipo": "card",
-        "x": 1120,
-        "y": 500,
-        "zoom": 1.5,
-        "rotulo": "Painel Por quê?",
-        "titulo": "Explicabilidade (XAI)",
-        "texto": "Quando um modelo nega um crédito, alguém precisa saber por quê. Técnicas de explicabilidade como SHAP e LIME mostram quais atributos pesaram em cada decisão, permitindo auditar o modelo, contestar um resultado e atender exigências legais."
-      },
-      {
-        "id": "entrega-certificado",
-        "tipo": "card",
-        "x": 1450,
-        "y": 700,
-        "zoom": 1.6,
-        "rotulo": "Certificado do lote",
-        "titulo": "O ciclo não termina aqui",
-        "texto": "Depois de publicado, o modelo precisa de monitoramento: o desempenho cai quando os dados em produção mudam (data drift). Métricas, novos exemplos e retreinamento fecham o ciclo — a fábrica não para quando o lote sai pela doca."
-      },
-      {
-        "id": "entrega-quiz",
-        "tipo": "quiz",
-        "x": 960,
-        "y": 840,
-        "zoom": 1.5,
-        "rotulo": "Terminal de liberação",
-        "pergunta": "Por que a explicabilidade (XAI) é considerada essencial em aplicações críticas de machine learning?",
-        "alternativas": [
-          "Porque deixa o modelo mais rápido durante o treinamento",
-          "Porque permite auditar, contestar e responsabilizar as decisões tomadas pelo modelo",
-          "Porque substitui a necessidade de avaliar métricas como precisão e revocação",
-          "Porque garante que o modelo nunca mais vai errar depois de publicado"
-        ],
-        "correta": 1,
-        "dica": "Pense em quem recebeu um não do sistema e tem o direito de saber o motivo.",
-        "explicacao": "Explicabilidade não melhora o desempenho: ela torna a decisão auditável e contestável, o que é exigência em crédito, saúde e seleção de pessoas."
-      }
-    ]
+      "hotspots": [
+        {
+          "id": "expedicao-quadro",
+          "tipo": "card",
+          "x": 350,
+          "y": 350,
+          "aproximacao": 2.5,
+          "rotulo": "Quadro de avisos",
+          "titulo": "Problemas e limitações",
+          "texto": "Modelos herdam os vieses dos dados e podem discriminar sem que ninguém perceba. Também sofrem com o data drift: o mundo muda e o modelo continua preso ao passado. Overfitting, custo de treino, consumo de energia e dependência de grandes bases são outras limitações. Por isso um modelo em produção precisa ser monitorado e retreinado, não apenas entregue."
+        },
+        {
+          "id": "expedicao-porque",
+          "tipo": "card",
+          "x": 960,
+          "y": 320,
+          "aproximacao": 2.5,
+          "rotulo": "Painel “Por quê?”",
+          "titulo": "Explicabilidade (XAI)",
+          "texto": "Redes neurais costumam ser chamadas de caixas-pretas: acertam, mas não dizem por quê. A IA explicável (XAI) tenta abrir essa caixa. Técnicas como SHAP e LIME mostram quais atributos mais pesaram em cada decisão. Isso é essencial em crédito, saúde e justiça; no Brasil, a LGPD garante o direito de pedir a revisão de decisões tomadas só por sistemas automatizados."
+        },
+        {
+          "id": "expedicao-caixa",
+          "tipo": "card",
+          "x": 680,
+          "y": 700,
+          "aproximacao": 2.5,
+          "rotulo": "Caixa lacrada",
+          "titulo": "Conclusão",
+          "texto": "Você acompanhou a linha inteira: os dados chegaram, foram limpos, alimentaram neurônios, passaram pela inspeção e agora saem com a etiqueta das suas limitações. Machine Learning não é mágica: é estatística, otimização e muito cuidado com dados. Um bom modelo nasce de boas perguntas, bons dados e avaliação honesta, e continua sendo responsabilidade de quem o constrói."
+        },
+        {
+          "id": "expedicao-quiz",
+          "tipo": "quiz",
+          "x": 1260,
+          "y": 685,
+          "aproximacao": 2.6,
+          "rotulo": "Terminal de liberação",
+          "pergunta": "Um banco usa uma rede neural para negar crédito. Um cliente pergunta por que foi recusado, e ninguém da equipe sabe responder. Qual prática resolveria isso?",
+          "alternativas": [
+            "Aumentar o número de camadas da rede",
+            "Usar técnicas de XAI, como SHAP, para mostrar quais fatores pesaram na decisão",
+            "Coletar mais dados de clientes recusados",
+            "Normalizar os atributos de novo"
+          ],
+          "correta": 1,
+          "dica": "A pergunta do cliente é “por quê?”. Olha só o painel que tem exatamente essa pergunta escrita.",
+          "explicacao": "Técnicas de explicabilidade apontam os atributos que mais influenciaram cada decisão. Além de dar transparência ao cliente, ajudam a equipe a encontrar vieses escondidos no modelo."
+        }
+      ]
+    }
+  ],
+  "expedicao": {
+    "titulo": "Modelo liberado!",
+    "texto": "Sua cópia {serie} está montada e ligada. Você passou pelas 5 estações de uma fábrica de IA: dados, limpeza, neurônios, métricas e explicabilidade.",
+    "falaZinos": "Bom turno, operador! Agora você entende mais de IA do que muita gente que fala dela por aí.",
+    "compartilharTexto": "Montei a {serie} na AutoLab. Como uma máquina aprende? Descubra:",
+    "compartilhar": "Compartilhar",
+    "recomecar": "Recomeçar",
+    "creditos": "Projeto de extensão PACEX VIII · Sistemas de Informação, UNIPAR · Estágio Supervisionado, prof. Elyssandro Piffer · Glauber Shoity Nakai, Kamilla Barros Silva e Wellington Henrique da Silva Lima"
   }
-]
+}
