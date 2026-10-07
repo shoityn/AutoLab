@@ -209,6 +209,14 @@ Se algum falhar, me manda o que aconteceu e eu corrijo.
 
 ---
 
+## 5. Movimento e montagem
+
+As cinco decisões de animação estão em **`docs/08-movimento-e-montagem.md`**, seção 6, com o contexto de cada uma: transcrever as peças em JSX, rosto de standby na cópia, a cor do `--acento` no Ambiente 2, a duração da cerimônia de montagem e a da transição entre cenas.
+
+Resumo do estado do projeto e do próximo passo: **`RETOMAR.md`**.
+
+---
+
 ## Resumo: o que ainda falta de você
 
 | # | Item | Urgência |

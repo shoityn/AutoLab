@@ -76,9 +76,11 @@ As cenas e as poses do mascote foram geradas para este projeto pela equipe; o lo
 
 ## Documentos
 
+- **`RETOMAR.md` — comece por aqui.** Onde o projeto está, o que mudou na última sessão e qual é o próximo passo.
 - **`docs/PLANO_v2.1.md` — o plano em vigor.** Substitui o v2 no que diz respeito a mundo, orientação, câmera, preloader e arte. O que ele não cita como alterado continua valendo do `PLANO.md`.
 - `PLANO.md` — plano v2 (máquina de estados, acessibilidade, regras do repositório)
 - `DECISOES.md` — o que foi decidido sem o grupo, o que divergiu dos planos e o que ficou pendente
 - `PERGUNTAS-ABERTAS.md` — as decisões que faltam, com contexto e sugestão para cada uma
 - `docs/01` a `docs/07` — resultados das discussões: mascote, logo, estilo e cenas, preloader e fachada (com o roteiro de tempos), conteúdo, cartaz, e as transições das salas 2 a 5
+- `docs/08-movimento-e-montagem.md` — revisão de animação, cor e brilho, e o plano da montagem da cópia peça por peça
 - `docs/PROMPT-sala5-edicao.txt` — roteiro para corrigir a arte da Sala 5 por edição
