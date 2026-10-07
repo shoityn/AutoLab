@@ -12,7 +12,8 @@
     <rect x="108" y="148" width="24" height="16" rx="4" fill="#7C8794" stroke="#2B2F36" stroke-width="3"/>
     <rect x="72" y="160" width="96" height="74" rx="24" fill="#F1EBDD" stroke="#2B2F36" stroke-width="5"/>
     <circle cx="120" cy="191" r="18" fill="#2B2F36"/>
-    <text x="120" y="225" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="11" font-weight="600"
-          fill="#2B2F36" letter-spacing=".5">ZN-07</text>
+    <!-- O número de série era desenhado aqui ("ZN-07"). Saiu porque cada jogador
+         recebe um serial sorteado (ZN-01 a ZN-99), mostrado abaixo da cópia na
+         Expedição — os dois juntos confundiam. Ver PERGUNTAS-ABERTAS.md 3.1. -->
   </g>
 </svg>
