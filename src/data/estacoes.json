@@ -72,7 +72,7 @@
       "saida": {
         "x": 1760,
         "y": 680,
-        "aproximacao": 2.0,
+        "aproximacao": 2,
         "rotulo": "Seguir pela esteira",
         "passagem": "tunel"
       },
@@ -151,7 +151,7 @@
       "saida": {
         "x": 1730,
         "y": 560,
-        "aproximacao": 2.0,
+        "aproximacao": 2,
         "rotulo": "Subir pelo elevador",
         "passagem": "elevador"
       },
@@ -230,7 +230,7 @@
       "saida": {
         "x": 1600,
         "y": 545,
-        "aproximacao": 2.0,
+        "aproximacao": 2,
         "rotulo": "Abrir a porta pressurizada",
         "passagem": "portaDupla"
       },
@@ -299,7 +299,7 @@
       "saida": {
         "x": 1625,
         "y": 535,
-        "aproximacao": 2.0,
+        "aproximacao": 2,
         "rotulo": "Passar pela porta de vidro",
         "passagem": "vidro"
       },
@@ -362,7 +362,7 @@
       "peca": "cabeca",
       "fala": "Último setor! Antes de despachar um modelo, a gente precisa admitir o que ele não sabe fazer.",
       "camadas": {
-        "cena": "salas/5/cena-provisoria.png"
+        "cena": "salas/5/cena.jpg"
       },
       "rotulos": [
         {
@@ -373,9 +373,9 @@
         }
       ],
       "saida": {
-        "x": 1600,
-        "y": 545,
-        "aproximacao": 2.0,
+        "x": 1588,
+        "y": 538,
+        "aproximacao": 2,
         "rotulo": "Despachar pela doca",
         "passagem": "luz"
       },
@@ -403,7 +403,7 @@
         {
           "id": "expedicao-caixa",
           "tipo": "card",
-          "x": 680,
+          "x": 648,
           "y": 700,
           "aproximacao": 2.5,
           "rotulo": "Caixa lacrada",
@@ -413,8 +413,8 @@
         {
           "id": "expedicao-quiz",
           "tipo": "quiz",
-          "x": 1260,
-          "y": 685,
+          "x": 1262,
+          "y": 620,
           "aproximacao": 2.6,
           "rotulo": "Terminal de liberação",
           "pergunta": "Um banco usa uma rede neural para negar crédito. Um cliente pergunta por que foi recusado, e ninguém da equipe sabe responder. Qual prática resolveria isso?",
