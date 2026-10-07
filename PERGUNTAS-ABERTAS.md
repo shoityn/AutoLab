@@ -1,85 +1,92 @@
-# Perguntas abertas — AutoLab (06/10/2026)
+# Perguntas abertas — AutoLab
 
-Estado: o jogo está **completo e jogável do início ao fim**, com a arte final das 5 salas, na branch `feat/visual`. O que falta não é código: é decisão.
-
-Cada item tem **a pergunta**, **por que importa**, **o que eu faria** e **onde encosta no código**. Responda só o que quiser; o resto eu assumo o padrão sugerido.
+> **Atualizado em 07/10.** Os itens 1.1, 1.2, 2.1 e 3.1 estão resolvidos. O 1.4 virou outra coisa: o site **não** estava publicado, e o motivo apareceu agora — ver 1.4 e 1.5.
+>
+> Cada item tem **a pergunta**, **por que importa**, **o que eu faria** e **onde encosta no código**. Responda só o que quiser; no resto eu sigo o padrão sugerido.
 
 ---
 
-## 1. Decisões que travam a publicação
+## 1. Decisões que travavam a publicação
 
-### 1.1 ⚠️ Qual é a URL de verdade do site?
+### 1.1 ✅ RESOLVIDO — a URL é `shoityn.github.io/AutoLab`
 
-**A pergunta:** `shoityn.github.io/AutoLab` ou `glaubershoity.github.io/AutoLab`?
+Conferido na API do GitHub: **`shoityn/AutoLab` existe e está público**; **`glaubershoity/AutoLab` não existe**. O código já estava certo. O que trazia o endereço errado eram o `docs/PLANO_v2.1.md` e a discussão 06 — corrigidos, para o erro não voltar na próxima consulta ao plano.
 
-**Por que importa:** os dois aparecem em lugares diferentes e **um deles está errado**:
+#### Os QRs do repositório estão corretos
 
-| Onde | URL que está lá |
+Decodifiquei os três arquivos de QR do repo em 07/10:
+
+| Arquivo | Conteúdo |
 |---|---|
-| `index.html` (meta tags, og:image) | `shoityn` |
-| `src/components/Expedicao.jsx` (botão Compartilhar) | `shoityn` |
-| `PLANO_v2.1.md` e `PROMPT-AGENTE.md` | `glaubershoity` |
-| **`qr-autolab.svg` / `.png` e os flyers já gerados** | `glaubershoity` |
+| `cartaz/qrcode.svg` | `https://shoityn.github.io/AutoLab/` ✅ |
+| `cartaz/qrcode.png` | `https://shoityn.github.io/AutoLab/` ✅ |
+| `cartaz/qr-autolab.svg` | `https://shoityn.github.io/AutoLab/` ✅ |
 
-Este é o item mais urgente da lista. **Se o QR do flyer apontar para a URL errada, todo cartaz impresso vira um 404** — e aí o trabalho de distribuição (Fase E) não comprova nada. Vale conferir abrindo o repositório no GitHub e olhando o endereço do Pages em Settings → Pages.
+Todos em versão 4 (33 módulos), correção de erro **H** (30%), como a discussão 06 pede.
 
-**O que eu faria:** confirmar no GitHub antes de imprimir qualquer coisa, e só então travar o valor nos dois arquivos de código.
-
-**Onde encosta:** `index.html` (4 linhas) e a constante `SITE_URL` em `Expedicao.jsx`. Mudança de 2 minutos — mas tem que ser a certa.
+⚠️ **Uma ressalva honesta:** uma anotação da sessão anterior dizia ter decodificado um `qr-autolab.png` apontando para `glaubershoity.github.io`. **Esse arquivo não existe no repositório** — não há como conferir a afirmação. Se você tem uma cópia solta dele na máquina ou dentro de um flyer já montado, vale escanear com o celular antes de imprimir. Para gerar o flyer novo, use `cartaz/qr-autolab.svg`.
 
 ---
 
-### 1.2 O repositório vai ficar público?
+### 1.2 ✅ RESOLVIDO — o repositório está público
 
-**A pergunta:** o GitHub Pages já está ligado? O repositório é privado?
-
-**Por que importa:** no plano o repositório é público e o Pages publica a cada push na `main`. Pelo que tenho anotado, hoje ele é privado. **GitHub Pages em repositório privado exige conta paga** (Pro/Team). Se for esse o caso, só há dois caminhos: tornar o repositório público ou publicar em outro lugar.
-
-**O que eu faria:** tornar público. É trabalho de extensão, não tem segredo nenhum no código, e isso também ajuda na comprovação acadêmica.
+`"private": false` na API, conferido em 07/10. Era a condição para o Pages funcionar sem conta paga, e o Pages está ligado (`has_pages: true`). Resolvido.
 
 ---
 
-### 1.3 Quando criar a conta do GoatCounter?
+### 1.3 🕓 ABERTO — quando criar a conta do GoatCounter?
 
 **A pergunta:** posso deixar sem métricas, ou vocês criam a conta antes de distribuir?
 
 **Por que importa:** o plano prevê exportar os números do GoatCounter para o relatório (Fase E). Se a conta não existir **antes** dos flyers saírem, as visitas dos primeiros dias se perdem — e são justamente as que mais contam.
 
-**Estado:** deixei pronto, atrás de uma constante vazia (`GOATCOUNTER_CODE` no `index.html`). Enquanto estiver vazia, o script nem é baixado. Basta preencher com o código da conta.
+**Estado:** está pronto, atrás de uma constante vazia (`GOATCOUNTER_CODE` no `index.html`). Enquanto estiver vazia, o script nem é baixado. Basta preencher com o código da conta.
 
 **O que eu faria:** criar a conta antes da impressão. É grátis e leva 5 minutos.
 
 ---
 
-### 1.4 Juntar na `main` agora ou depois da revisão de vocês?
+### 1.4 ⚠️ CORREÇÃO — a `feat/visual` **não** estava mesclada, nem enviada ao GitHub
 
-**A pergunta:** eu posso mesclar `feat/visual` na `main`, ou vocês querem ver rodando primeiro?
+Uma anotação de 06/10 dizia que o merge tinha sido feito. **Não foi.** Em 07/10, `git ls-remote` mostra que o `origin` tem só três branches — `main`, `feat/salas` e `feat/3d` — e as três estão no commit `74ef166`, a Fase A. A `feat/visual` nunca saiu da máquina: são **16 commits locais** de diferença.
 
-**Por que importa:** a `main` publica automaticamente. Enquanto não mesclar, nada vai ao ar — o que é bom para revisar com calma, e ruim se vocês quiserem testar no celular (precisa estar no ar, ou rodar `npm run dev` na mesma rede).
+Ou seja: o jogo completo, com a arte das 5 salas, nunca chegou ao GitHub. É por isso que o site no ar não é o jogo.
 
-**O que eu faria:** mesclar depois que pelo menos uma pessoa jogar do início ao fim num celular deitado.
+**O que eu faria:** enviar a `feat/visual` para o GitHub agora (a branch sozinha não publica nada, é seguro) e mesclar na `main` quando você quiser que o site vá ao ar. A pergunta original continua de pé: **publicar antes ou depois da revisão de conteúdo da dupla?** O conteúdo que está no ar hoje é o rascunho (item 2.1).
+
+---
+
+### 1.5 ⚠️ A causa da tela branca — a fonte do Pages está errada
+
+**O que está acontecendo:** `https://shoityn.github.io/AutoLab/` responde **200**, mas o que vem é o `index.html` **cru do repositório**, não o resultado do build. A última linha dele é:
+
+```html
+<script type="module" src="/src/main.jsx"></script>
+```
+
+Nenhum navegador executa JSX. O React nunca monta, a `<div id="root">` fica vazia e você vê uma página branca. Dá para confirmar de fora: `/README.md` e `/package.json` também respondem 200 no site — prova de que o Pages está servindo a pasta do repositório inteira.
+
+**Por que:** em **Settings → Pages**, a origem está em **"Deploy from a branch" → `main` / `(root)`**. Nesse modo o Pages ignora o `.github/workflows/deploy.yml` e simplesmente copia os arquivos do repositório. O workflow existe e está correto (`npm ci`, `npm run build`, publica `dist`), mas nunca é usado como fonte.
+
+**A correção:** Settings → Pages → **Source: GitHub Actions**. Um clique. A partir daí o `deploy.yml` assume e o que vai ao ar é o `dist` do Vite, com o `base: '/AutoLab/'` já configurado.
 
 ---
 
 ## 2. Conteúdo
 
-### 2.1 A revisão técnica dos textos já aconteceu?
+### 2.1 🕓 EM ANDAMENTO — a dupla revisa a planilha, eu converto depois
 
-**A pergunta:** o conteúdo que está no site hoje é a versão revisada, ou ainda é o rascunho?
+O conteúdo que está no ar hoje (17 cards, 5 quizzes, 5 falas do Zinos, textos da Expedição) é o rascunho da entrega, escrito a partir de conhecimento geral de ML. A discussão 05 diz que **o grupo precisa conferir com o relatório PACEX**, usando a planilha `conteudo-salas-revisao.xlsx`.
 
-**Por que importa:** a discussão 05 diz que o conteúdo foi rascunhado a partir de conhecimento geral de ML e que **o grupo precisa conferir com o relatório PACEX**. Existe uma planilha para isso (`conteudo-salas-revisao.xlsx`). Hoje o site tem 17 cards, 5 quizzes, 5 falas do Zinos e os textos da Expedição — todos vindos dessa entrega.
-
-Se a revisão mudar texto, não há problema: as coordenadas dos hotspots ficam intactas, só os textos trocam.
-
-**O que eu faria:** Kamilla e Wellington revisam a planilha; você aprova; eu converto de volta para o JSON mantendo as coordenadas.
+Quando a revisão voltar, eu converto a planilha para o JSON **mantendo todas as coordenadas** — mudar texto não mexe em hotspot.
 
 ---
 
-### 2.2 As falas do Zinos estão no tom certo?
+### 2.2 🕓 ABERTO — as falas do Zinos estão no tom certo?
 
-**A pergunta:** o humor do mascote está adequado para um trabalho acadêmico?
+**A pergunta:** o humor do mascote é adequado para um trabalho acadêmico?
 
-**Por que importa:** o tom definido foi "técnico com humor". Exemplos que estão no ar hoje:
+**Por que importa:** o tom definido foi "técnico com humor". O que está no ar:
 
 > *Sala 1:* "Bem-vindo à doca! Todo modelo começa aqui: nos dados. E já aviso: lixo que entra, lixo que sai."
 >
@@ -87,64 +94,55 @@ Se a revisão mudar texto, não há problema: as coordenadas dos hotspots ficam 
 >
 > *Expedição:* "Bom turno, operador! Agora você entende mais de IA do que muita gente que fala dela por aí."
 
-Essa última é a mais ousada. Funciona com estudante, mas se o professor for ler, talvez queiram algo mais contido.
+A última é a mais ousada. Funciona com estudante, mas se o professor for ler, talvez queiram algo mais contido.
 
 **O que eu faria:** manter. O humor é o que faz alguém terminar os 10 minutos.
 
 ---
 
-### 2.3 As Salas 3, 4 e 5 têm 3 cards; as Salas 1 e 2 têm 4. Fica assim?
+### 2.3 🕓 ABERTO — Salas 3, 4 e 5 têm 3 cards; as Salas 1 e 2 têm 4
 
 **A pergunta:** incomoda a assimetria, ou é proposital?
 
-**Por que importa:** foi uma decisão de orçamento de tempo no plano v2.1 ("as Salas 3 a 5 já começam com 3 cards"). Na prática funciona bem: as salas finais são mais rápidas e o jogo não cansa. Mas o contador no HUD mostra "Registros 0/3" em três salas e "0/4" em duas, e alguém pode achar que falta coisa.
+**Por que importa:** foi decisão de orçamento de tempo no plano v2.1 ("as Salas 3 a 5 já começam com 3 cards"). Na prática funciona: as salas finais são mais rápidas e o jogo não cansa. Mas o HUD mostra "Registros 0/3" em três salas e "0/4" em duas, e alguém pode achar que falta conteúdo.
 
-**O que eu faria:** deixar como está. Acelerar no fim é bom ritmo de jogo, não defeito.
+**O que eu faria:** deixar. Acelerar no fim é bom ritmo de jogo, não defeito.
 
 ---
 
 ## 3. Arte e acabamento
 
-### 3.1 ⚠️ O torso da cópia tem "ZN-07" desenhado no SVG
+### 3.1 ✅ RESOLVIDO — o "ZN-07" saiu do SVG
 
-**A pergunta:** apago o "ZN-07" do arquivo, ou deixo?
-
-**Por que importa:** cada jogador recebe um número de série sorteado (ZN-01 a ZN-99) que aparece embaixo da cópia montada. Mas o arquivo `public/mascote/pecas/2-tronco.svg` tem **"ZN-07" impresso no peito**. Então na Expedição aparece um robô com "ZN-07" no peito e "ZN-42" embaixo. Fica confuso.
-
-**Três saídas:**
-1. Apagar o texto do SVG (1 linha) — a cópia fica sem número no peito.
-2. Deixar como está e tratar ZN-07 como "o modelo", ZN-42 como "a unidade".
-3. Tirar o sorteio e usar ZN-07 para todo mundo — mas aí some a graça do "sua cópia".
-
-**O que eu faria:** opção 1. É a mais limpa e mantém o sorteio, que é o que dá a sensação de "minha cópia".
+O `public/mascote/pecas/2-tronco.svg` tinha "ZN-07" desenhado no peito, enquanto cada jogador recebe um serial sorteado (ZN-01 a ZN-99). Os dois apareciam juntos na Expedição. O texto foi apagado do arquivo; agora só o serial sorteado aparece, embaixo da cópia.
 
 ---
 
-### 3.2 Vale passar as cenas no Upscayl?
+### 3.2 🕓 ABERTO — vale passar as cenas no Upscayl?
 
 **A pergunta:** querem nitidez maior no PC?
 
-**Por que importa:** as cenas estão em 1920 × 1080 nativo (a da Sala 5 veio em 1376 e eu ampliei para 1920). Num celular deitado ficam ótimas. Num monitor grande, levemente suaves. O plano sugere passar no Upscayl para 2560 × 1440 se quiserem mais nitidez — ao custo de arquivos maiores e carregamento mais lento no 4G.
+**Por que importa:** as cenas estão em 1920 × 1080 (a da Sala 5 veio em 1376 × 768 e foi ampliada). Num celular deitado ficam ótimas. Num monitor grande, levemente suaves. O plano sugere subir para 2560 × 1440 — ao custo de arquivos maiores e carregamento mais lento no 4G.
 
 **O que eu faria:** não fazer. O alvo é celular de entrada no 4G, e peso de arquivo é o que mais machuca ali.
 
 ---
 
-### 3.3 Alguma sala merece camada de frente (parallax no PC)?
+### 3.3 🕓 ABERTO — alguma sala merece camada de frente (parallax no PC)?
 
 **A pergunta:** vale recortar 1 ou 2 objetos de primeiro plano?
 
-**Por que importa:** o código já lê `camadas.frente` e move essa camada com o mouse no PC, mas **nenhuma sala tem esse arquivo**. Hoje o parallax move só a cena, de leve. Com um objeto recortado (a esteira da Sala 2, as caixas da Sala 1), o efeito de profundidade fica bem mais convincente — só no PC, e o custo é um recorte por sala no Figma.
+**Por que importa:** o código já lê `camadas.frente` e move essa camada com o mouse no PC, mas **nenhuma sala tem esse arquivo**. Hoje o parallax move só a cena, de leve. Com um objeto recortado (a esteira da Sala 2, as caixas da Sala 1) a profundidade fica bem mais convincente — só no PC, e o custo é um recorte por sala no Figma.
 
-**O que eu faria:** fazer só na Sala 1, que é a primeira impressão. Se der tempo, Sala 2.
+**O que eu faria:** fazer só na Sala 1, que é a primeira impressão. Se der tempo, a Sala 2.
 
 ---
 
-### 3.4 A Sala 5 ficou com uma tela escura grande. Está bom?
+### 3.4 🕓 ABERTO — a tela grande da Sala 5 está boa assim?
 
 **A pergunta:** o painel "Por quê?" convence?
 
-**Por que importa:** a arte nova entregou a tela em branco (certo, porque texto nunca vem da imagem gerada) e o site escreve "Por quê?" por cima, em ciano monoespaçado. Ficou legível e no estilo. Só sinalizo que a tela é grande e fica bem escura no ambiente claro do laboratório — se quiserem, dá para acender um brilho ciano de fundo nela.
+**Por que importa:** a arte entregou a tela em branco (certo — texto nunca vem da imagem gerada) e o site escreve "Por quê?" por cima, em ciano monoespaçado. Ficou legível e no estilo. Só sinalizo que a tela é grande e bem escura dentro do laboratório claro; se quiserem, dá para acender um brilho ciano de fundo nela.
 
 **O que eu faria:** deixar. O contraste chama atenção para o hotspot.
 
@@ -152,26 +150,26 @@ Essa última é a mais ousada. Funciona com estudante, mas se o professor for le
 
 ## 4. Flyer e distribuição
 
-### 4.1 O flyer A5 já está fechado?
+### 4.1 🕓 ABERTO — o flyer ainda não está fechado
 
-**A pergunta:** o `flyer-2porA4.pdf` é a versão final, ou ainda falta a marca da UNIPAR?
+O travamento real é a **marca da UNIPAR**: a discussão 06 reservou 80 × 30 mm no rodapé para a arte oficial, que depende dos arquivos e das regras de marca da universidade. Isso costuma demorar mais do que parece.
 
-**Por que importa:** a discussão 06 deixou uma **área reservada de 80 × 30 mm no rodapé** para a arte oficial da UNIPAR, que depende dos arquivos e das regras de marca da universidade. Isso costuma demorar mais do que parece.
+Pendências que a própria discussão 06 lista e continuam em aberto:
 
-**Pendências que a própria discussão 06 lista e ainda não vi resolvidas:**
 - [ ] Inserir a arte da UNIPAR
-- [ ] Imprimir 1 teste e escanear com 3 celulares, a 1 m e a 2 m
+- [ ] Usar `cartaz/qr-autolab.svg` como QR (conferido em 07/10 — item 1.1)
+- [ ] Imprimir 1 teste e escanear com 3 celulares, a 1 m e a 2 m — só vale depois que o site estiver realmente no ar (item 1.5)
 - [ ] Confirmar o tempo de jogo (~10 min) com o site pronto
 
 ---
 
-### 4.2 Quanto tempo o jogo leva de verdade?
+### 4.2 🕓 ABERTO — quanto tempo o jogo leva de verdade?
 
 **A pergunta:** alguém pode cronometrar uma partida completa?
 
-**Por que importa:** o flyer promete **~10 minutos**. Pela quantidade de texto (17 cards de ~60 palavras + 5 quizzes + as animações de câmera), meu palpite é **6 a 9 minutos** para quem lê tudo sem pressa. Se ficar bem abaixo de 10, vale ajustar o número no flyer antes de imprimir — promessa quebrada para menos é melhor do que para mais, mas o número certo é melhor ainda.
+**Por que importa:** o flyer promete **~10 minutos**. Pela quantidade de texto (17 cards de ~60 palavras + 5 quizzes + as animações de câmera), meu palpite é **6 a 9 minutos** para quem lê tudo sem pressa. Se ficar bem abaixo de 10, vale ajustar o número antes de imprimir.
 
-**O que eu faria:** cronometrar na primeira partida de teste no celular e ajustar o flyer se der diferença grande.
+**O que eu faria:** cronometrar na primeira partida de teste no celular e ajustar o flyer se a diferença for grande.
 
 ---
 
@@ -187,9 +185,9 @@ O plano tem uma "escada de cortes" definida de antemão. Como o jogo já está c
 
 ---
 
-## 6. Teste que só vocês podem fazer
+## 6. Testes que só vocês podem fazer
 
-Não consigo fazer daqui, e é critério de aceite do plano:
+Não consigo fazer daqui, e são critério de aceite do plano:
 
 - [ ] **Jogar do início ao fim num Galaxy A12 deitado**, sem travar, com cada transição em até ~1,6 s
 - [ ] Testar no **navegador interno do WhatsApp e do Instagram** (é assim que a maioria vai abrir, vindo do QR)
@@ -197,16 +195,17 @@ Não consigo fazer daqui, e é critério de aceite do plano:
 - [ ] **Lighthouse mobile**: meta de Performance ≥ 85 e Acessibilidade ≥ 95
 - [ ] Jogar **só pelo teclado**, sem mouse
 
-Se algum desses falhar, me manda o que aconteceu e eu corrijo.
+Se algum falhar, me manda o que aconteceu e eu corrijo.
 
 ---
 
-## Resumo: o que eu preciso de você para seguir
+## Resumo: o que ainda falta de você
 
-Se for responder só três coisas, que sejam estas:
-
-1. **A URL certa** (1.1) — bloqueia a impressão do flyer
-2. **ZN-07 no peito da cópia: apago?** (3.1)
-3. **Mesclo na `main` agora?** (1.4)
-
-O resto eu toco com os padrões que sugeri acima.
+| # | Item | Urgência |
+|---|---|---|
+| 4.1 | **Refazer o flyer com o QR novo** (`cartaz/qr-autolab.svg`) e inserir a marca da UNIPAR | **Alta** — o QR atual leva a 404 |
+| 1.3 | Criar a conta do GoatCounter e preencher `GOATCOUNTER_CODE` | Alta — antes de distribuir |
+| 6 | Jogar do início ao fim num Galaxy A12 deitado | Alta — é o critério de aceite |
+| 2.1 | Revisão dos textos pela dupla | Média — até 17/10 |
+| 4.2 | Cronometrar uma partida e ajustar o tempo prometido no flyer | Média |
+| 2.2, 2.3, 3.2, 3.3, 3.4 | Preferências de tom, arte e acabamento | Baixa — sigo o padrão sugerido |

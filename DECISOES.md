@@ -49,8 +49,10 @@ Todos os 19 SVGs (`marca/`, `mascote/`, `favicon`) são idênticos aos que já e
 **2. O `Mascote` é uma transcrição em JSX, não o SVG injetado em runtime.**
 O prompt pedia para injetar `zinos-cabeca.svg` inline. O preloader precisa desenhar o Zinos **antes** de qualquer asset carregar, e um fetch ali atrasaria justamente a primeira tela. Os grupos continuam acessíveis (expressão e `[data-olhos]` para a piscada), que é o que as animações pedem. Se o arquivo mudar, a transcrição precisa ser atualizada junto.
 
-**3. A URL do site continua `shoityn.github.io`.**
-O `PLANO_v2.1.md` e o `PROMPT-AGENTE.md` dizem `glaubershoity.github.io`, mas o repositório e o `index.html` sempre usaram `shoityn`. **Confira qual é a certa** — está em dois lugares: `index.html` (meta tags) e `SITE_URL` em `src/components/Expedicao.jsx`.
+**3. ✅ A URL é `shoityn.github.io` — confirmado.**
+`shoityn/AutoLab` existe e está **público** (conferido na API do GitHub em 07/10); `glaubershoity/AutoLab` **não existe**. O código (`index.html` e `SITE_URL` em `Expedicao.jsx`) já estava certo — o que trazia o endereço errado eram o `PLANO_v2.1.md` e a discussão 06, corrigidos agora.
+
+**Sobre o QR: os três arquivos que estão no repositório estão corretos.** Decodifiquei `cartaz/qrcode.svg`, `cartaz/qrcode.png` e `cartaz/qr-autolab.svg` em 07/10 — todos devolvem `https://shoityn.github.io/AutoLab/` (versão 4, correção de erro H). Uma anotação da sessão anterior falava de um `qr-autolab.png` apontando para `glaubershoity`; esse arquivo **não existe no repositório** e não pude conferir. Se houver uma cópia solta fora do repo, é ela que deve ser descartada. Para o flyer, use `cartaz/qr-autolab.svg`.
 
 **4. O GoatCounter ficou atrás de uma constante vazia.**
 `window.GOATCOUNTER_CODE` no `index.html`. Enquanto estiver `''`, o script nem é carregado (nada de requisição para um domínio que não existe). Basta preencher com o código da conta.
@@ -58,8 +60,8 @@ O `PLANO_v2.1.md` e o `PROMPT-AGENTE.md` dizem `glaubershoity.github.io`, mas o 
 **5. O id da Sala 5 é `expedicao` e o estado final também se chama `expedicao`.**
 Vieram assim no JSON da entrega. Não colidem (um é `sala.id`, o outro é `estado.estado`), mas é uma pegadinha se alguém mexer no reducer.
 
-**6. O torso da cópia tem "ZN-07" impresso no próprio SVG.**
-O número de série sorteado (ex.: ZN-42) aparece abaixo da cópia, mas o `2-tronco.svg` tem "ZN-07" desenhado. Fica estranho lado a lado. Não mexi no asset: ou se apaga o texto do SVG, ou se aceita que ZN-07 é o "modelo" e ZN-42 é a unidade.
+**6. ✅ O "ZN-07" saiu do torso da cópia.**
+O `2-tronco.svg` tinha "ZN-07" desenhado no peito, enquanto cada jogador recebe um serial sorteado (ex.: ZN-42) mostrado abaixo da cópia — os dois apareciam juntos. O texto foi apagado do SVG; um comentário no arquivo explica o porquê, para ninguém devolver sem saber.
 
 **7. O rótulo "Por quê?" sobe um pouco em relação à coordenada do JSON.**
 O anel do hotspot e o rótulo compartilham o mesmo x/y (960, 320) e ficavam um em cima do outro. O rótulo de estilo `tela` é desenhado deslocado para cima, para os dois se lerem. Quando a arte final da Sala 5 chegar e os x/y forem reconferidos, vale revisar.
@@ -119,11 +121,14 @@ Os painéis abriam com `autoAlpha` do GSAP, que aplica `visibility: hidden`. Ele
 | ~~Arte da Sala 5~~ | **Pronta.** Instalada em 06/10 e os 5 hotspots reposicionados sobre os objetos com o `?debug=1`. Ficou em JPEG (205 KB) e não WebP, porque não há codificador WebP na máquina — se quiserem padronizar, dá para converter depois sem mexer em código, só trocando `camadas.cena`. |
 | **Camada `frente` e parallax forte** | O código já lê `camadas.frente` e move a camada no PC, mas nenhuma sala tem esse arquivo ainda. Hoje o parallax move só a cena, de leve. |
 | **GoatCounter** | `GOATCOUNTER_CODE` vazio no `index.html`. |
-| **URL do Pages** | `shoityn` × `glaubershoity` — conferir (item ⚠️ 3). |
-| **Revisão do conteúdo** | Os textos vieram prontos na entrega; a revisão do grupo continua valendo. |
+| ~~URL do Pages~~ | **Resolvida:** `shoityn.github.io/AutoLab` (item 3 acima). |
+| **QR do flyer** | Os QRs do repositório estão corretos (conferidos por decodificação em 07/10). Use `cartaz/qr-autolab.svg`. |
+| **Marca da UNIPAR no flyer** | Área de 80 × 30 mm reservada no rodapé, ainda vazia. |
+| **Revisão do conteúdo** | Os textos vieram prontos na entrega; a revisão do grupo continua valendo (até 17/10). |
 | **Teste no Galaxy A12** | Não dá para fazer daqui. É o critério de aceite do plano. |
 | **Lighthouse mobile** | Não medido. |
-| **Merge na `main`** | A branch `feat/visual` está pronta; a `main` continua como estava. |
+| ⚠️ **Fonte do Pages mal configurada** | Em Settings → Pages a origem está em **"Deploy from a branch: main / (root)"**, então o Pages publica o repositório cru em vez do `dist` do build. O `index.html` servido ainda carrega `/src/main.jsx`, que o navegador não executa — resultado: tela branca. Tem de virar **"GitHub Actions"**, para o `deploy.yml` assumir. |
+| **Merge na `main`** | A `feat/visual` está pronta mas **não foi mesclada** — e nem enviada ao GitHub. O `origin` só tem `main`, `feat/salas` e `feat/3d`, todas paradas na Fase A. São 16 commits locais de diferença. |
 
 ---
 
