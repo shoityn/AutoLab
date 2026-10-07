@@ -1,6 +1,7 @@
 import CopiaRobo from './CopiaRobo'
 import Mascote from './Mascote'
 import BalaoFala from './BalaoFala'
+import BotaoSom from './BotaoSom'
 import { MARCA } from '../lib/assets'
 
 /**
@@ -59,6 +60,8 @@ function Hud({
           <Mascote expressao={expressao} piscar className="w-11 shrink-0" />
 
           <CopiaRobo pecas={pecas} serie={serie} className="h-11 w-8" />
+
+          <BotaoSom />
 
           <button
             type="button"

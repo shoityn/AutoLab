@@ -6,6 +6,7 @@ import { EXPEDICAO_TEXTOS, SALAS, preencher } from '../lib/conteudo'
 import { PECAS, ZINOS_CORPO, asset } from '../lib/assets'
 import CopiaRobo from './CopiaRobo'
 import BalaoFala from './BalaoFala'
+import BotaoSom from './BotaoSom'
 
 const SITE_URL = import.meta.env.BASE_URL.startsWith('http')
   ? import.meta.env.BASE_URL
@@ -79,6 +80,17 @@ function Expedicao({ serie, onRecomecar }) {
           style={{ filter: 'blur(6px)', transform: 'scale(1.06)' }}
         />
         <div className="absolute inset-0" style={{ background: 'rgba(5,8,12,.6)' }} />
+      </div>
+
+      {/* A fanfarra toca na chegada: o mudo precisa estar ao alcance da mão. */}
+      <div
+        className="fixed z-20"
+        style={{
+          top: 'max(.75rem, env(safe-area-inset-top))',
+          right: 'max(.75rem, env(safe-area-inset-right))',
+        }}
+      >
+        <BotaoSom />
       </div>
 
       <div

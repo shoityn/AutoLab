@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import CopiaRobo from './CopiaRobo'
+import BotaoSom from './BotaoSom'
 import { MARCA } from '../lib/assets'
 import { ABERTURA, preencher } from '../lib/conteudo'
 import { prefereMovimentoReduzido } from '../hooks/useCamera'
@@ -119,6 +120,12 @@ function PainelFachada({ temProgresso, pecas, serie, onIniciar, onContinuar, onR
             )}
           </div>
         )}
+
+        {/* O jogo começa mudo: o convite para ligar fica aqui, visível, porque
+            no HUD das salas o botão é só um ícone. */}
+        <div className="mt-2.5 flex justify-center border-t border-white/10 pt-2.5">
+          <BotaoSom variante="fachada" />
+        </div>
       </div>
     </div>
   )
