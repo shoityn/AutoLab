@@ -13,13 +13,19 @@ const TEMPO_MINIMO = 1200
  * Estado `carregando`. Segue as tabelas A e B do roteiro da discussão 04:
  * caracteres rolando na tela do Zinos + barra de progresso real; ao terminar,
  * os olhos acendem, "Sistema pronto!" é escrito e ele sorri.
+ *
+ * `carregado` é o que dispara a sequência de saída, e muda uma única vez.
+ * O sorriso é um estado separado de propósito: se ele estivesse no mesmo
+ * estado, a troca de expressão refaria o efeito e cancelaria os temporizadores
+ * da própria saída — o jogo ficava preso na primeira tela.
  */
 function Preloader({ onPronto }) {
   const [progresso, setProgresso] = useState(0)
-  const [fase, setFase] = useState('carregando') // carregando | pronto | feliz
+  const [carregado, setCarregado] = useState(false)
+  const [sorrindo, setSorrindo] = useState(false)
   const [escrito, setEscrito] = useState('')
   const containerRef = useRef(null)
-  const linhas = useLinhasCodigo(fase === 'carregando')
+  const linhas = useLinhasCodigo(!carregado)
 
   const textoPronto = ABERTURA.preloader.pronto
 
@@ -27,7 +33,7 @@ function Preloader({ onPronto }) {
   useEffect(() => {
     let vivo = true
     Promise.all([precarregar(assetsEssenciais(), (p) => vivo && setProgresso(p)), espera(TEMPO_MINIMO)]).then(() => {
-      if (vivo) setFase('pronto')
+      if (vivo) setCarregado(true)
     })
     return () => {
       vivo = false
@@ -36,7 +42,7 @@ function Preloader({ onPronto }) {
 
   // Sequência final (tabela B): olhos acendem → escreve → sorri → sai.
   useEffect(() => {
-    if (fase !== 'pronto') return undefined
+    if (!carregado) return undefined
 
     if (prefereMovimentoReduzido()) {
       setEscrito(textoPronto)
@@ -44,8 +50,11 @@ function Preloader({ onPronto }) {
       return () => window.clearTimeout(t)
     }
 
+    // A saída não pode depender só do onComplete do GSAP: se o rAF congelar
+    // (aba em segundo plano), o fade nunca termina e o jogo trava aqui.
+    const saida = comSalvaguarda(onPronto, 2600)
     const temporizadores = []
-    // 0,45 s: revela letra a letra em ~0,35 s
+
     let i = 0
     const passo = Math.max(20, 350 / Math.max(textoPronto.length, 1))
     const escrever = window.setInterval(() => {
@@ -54,11 +63,7 @@ function Preloader({ onPronto }) {
       if (i >= textoPronto.length) window.clearInterval(escrever)
     }, passo)
 
-    temporizadores.push(window.setTimeout(() => setFase('feliz'), 1200))
-
-    // A saída do preloader NÃO pode depender do onComplete do GSAP: se o rAF
-    // estiver congelado, o fade nunca termina e o jogo trava na primeira tela.
-    const saida = comSalvaguarda(onPronto, 2600)
+    temporizadores.push(window.setTimeout(() => setSorrindo(true), 1200))
     temporizadores.push(
       window.setTimeout(() => {
         gsap.to(containerRef.current, {
@@ -76,9 +81,9 @@ function Preloader({ onPronto }) {
       saida.cancelar()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fase])
+  }, [carregado])
 
-  const expressao = fase === 'carregando' ? 'carregando' : fase === 'pronto' ? 'pronto' : 'feliz'
+  const expressao = !carregado ? 'carregando' : sorrindo ? 'feliz' : 'pronto'
 
   return (
     <div
@@ -87,13 +92,13 @@ function Preloader({ onPronto }) {
       style={{ background: 'var(--bg)' }}
       role="status"
       aria-label={ABERTURA.preloader.aria}
-      aria-busy={fase === 'carregando'}
+      aria-busy={!carregado}
     >
       <Mascote
         expressao={expressao}
         progresso={progresso}
-        mensagem={fase === 'carregando' ? linhas : escrito}
-        piscar={fase === 'feliz'}
+        mensagem={carregado ? escrito : linhas}
+        piscar={sorrindo}
         className="h-auto"
         style={{ width: 'min(42vw, 42vh)' }}
         titulo={ABERTURA.preloader.aria}
