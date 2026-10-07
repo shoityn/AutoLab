@@ -57,7 +57,7 @@ Para acrescentar um hotspot: abrir a sala com `?debug=1`, tocar no objeto, anota
 | `marca/` | Logotipo AutoLab (horizontal, vertical, mono preto/branco, símbolo) |
 | `mascote/` | Zinos: poses de corpo inteiro (`.webp`), folha de expressões da cabeça (`.svg`) e as 5 peças do robô |
 | `fachada/` | Cena da fachada + portão (o vão é deixado em branco na ilustração e o portão entra por cima) |
-| `salas/<n>/` | Cena de cada sala em 1920 × 1080. a Sala 5 em `cena.jpg` |
+| `salas/<n>/` | Cena de cada sala em 1920 × 1080 (`cena.webp`; a Sala 5 é `cena.jpg`) |
 | `og-image.png` | Prévia de link (1200 × 630) |
 
 As coordenadas de todos os hotspots e dos encaixes da fachada vivem em `src/data/estacoes.json` — não há arquivo de coordenadas separado.

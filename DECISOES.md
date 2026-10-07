@@ -18,7 +18,7 @@ As decisões marcadas com ⚠️ divergem de algum documento e merecem conferên
 | Novo | Detalhe |
 |---|---|
 | `salas/2,3,4/cena.webp` | Arte final (1920 × 1080, 66 a 134 KB) |
-| `salas/5/cena-provisoria.png` | Blockout cinza — a arte da Sala 5 saiu repetindo a Sala 4 e será corrigida por edição (roteiro em `pendente-sala5/`) |
+| `salas/5/cena.jpg` | Arte final, entregue depois (1376 × 768 redimensionada para 1920 × 1080, 205 KB). O blockout provisório foi descartado |
 | `fachada/cena.webp` | Agora **com furo transparente no portão** (a versão anterior era opaca) |
 | `fachada/portao.webp` | Portão recortado, para subir por `clip-path` |
 | `og-image.png` | 1200 × 630, pronta |
@@ -116,7 +116,7 @@ Os painéis abriam com `autoAlpha` do GSAP, que aplica `visibility: hidden`. Ele
 
 | Item | Situação |
 |---|---|
-| **Arte da Sala 5** | Blockout provisório. O roteiro de edição está em `ENTREGA-CODIGO/pendente-sala5/PROMPT-sala5-edicao.txt`. Quando sair: salvar como `public/salas/5/cena.webp` e trocar `camadas.cena` da sala `expedicao` no JSON. |
+| ~~Arte da Sala 5~~ | **Pronta.** Instalada em 06/10 e os 5 hotspots reposicionados sobre os objetos com o `?debug=1`. Ficou em JPEG (205 KB) e não WebP, porque não há codificador WebP na máquina — se quiserem padronizar, dá para converter depois sem mexer em código, só trocando `camadas.cena`. |
 | **Camada `frente` e parallax forte** | O código já lê `camadas.frente` e move a camada no PC, mas nenhuma sala tem esse arquivo ainda. Hoje o parallax move só a cena, de leve. |
 | **GoatCounter** | `GOATCOUNTER_CODE` vazio no `index.html`. |
 | **URL do Pages** | `shoityn` × `glaubershoity` — conferir (item ⚠️ 3). |
