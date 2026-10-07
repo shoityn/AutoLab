@@ -1,71 +1,81 @@
 import { useCallback, useRef } from 'react'
 import gsap from 'gsap'
+import { MUNDO } from '../lib/conteudo'
 
-/**
- * Tamanho do mundo. Casa com as cenas de public/salas/<n>/cena.webp e com
- * public/coordenadas.json, que estão todos em 1920 x 1080 (paisagem).
- * Ver DECISOES.md — mudou do 1000 x 1600 (retrato) descrito no PLANO.md v2.
- */
-export const MUNDO = { largura: 1920, altura: 1080 }
+export { MUNDO }
 
 /** Abaixo desta proporção (largura/altura) a tela é considerada retrato. */
 export const PROPORCAO_MINIMA = 1.2
+
+/** Acima desta altura o painel de card/quiz abre centralizado em vez de lateral. */
+export const ALTURA_PAINEL_LATERAL = 560
 
 export function ehRetrato(largura = window.innerWidth, altura = window.innerHeight) {
   return largura / altura < PROPORCAO_MINIMA
 }
 
-function prefereMovimentoReduzido() {
+export function prefereMovimentoReduzido() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
-/** Zoom que faz a sala inteira caber na tela (contain). Sobra vira faixa de --bg. */
-export function zoomVisaoGeral(vw, vh) {
+/** Zoom em que a parede inteira cabe na tela (contain). PLANO v2.1 seção 6.1. */
+export function zoomBase(vw, vh) {
   return Math.min(vw / MUNDO.largura, vh / MUNDO.altura)
 }
 
-/**
- * Impede a câmera de mostrar o vazio fora da sala: o centro é limitado para que
- * as bordas do mundo nunca entrem na tela quando o zoom é maior que o da visão
- * geral. Se o mundo couber inteiro no eixo, centraliza (aí a faixa é proposital).
- */
-export function limitarCentro({ x, y, zoom }, vw, vh) {
-  const metadeX = vw / 2 / zoom
-  const metadeY = vh / 2 / zoom
+/** Câmera da visão geral: a parede inteira, centralizada. */
+export function cameraVisaoGeral(vw = window.innerWidth, vh = window.innerHeight) {
+  return { x: MUNDO.largura / 2, y: MUNDO.altura / 2, zoom: zoomBase(vw, vh) }
+}
 
-  const px =
-    metadeX * 2 >= MUNDO.largura ? MUNDO.largura / 2 : Math.min(Math.max(x, metadeX), MUNDO.largura - metadeX)
-  const py = metadeY * 2 >= MUNDO.altura ? MUNDO.altura / 2 : Math.min(Math.max(y, metadeY), MUNDO.altura - metadeY)
+/**
+ * Alvo de um hotspot ou da saída. `aproximacao` vem do JSON e é **multiplicador
+ * da visão geral**, não zoom absoluto (foi a mudança da v2 para a v2.1: o valor
+ * absoluto dava enquadramentos diferentes em cada tela).
+ */
+export function alvoDe(ponto, vw = window.innerWidth, vh = window.innerHeight) {
+  return { x: ponto.x, y: ponto.y, zoom: zoomBase(vw, vh) * (ponto.aproximacao ?? 1) }
+}
+
+/**
+ * Impede a câmera de mostrar o vazio fora da parede. `ancoraX`/`ancoraY` dizem
+ * em que ponto da tela o alvo deve cair (0,5 = centro); com o painel lateral
+ * aberto a âncora desloca para a metade livre da tela.
+ */
+export function limitarCentro({ x, y, zoom }, vw, vh, ancoraX = 0.5, ancoraY = 0.5) {
+  const antes = (vw * ancoraX) / zoom
+  const depois = (vw * (1 - ancoraX)) / zoom
+  const acima = (vh * ancoraY) / zoom
+  const abaixo = (vh * (1 - ancoraY)) / zoom
+
+  const px = antes + depois >= MUNDO.largura ? MUNDO.largura / 2 : Math.min(Math.max(x, antes), MUNDO.largura - depois)
+  const py = acima + abaixo >= MUNDO.altura ? MUNDO.altura / 2 : Math.min(Math.max(y, acima), MUNDO.altura - abaixo)
 
   return { x: px, y: py, zoom }
 }
 
-/** Transform do mundo para "olhar" um ponto com um zoom. Ver PLANO.md seção 6.1. */
-export function enquadrarEm(alvo, vw, vh) {
-  const { x, y, zoom } = limitarCentro(alvo, vw, vh)
-  return { x: vw / 2 - x * zoom, y: vh / 2 - y * zoom, scale: zoom }
+/** Transform do mundo para "olhar" um ponto. */
+export function enquadrarEm(alvo, vw, vh, ancoraX = 0.5, ancoraY = 0.5) {
+  const { x, y, zoom } = limitarCentro(alvo, vw, vh, ancoraX, ancoraY)
+  return { x: vw * ancoraX - x * zoom, y: vh * ancoraY - y * zoom, scale: zoom }
 }
 
-/** Posição em tela (px) de um ponto do mundo, dada a câmera atual. Seção 6.5. */
-export function pontoParaTela(ponto, camera, vw = window.innerWidth, vh = window.innerHeight) {
-  const { x, y, zoom } = limitarCentro(camera, vw, vh)
+/** Posição em tela (px) de um ponto do mundo, dada a câmera atual. Seção 6.4. */
+export function pontoParaTela(ponto, camera, vw = window.innerWidth, vh = window.innerHeight, ancoraX = 0.5) {
+  const { x, y, zoom } = limitarCentro(camera, vw, vh, ancoraX)
   return {
-    left: vw / 2 + (ponto.x - x) * zoom,
+    left: vw * ancoraX + (ponto.x - x) * zoom,
     top: vh / 2 + (ponto.y - y) * zoom,
   }
 }
 
-/** Câmera da visão geral: sala inteira, centralizada. */
-export function cameraVisaoGeral(vw = window.innerWidth, vh = window.innerHeight) {
-  return { x: MUNDO.largura / 2, y: MUNDO.altura / 2, zoom: zoomVisaoGeral(vw, vh) }
-}
-
 /**
- * Técnica de câmera 2.5D: o "mundo" (1920 x 1080) é posicionado dentro do
- * viewport por transform (x, y, scale). Ver PLANO.md seção 6.
+ * Câmera 2.5D: o "mundo" (1920 × 1080) é posicionado dentro do viewport por
+ * transform (x, y, scale). PLANO v2.1 seção 6.
  */
 export function useCamera(viewportRef, mundoRef) {
   const alvoAtual = useRef(null)
+  const ancoraAtual = useRef(0.5)
 
   const tela = useCallback(() => {
     const el = viewportRef.current
@@ -75,9 +85,9 @@ export function useCamera(viewportRef, mundoRef) {
   }, [viewportRef])
 
   const enquadrar = useCallback(
-    (alvo) => {
+    (alvo, ancoraX = 0.5) => {
       const { width, height } = tela()
-      return enquadrarEm(alvo, width, height)
+      return enquadrarEm(alvo, width, height, ancoraX)
     },
     [tela],
   )
@@ -87,18 +97,18 @@ export function useCamera(viewportRef, mundoRef) {
     return cameraVisaoGeral(width, height)
   }, [tela])
 
-  /** Alvo efetivo da câmera (já limitado), para converter mundo -> tela. */
-  const alvoEfetivo = useCallback(
-    (alvo) => {
+  /** Converte um ponto do JSON (com `aproximacao`) no alvo da câmera. */
+  const alvo = useCallback(
+    (ponto) => {
       const { width, height } = tela()
-      return limitarCentro(alvo, width, height)
+      return alvoDe(ponto, width, height)
     },
     [tela],
   )
 
-  // Move a câmera e aplica parallax nas camadas. Devolve a timeline.
+  // Move a câmera. Devolve a timeline (o chamador decide o onComplete).
   const ir = useCallback(
-    (alvo, { duracao = 1.2, ease = 'power3.inOut', mundo, onComplete } = {}) => {
+    (destino, { duracao = 1.2, ease = 'power3.inOut', mundo, ancoraX = 0.5, onComplete } = {}) => {
       const el = mundo ?? mundoRef.current
       if (!el) {
         onComplete?.()
@@ -106,31 +116,16 @@ export function useCamera(viewportRef, mundoRef) {
       }
 
       const d = prefereMovimentoReduzido() ? 0 : duracao
-      alvoAtual.current = alvo
+      alvoAtual.current = destino
+      ancoraAtual.current = ancoraX
 
       const { width, height } = tela()
-      const limitado = limitarCentro(alvo, width, height)
-      const tl = gsap.timeline({ onComplete })
-      tl.to(el, { ...enquadrarEm(alvo, width, height), duration: d, ease, overwrite: 'auto' }, 0)
-
-      // Parallax: camadas com profundidade != 1 deslizam contra a câmera.
-      el.querySelectorAll('[data-profundidade]').forEach((camada) => {
-        const p = parseFloat(camada.dataset.profundidade)
-        if (!p || p === 1) return
-        tl.to(
-          camada,
-          {
-            x: (limitado.x - MUNDO.largura / 2) * (1 - p),
-            y: (limitado.y - MUNDO.altura / 2) * (1 - p),
-            duration: d,
-            ease,
-            overwrite: 'auto',
-          },
-          0,
-        )
+      return gsap.timeline({ onComplete }).to(el, {
+        ...enquadrarEm(destino, width, height, ancoraX),
+        duration: d,
+        ease,
+        overwrite: 'auto',
       })
-
-      return tl
     },
     [mundoRef, tela],
   )
@@ -138,9 +133,9 @@ export function useCamera(viewportRef, mundoRef) {
   // Chamar no resize/orientationchange.
   const reenquadrar = useCallback(() => {
     if (alvoAtual.current && mundoRef.current) {
-      gsap.set(mundoRef.current, enquadrar(alvoAtual.current))
+      gsap.set(mundoRef.current, enquadrar(alvoAtual.current, ancoraAtual.current))
     }
   }, [enquadrar, mundoRef])
 
-  return { ir, enquadrar, visaoGeral, alvoEfetivo, reenquadrar, alvoAtual }
+  return { ir, enquadrar, visaoGeral, alvo, reenquadrar, alvoAtual, ancoraAtual }
 }

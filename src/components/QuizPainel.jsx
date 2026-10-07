@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { abrirPainel, fecharPainel } from '../lib/transicoes'
 import { usePainelAcessivel } from '../hooks/usePainelAcessivel'
-import { ZinosCabeca } from './Zinos'
+import Mascote from './Mascote'
+import BalaoFala from './BalaoFala'
 
 /**
- * Registro final da sala: uma pergunta, tentativas livres e dica fixa ao errar
- * (PLANO.md seção 4.3). Acertar monta a peça do robô e acende a saída.
+ * Registro final da sala: uma pergunta, tentativas livres e a dica dita pelo
+ * Zinos num balão (PLANO v2.1 seção 4.4). Ao errar ele fica `triste` e depois
+ * `explicando`; ao acertar, `feliz`, e a peça encaixa na cópia.
  */
-function QuizPainel({ hotspot, salaId, origem, jaConcluido, onAcertou, onFechar }) {
+function QuizPainel({ hotspot, salaId, origem, lateral, lado, jaConcluido, onAcertou, onFechar }) {
   const ref = useRef(null)
   const [selecionada, setSelecionada] = useState(null)
   const [acertou, setAcertou] = useState(jaConcluido)
@@ -33,19 +35,23 @@ function QuizPainel({ hotspot, salaId, origem, jaConcluido, onAcertou, onFechar 
   }
 
   const errou = selecionada !== null && !acertou
-  const expressao = acertou ? 'feliz' : errou ? 'triste' : 'pensando'
+  const expressao = acertou ? 'feliz' : errou ? 'explicando' : 'pensando'
+
+  const posicao = lateral
+    ? `fixed inset-y-0 ${lado === 'direita' ? 'right-0' : 'left-0'} z-30 flex w-[55%] items-stretch p-2`
+    : 'fixed inset-0 z-30 flex items-center justify-center p-4'
 
   return (
     <div
-      className="fixed inset-0 z-30 flex items-center justify-center p-4"
+      className={posicao}
       role="dialog"
       aria-modal="true"
       aria-labelledby="quiz-titulo"
-      style={{ background: 'rgba(5,8,12,.5)' }}
+      style={lateral ? undefined : { background: 'rgba(5,8,12,.5)' }}
     >
       <div
         ref={ref}
-        className="flex max-h-full w-full max-w-md flex-col overflow-hidden rounded-2xl border shadow-2xl"
+        className={`flex min-h-0 w-full flex-col overflow-hidden rounded-2xl border shadow-2xl ${lateral ? '' : 'max-w-md'}`}
         style={{
           background: 'var(--card)',
           borderColor: 'color-mix(in srgb, var(--hotspot) 32%, transparent)',
@@ -53,25 +59,27 @@ function QuizPainel({ hotspot, salaId, origem, jaConcluido, onAcertou, onFechar 
         }}
       >
         <div
-          className="flex items-center gap-2 px-4 py-2"
+          className="flex shrink-0 items-center gap-2 px-3 py-1.5"
           style={{ background: 'color-mix(in srgb, var(--marca-tela) 45%, transparent)' }}
         >
-          <ZinosCabeca expressao={expressao} className="h-8 w-10 shrink-0" />
-          <p className="text-[10px] uppercase tracking-[2px] opacity-70">Registro final · {hotspot.rotulo}</p>
+          <Mascote expressao={expressao} className="w-9 shrink-0" />
+          <p className="truncate text-[10px] uppercase tracking-[2px] opacity-70">
+            Registro final · {hotspot.rotulo}
+          </p>
         </div>
 
-        <div className="min-h-0 overflow-y-auto p-4">
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
           <h3
             id="quiz-titulo"
             tabIndex={-1}
             data-foco-inicial
-            className="mb-3 text-[15px] font-bold leading-snug outline-none"
+            className="mb-2.5 text-[14.5px] font-bold leading-snug outline-none"
             style={{ color: 'var(--titulo)' }}
           >
             {hotspot.pergunta}
           </h3>
 
-          <div className="flex flex-col gap-2" role="radiogroup" aria-label={hotspot.pergunta}>
+          <div className="flex flex-col gap-1.5" role="radiogroup" aria-label={hotspot.pergunta}>
             {hotspot.alternativas.map((alternativa, indice) => {
               const ehSelecionada = selecionada === indice
               const ehCorreta = acertou && indice === hotspot.correta
@@ -85,7 +93,7 @@ function QuizPainel({ hotspot, salaId, origem, jaConcluido, onAcertou, onFechar 
                   aria-checked={ehSelecionada}
                   disabled={acertou}
                   onClick={() => responder(indice)}
-                  className="flex min-h-11 items-start gap-2 rounded-xl border px-3 py-2.5 text-left text-[13px] leading-snug transition-colors"
+                  className="flex min-h-11 items-start gap-2 rounded-xl border px-3 py-2 text-left text-[12.5px] leading-snug transition-colors"
                   style={{
                     borderColor: ehCorreta
                       ? 'var(--hotspot)'
@@ -108,53 +116,38 @@ function QuizPainel({ hotspot, salaId, origem, jaConcluido, onAcertou, onFechar 
             })}
           </div>
 
-          <div aria-live="polite">
+          <div aria-live="polite" className="mt-3">
             {errou && (
-              <p
-                className="mt-3 rounded-xl p-3 text-[13px] leading-snug"
-                style={{
-                  background: 'color-mix(in srgb, var(--acento) 18%, transparent)',
-                  border: '1px solid color-mix(in srgb, var(--acento) 45%, transparent)',
-                }}
-              >
-                <strong className="font-semibold">Ainda não.</strong> {hotspot.dica}
-                {tentativas > 1 && ' Tente de novo, dá para errar à vontade.'}
-              </p>
+              <BalaoFala
+                texto={`${hotspot.dica}${tentativas > 1 ? ' Pode tentar de novo à vontade.' : ''}`}
+                expressao="triste"
+                compacto
+                piscar={false}
+              />
             )}
-
-            {acertou && (
-              <p
-                className="mt-3 rounded-xl p-3 text-[13px] leading-snug"
-                style={{
-                  background: 'color-mix(in srgb, var(--hotspot) 15%, transparent)',
-                  border: '1px solid color-mix(in srgb, var(--hotspot) 45%, transparent)',
-                }}
-              >
-                <strong className="font-semibold">Isso.</strong> {hotspot.explicacao}
-              </p>
-            )}
+            {acertou && <BalaoFala texto={hotspot.explicacao} expressao="feliz" compacto piscar={false} />}
           </div>
+        </div>
 
-          <div className="mt-4 flex justify-end gap-2">
-            {!acertou ? (
-              <button
-                type="button"
-                onClick={() => fechar(onFechar)}
-                className="min-h-11 rounded-xl px-4 text-sm underline opacity-70"
-              >
-                Voltar para a sala
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => fechar(() => onAcertou(salaId))}
-                className="min-h-11 rounded-xl px-6 font-semibold active:scale-[.98]"
-                style={{ background: 'var(--hotspot)', color: 'var(--marca-tela)' }}
-              >
-                {jaConcluido ? 'Voltar para a sala' : 'Montar a peça'}
-              </button>
-            )}
-          </div>
+        <div className="flex shrink-0 justify-end gap-2 px-4 pb-3 pt-1">
+          {!acertou ? (
+            <button
+              type="button"
+              onClick={() => fechar(onFechar)}
+              className="min-h-11 rounded-xl px-3 text-sm underline opacity-70"
+            >
+              Voltar para a sala
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => fechar(() => onAcertou(salaId))}
+              className="min-h-11 rounded-xl px-5 font-semibold active:scale-[.98]"
+              style={{ background: 'var(--hotspot)', color: 'var(--marca-tela)' }}
+            >
+              {jaConcluido ? 'Voltar para a sala' : 'Montar a peça'}
+            </button>
+          )}
         </div>
       </div>
     </div>

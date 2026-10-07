@@ -1,25 +1,27 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { CABECA_LIGADA, PECAS } from '../lib/assets'
+import { prefereMovimentoReduzido } from '../hooks/useCamera'
 
 const ORDEM = PECAS.map((p) => p.id)
 
 /**
- * O robô montado a partir das 5 peças entregues em public/mascote/pecas/.
- * Todas compartilham o viewBox 240x320, então basta empilhá-las no mesmo quadro.
- * A peça nova de cada sala entra com `bounce.out` (PLANO.md seção 4.3).
+ * A cópia do Zinos que o jogador monta, peça por peça.
+ * As 5 peças de public/mascote/pecas/ compartilham o viewBox 240x320, então
+ * basta empilhá-las no mesmo quadro. A peça nova entra com `bounce.out`
+ * (PLANO v2.1 seção 4.4).
  *
- * `completo` troca a cabeça apagada pela cabeça ligada (rosto feliz) — é o
- * momento em que o robô "acorda", na Expedição.
+ * `ligada` troca a cabeça apagada pela acesa — é o momento da Expedição em que
+ * a cópia "acorda".
  */
-function Robo({ pecas = [], completo = false, className = '' }) {
+function CopiaRobo({ pecas = [], ligada = false, serie, className = '' }) {
   const refs = useRef({})
   const anterioresRef = useRef(null)
 
   useEffect(() => {
-    const reduzido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduzido = prefereMovimentoReduzido()
 
-    // Na primeira renderização não anima (pode estar só restaurando o progresso salvo).
+    // Na primeira renderização não anima (pode estar só restaurando o progresso).
     if (anterioresRef.current === null) {
       anterioresRef.current = pecas
       return
@@ -45,14 +47,14 @@ function Robo({ pecas = [], completo = false, className = '' }) {
 
   const nomes = PECAS.filter((p) => pecas.includes(p.id)).map((p) => p.nome)
   const descricao = nomes.length
-    ? `Robô em montagem: ${nomes.join(', ')}. ${pecas.length} de ${ORDEM.length} peças.`
-    : 'Robô ainda sem peças.'
+    ? `Cópia ${serie ?? ''} em montagem: ${nomes.join(', ')}. ${pecas.length} de ${ORDEM.length} peças.`
+    : 'Cópia ainda sem peças.'
 
   return (
-    <div className={`relative ${className}`} role="img" aria-label={descricao}>
+    <div className={`relative ${className}`} role="img" aria-label={descricao.trim()}>
       {PECAS.map((peca) => {
         const presente = pecas.includes(peca.id)
-        const arquivo = peca.id === 'cabeca' && completo ? CABECA_LIGADA : peca.arquivo
+        const arquivo = peca.id === 'cabeca' && ligada ? CABECA_LIGADA : peca.arquivo
         return (
           <img
             key={peca.id}
@@ -72,4 +74,4 @@ function Robo({ pecas = [], completo = false, className = '' }) {
   )
 }
 
-export default Robo
+export default CopiaRobo

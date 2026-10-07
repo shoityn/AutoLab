@@ -40,7 +40,7 @@ body {
 body {
   background: var(--bg);
   color: var(--texto);
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -125,12 +125,12 @@ body {
 /* Dica de girar o aparelho. */
 @keyframes autolab-girar {
   0%,
-  55%,
+  45%,
   100% {
     transform: rotate(0deg);
   }
-  75%,
-  92% {
+  65%,
+  88% {
     transform: rotate(-90deg);
   }
 }

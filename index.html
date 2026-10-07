@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <title>AutoLab — a fábrica que monta um modelo de IA</title>
+    <title>AutoLab</title>
     <meta
       name="description"
-      content="Site-jogo sobre Machine Learning: percorra as salas de uma fábrica, toque nos pontos de interesse, responda ao registro de cada sala e monte o robô até a expedição."
+      content="Como uma máquina aprende? Entre na fábrica e monte uma IA em 5 estações."
     />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -15,38 +15,53 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#1E222A" />
     <meta name="color-scheme" content="dark light" />
-
-    <!-- O jogo é em paisagem (as cenas são 1920x1080). Ver DECISOES.md. -->
     <meta name="mobile-web-app-capable" content="yes" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="AutoLab" />
     <meta property="og:locale" content="pt_BR" />
-    <meta property="og:title" content="AutoLab — a fábrica que monta um modelo de IA" />
+    <meta property="og:title" content="AutoLab" />
     <meta
       property="og:description"
-      content="Percorra as salas da fábrica, toque nos pontos de interesse, responda ao registro de cada sala e monte o robô até a expedição."
+      content="Como uma máquina aprende? Entre na fábrica e monte uma IA em 5 estações."
     />
     <meta property="og:url" content="https://shoityn.github.io/AutoLab/" />
-    <meta property="og:image" content="https://shoityn.github.io/AutoLab/og-image.jpg" />
+    <meta property="og:image" content="https://shoityn.github.io/AutoLab/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Zinos, o robô mascote da AutoLab, acenando na frente da fábrica." />
+    <meta property="og:image:alt" content="Zinos, o robô mascote da AutoLab, na frente da fábrica." />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AutoLab — a fábrica que monta um modelo de IA" />
+    <meta name="twitter:title" content="AutoLab" />
     <meta
       name="twitter:description"
-      content="Percorra as salas da fábrica, toque nos pontos de interesse, responda ao registro de cada sala e monte o robô até a expedição."
+      content="Como uma máquina aprende? Entre na fábrica e monte uma IA em 5 estações."
     />
-    <meta name="twitter:image" content="https://shoityn.github.io/AutoLab/og-image.jpg" />
+    <meta name="twitter:image" content="https://shoityn.github.io/AutoLab/og-image.png" />
 
-    <!-- A primeira coisa que aparece é a fachada: vale pré-carregar. -->
+    <!-- IBM Plex Sans 400/600 e IBM Plex Mono 400 (PLANO v2.1 seção 12) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;600&display=swap"
+    />
+
+    <!-- A primeira tela é o preloader; logo depois vem a fachada. -->
     <link rel="preload" as="image" href="/fachada/cena.webp" fetchpriority="high" />
 
-    <!-- TODO: trocar `seucodigo` pelo código real assim que a conta do GoatCounter
-         for criada (pendência do PLANO.md seção 17, até 18/10). -->
-    <script data-goatcounter="https://seucodigo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script>
+      // TODO: trocar pelo código real da conta do GoatCounter (pendência do
+      // PLANO v2.1 seção 18, até 18/10). Enquanto estiver vazio, nada é medido.
+      window.GOATCOUNTER_CODE = ''
+      if (window.GOATCOUNTER_CODE) {
+        var gc = document.createElement('script')
+        gc.async = true
+        gc.src = '//gc.zgo.at/count.js'
+        gc.setAttribute('data-goatcounter', 'https://' + window.GOATCOUNTER_CODE + '.goatcounter.com/count')
+        document.head.appendChild(gc)
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -2,26 +2,36 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
-import estacoes from './data/estacoes.json'
 import { EXPEDICAO, useJogo } from './hooks/useJogo'
-import { MUNDO, ehRetrato, pontoParaTela, useCamera } from './hooks/useCamera'
+import {
+  ALTURA_PAINEL_LATERAL,
+  MUNDO,
+  alvoDe,
+  pontoParaTela,
+  prefereMovimentoReduzido,
+  useCamera,
+} from './hooks/useCamera'
+import { useOrientacao, tentarPaisagem } from './hooks/useOrientacao'
 import { aplicarAmbiente } from './hooks/useAmbiente'
 import { registrarEstacaoConcluida, registrarFim } from './lib/metricas'
-import { abrirPortao, transicaoEntreCenas } from './lib/transicoes'
+import { abrirPortao } from './lib/transicoes'
 import { PECAS } from './lib/assets'
-import { FACHADA } from './lib/coordenadas'
+import { ABERTURA, SALAS, TOTAL_SALAS, cardsDaSala, salaPorIndice } from './lib/conteudo'
+import { precarregarEmSegundoPlano } from './lib/precarregar'
 
 import Viewport from './components/Viewport'
 import Mundo from './components/Mundo'
+import Preloader from './components/Preloader'
 import Fachada from './components/Fachada'
+import PainelFachada from './components/PainelFachada'
 import Sala from './components/Sala'
 import Hotspot from './components/Hotspot'
+import Passagem from './components/Passagem'
 import CardPainel from './components/CardPainel'
 import QuizPainel from './components/QuizPainel'
 import Hud from './components/Hud'
-import Recepcao from './components/Recepcao'
 import Expedicao from './components/Expedicao'
-import GirarCelular from './components/GirarCelular'
+import AvisoOrientacao from './components/AvisoOrientacao'
 
 gsap.registerPlugin(useGSAP)
 
@@ -31,30 +41,16 @@ if (import.meta.env.DEV) {
   gsap.ticker.lagSmoothing(0)
 }
 
-const SALAS = [...estacoes].sort((a, b) => a.ordem - b.ordem)
 const TOTAL_PECAS = PECAS.length
 const DEBUG = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('debug') === '1'
-
-function reduzido() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
-
-function cardsDaSala(sala) {
-  return sala.hotspots.filter((h) => h.tipo === 'card')
-}
 
 function todosCardsLidos(sala, lidos) {
   return cardsDaSala(sala).every((h) => lidos.includes(h.id))
 }
 
-/**
- * Retângulo de onde o painel "nasce": o objeto está no centro da tela depois que
- * a câmera chegou nele, e o tamanho aparente cresce com o zoom. Ver seção 6.4.
- */
-function origemDoPainel(hotspot, tela) {
-  const centro = pontoParaTela(hotspot, hotspot, tela.vw, tela.vh)
-  const lado = Math.min(220, 110 * hotspot.zoom)
-  return { left: centro.left - lado / 2, top: centro.top - lado / 2, width: lado, height: lado }
+/** Parallax do PC: só com mouse de verdade e sem movimento reduzido. Seção 6.3. */
+function temParallax() {
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches && !prefereMovimentoReduzido()
 }
 
 function Jogo({ jogo }) {
@@ -62,28 +58,26 @@ function Jogo({ jogo }) {
 
   const viewportRef = useRef(null)
   const mundoARef = useRef(null)
-  const mundoBRef = useRef(null)
   const portaoRef = useRef(null)
-  const hotspotRefs = useRef({})
+  const logoRef = useRef(null)
+  const zinosRef = useRef(null)
+  const frenteRef = useRef(null)
   const origemRef = useRef(null)
   const cenaPosicionadaRef = useRef(null)
   const avisoTimeoutRef = useRef(null)
 
-  // Tamanho real do viewport. Em celular `100dvh` nem sempre bate com
-  // `innerHeight`, e a câmera e o overlay de hotspots precisam da MESMA medida,
-  // senão os anéis param deslocados em relação aos objetos.
   const [tela, setTela] = useState(() => ({ vw: window.innerWidth, vh: window.innerHeight }))
   const [aviso, setAviso] = useState(null)
+  const [falaVisivel, setFalaVisivel] = useState(true)
   const [debugToque, setDebugToque] = useState(null)
 
   const camera = useCamera(viewportRef, mundoARef)
   const { contextSafe } = useGSAP({ scope: viewportRef })
 
   const naFachada =
-    estado.estado === 'recepcao' || (estado.estado === 'transicao' && estado.origemTransicao === 'fachada')
-  const sala = SALAS[estado.salaAtual] ?? SALAS[0]
+    estado.estado === 'fachada' || (estado.estado === 'transicao' && estado.origemTransicao === 'fachada')
+  const sala = salaPorIndice(estado.salaAtual)
   const emTransicao = estado.estado === 'transicao'
-  const salaDestino = emTransicao && estado.destino !== EXPEDICAO ? SALAS[estado.destino] : null
   const cenaId = naFachada ? 'fachada' : sala.id
 
   const hotspotAtivo = estado.hotspotAtivo ? sala.hotspots.find((h) => h.id === estado.hotspotAtivo) : null
@@ -91,6 +85,10 @@ function Jogo({ jogo }) {
   const cards = cardsDaSala(sala)
   const lidosNaSala = cards.filter((h) => estado.lidos.includes(h.id)).length
   const pecas = SALAS.filter((s) => estado.quizzes.includes(s.id)).map((s) => s.peca)
+
+  // Painel lateral só no deitado com pouca altura; no PC e em retrato é centralizado.
+  const painelLateral = tela.vh <= ALTURA_PAINEL_LATERAL && tela.vw / tela.vh >= 1.2
+  const ladoPainel = hotspotAtivo && hotspotAtivo.x < MUNDO.largura / 2 ? 'direita' : 'esquerda'
 
   const mostrarAviso = useCallback((texto) => {
     setAviso(texto)
@@ -105,13 +103,18 @@ function Jogo({ jogo }) {
     aplicarAmbiente(naFachada ? 1 : sala.ambiente, { animado: true })
   }, [naFachada, sala.ambiente])
 
-  // Ao trocar de cena no slot A, o enquadramento vai direto para a visão geral,
+  // A fala de entrada reaparece a cada sala nova.
+  useEffect(() => {
+    setFalaVisivel(true)
+  }, [sala.id])
+
+  // Ao trocar a cena do slot, o enquadramento vai direto para a visão geral,
   // antes do paint, para não piscar a cena em escala 1:1.
   useLayoutEffect(() => {
     if (!mundoARef.current) return
     if (cenaPosicionadaRef.current === cenaId) return
     cenaPosicionadaRef.current = cenaId
-    gsap.set(mundoARef.current, { ...camera.enquadrar(camera.visaoGeral()), autoAlpha: 1 })
+    gsap.set(mundoARef.current, { ...camera.enquadrar(camera.visaoGeral()), opacity: 1 })
   }, [cenaId, camera])
 
   // Mede o viewport de verdade e reenquadra ao girar o aparelho / redimensionar.
@@ -125,7 +128,7 @@ function Jogo({ jogo }) {
 
     function aoRedimensionar() {
       medir()
-      if (estado.estado === 'visao-geral' || estado.estado === 'recepcao') {
+      if (estado.estado === 'visao-geral' || estado.estado === 'fachada') {
         camera.ir(camera.visaoGeral(), { duracao: 0 })
       } else {
         camera.reenquadrar()
@@ -148,67 +151,83 @@ function Jogo({ jogo }) {
     return () => tl.kill()
   }, [estado.estado, estado.hotspotAtivo, camera])
 
-  // Foco: câmera vai até o hotspot tocado e, ao chegar, abre o painel.
+  // Foco: câmera vai até o hotspot e, ao chegar, o painel abre.
   useEffect(() => {
     if (estado.estado !== 'foco' || !hotspotAtivo) return undefined
-    const tl = camera.ir(hotspotAtivo, {
+    const tl = camera.ir(camera.alvo(hotspotAtivo), {
+      ancoraX: estado.ancoraPainel,
       onComplete: () => dispatch({ type: 'FOCO_PRONTO', tipo: hotspotAtivo.tipo }),
     })
     return () => tl.kill()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estado.estado, estado.hotspotAtivo])
 
-  // Transições de câmera entre cenas (PLANO.md seções 4.4 e 6.6).
+  // Parallax do PC: o mouse move a camada de frente ±12 px e a cena ±4 px.
   useEffect(() => {
-    if (estado.estado !== 'transicao') return undefined
+    if (!temParallax()) return undefined
+    if (estado.estado !== 'visao-geral' && estado.estado !== 'fachada') return undefined
 
-    const concluir = () => dispatch({ type: 'TRANSICAO_CONCLUIDA' })
-    const mundoA = mundoARef.current
-    const mundoB = mundoBRef.current
-    let tl
+    const mundo = mundoARef.current
+    const frente = frenteRef.current
+    if (!mundo) return undefined
 
-    if (estado.origemTransicao === 'fachada') {
-      // Portão enrola para cima e a câmera mergulha pelo vão até a Sala 1.
-      const geral = camera.visaoGeral()
-      const perto = { ...FACHADA.centroPortao, zoom: 1.5 }
-      const dentro = { ...FACHADA.centroPortao, zoom: FACHADA.aproximacaoPortao }
-      const d = reduzido() ? 0 : 1
+    const moverCena = gsap.quickTo(mundo, 'xPercent', { duration: 0.6, ease: 'power2.out' })
+    const moverFrente = frente ? gsap.quickTo(frente, 'x', { duration: 0.6, ease: 'power2.out' }) : null
 
-      tl = gsap.timeline({ onComplete: concluir })
-      tl.add(abrirPortao(portaoRef.current))
-        .to(mundoA, { ...camera.enquadrar(perto), duration: 0.75 * d, ease: 'power2.inOut' })
-        .to(mundoA, { ...camera.enquadrar(dentro), duration: 0.8 * d, ease: 'power2.in' })
-        .to(mundoA, { autoAlpha: 0, duration: 0.3 * d }, `>-${0.3 * d}`)
-        .fromTo(
-          mundoB,
-          { ...camera.enquadrar({ ...geral, zoom: geral.zoom * 0.62 }), autoAlpha: 0 },
-          { ...camera.enquadrar(geral), autoAlpha: 1, duration: 0.9 * d, ease: 'power3.out' },
-          `>-${0.15 * d}`,
-        )
-    } else if (estado.destino === EXPEDICAO) {
-      // Última sala: mergulha pela doca e entrega a tela final.
-      const d = reduzido() ? 0 : 1
-      tl = gsap.timeline({ onComplete: concluir })
-      tl.to(mundoA, { ...camera.enquadrar(sala.saida), duration: 0.8 * d, ease: 'power2.inOut' })
-        .to(
-          mundoA,
-          { ...camera.enquadrar({ ...sala.saida, zoom: sala.saida.zoom * 4 }), duration: 0.7 * d, ease: 'power2.in' },
-        )
-        .to(mundoA, { autoAlpha: 0, duration: 0.3 * d }, `>-${0.3 * d}`)
-    } else {
-      tl = transicaoEntreCenas({
-        enquadrar: camera.enquadrar,
-        visaoGeral: camera.visaoGeral,
-        mundoAtual: mundoA,
-        mundoProximo: mundoB,
-        saida: sala.saida,
-        aoTerminar: concluir,
-      })
+    function aoMover(evento) {
+      const dx = evento.clientX / window.innerWidth - 0.5
+      moverCena(dx * 0.4)
+      moverFrente?.(dx * -24)
     }
 
-    return () => tl?.kill()
+    window.addEventListener('pointermove', aoMover)
+    return () => {
+      window.removeEventListener('pointermove', aoMover)
+      gsap.to(mundo, { xPercent: 0, duration: 0.3 })
+      if (frente) gsap.to(frente, { x: 0, duration: 0.3 })
+    }
+  }, [estado.estado, sala.id])
+
+  // Entrada na fábrica: portão enrola e a câmera mergulha pelo vão. Tabela D.
+  useEffect(() => {
+    if (estado.estado !== 'transicao' || estado.origemTransicao !== 'fachada') return undefined
+
+    const mundo = mundoARef.current
+    const d = prefereMovimentoReduzido() ? 0 : 1
+    const alvoVao = alvoDe(ABERTURA.fachada.saida, tela.vw, tela.vh)
+
+    const tl = gsap.timeline({ onComplete: () => dispatch({ type: 'TRANSICAO_CONCLUIDA' }) })
+    tl.to([logoRef.current, zinosRef.current], { opacity: 0, duration: 0.25 * d }, 0)
+      .add(abrirPortao(portaoRef.current), 0.2 * d)
+      .to(mundo, { ...camera.enquadrar(alvoVao), duration: 0.6 * d, ease: 'power2.in' }, 0.9 * d)
+      .to(mundo, { opacity: 0, duration: 0.25 * d }, `>-${0.25 * d}`)
+
+    return () => tl.kill()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [estado.estado, estado.origemTransicao, estado.destino])
+  }, [estado.estado, estado.origemTransicao])
+
+  // Saída da sala: a câmera vai até a saída e a <Passagem> assume.
+  useEffect(() => {
+    if (estado.estado !== 'transicao' || estado.origemTransicao !== 'saida') return undefined
+    const tl = camera.ir(camera.alvo(sala.saida), { duracao: 0.6, ease: 'power2.in' })
+    return () => tl.kill()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [estado.estado, estado.origemTransicao])
+
+  // A sala nova chega em visão geral depois que a passagem cobre a tela.
+  useLayoutEffect(() => {
+    if (!estado.trocou || !mundoARef.current) return
+    if (prefereMovimentoReduzido()) {
+      gsap.set(mundoARef.current, { ...camera.enquadrar(camera.visaoGeral()), opacity: 1, scale: undefined })
+      return
+    }
+    const alvo = camera.enquadrar(camera.visaoGeral())
+    gsap.fromTo(
+      mundoARef.current,
+      { ...alvo, scale: alvo.scale * 1.12, opacity: 0 },
+      { ...alvo, opacity: 1, duration: 0.5, ease: 'power2.out' },
+    )
+  }, [estado.trocou, estado.salaAtual, camera])
 
   const tocarHotspot = contextSafe((hotspot) => {
     if (estado.estado !== 'visao-geral') return
@@ -218,8 +237,17 @@ function Jogo({ jogo }) {
       return
     }
 
-    origemRef.current = origemDoPainel(hotspot, tela)
-    dispatch({ type: 'TOCAR_HOTSPOT', id: hotspot.id })
+    const lado = painelLateral ? (hotspot.x < MUNDO.largura / 2 ? 0.225 : 0.775) : 0.5
+    const centro = pontoParaTela(hotspot, camera.alvo(hotspot), tela.vw, tela.vh, lado)
+    const ladoPx = Math.min(220, 110 * (hotspot.aproximacao ?? 2))
+    origemRef.current = {
+      left: centro.left - ladoPx / 2,
+      top: centro.top - ladoPx / 2,
+      width: ladoPx,
+      height: ladoPx,
+    }
+    setFalaVisivel(false)
+    dispatch({ type: 'TOCAR_HOTSPOT', id: hotspot.id, ancoraX: lado })
   })
 
   const tocarSaida = contextSafe(() => {
@@ -228,45 +256,45 @@ function Jogo({ jogo }) {
       mostrarAviso('Responda ao registro final desta sala antes de seguir.')
       return
     }
-    dispatch({ type: 'TOCAR_SAIDA', total: SALAS.length })
+    dispatch({ type: 'TOCAR_SAIDA' })
   })
 
   function aoTocarDebug(evento) {
     if (!DEBUG) return
     const geral = camera.visaoGeral()
-    const vw = window.innerWidth
-    const vh = window.innerHeight
     setDebugToque({
-      x: Math.round((evento.clientX - vw / 2) / geral.zoom + MUNDO.largura / 2),
-      y: Math.round((evento.clientY - vh / 2) / geral.zoom + MUNDO.altura / 2),
+      x: Math.round((evento.clientX - tela.vw / 2) / geral.zoom + MUNDO.largura / 2),
+      y: Math.round((evento.clientY - tela.vh / 2) / geral.zoom + MUNDO.altura / 2),
     })
+  }
+
+  async function iniciar(acao) {
+    await tentarPaisagem()
+    dispatch({ type: acao })
   }
 
   const overlayVisivel = estado.estado === 'visao-geral'
   const geral = camera.visaoGeral()
+  const expressaoHud = saidaLiberada ? 'feliz' : lidosNaSala === cards.length ? 'indicando' : 'neutro'
 
   return (
     <Viewport ref={viewportRef} onPointerDown={DEBUG ? aoTocarDebug : undefined}>
       <Mundo ref={mundoARef} key={cenaId} tela={tela}>
         {naFachada ? (
-          <Fachada portaoRef={portaoRef} />
+          <Fachada portaoRef={portaoRef} logoRef={logoRef} zinosRef={zinosRef} />
         ) : (
-          <Sala estacao={sala} lidos={estado.lidos} saidaLiberada={saidaLiberada} />
+          <Sala estacao={sala} lidos={estado.lidos} saidaLiberada={saidaLiberada} frenteRef={frenteRef} />
         )}
         {DEBUG && <GradeDebug />}
       </Mundo>
 
-      {salaDestino && (
-        <Mundo ref={mundoBRef} key={`destino-${salaDestino.id}`} tela={tela}>
-          <Sala estacao={salaDestino} lidos={estado.lidos} saidaLiberada={false} />
-        </Mundo>
-      )}
-
-      {estado.estado === 'recepcao' && (
-        <Recepcao
+      {estado.estado === 'fachada' && (
+        <PainelFachada
           temProgresso={temProgresso}
-          onIniciar={() => dispatch({ type: 'INICIAR' })}
-          onContinuar={() => dispatch({ type: 'CONTINUAR' })}
+          pecas={pecas}
+          serie={estado.serie}
+          onIniciar={() => iniciar('INICIAR')}
+          onContinuar={() => iniciar('CONTINUAR')}
           onRecomecar={recomecar}
         />
       )}
@@ -290,9 +318,6 @@ function Jogo({ jogo }) {
             return (
               <Hotspot
                 key={hotspot.id}
-                ref={(el) => {
-                  hotspotRefs.current[hotspot.id] = el
-                }}
                 x={pos.left}
                 y={pos.top}
                 rotulo={hotspot.rotulo}
@@ -314,21 +339,40 @@ function Jogo({ jogo }) {
           />
 
           <Hud
-            rotuloSala={sala.rotuloSala}
+            ordem={sala.ordem}
             titulo={sala.titulo}
             lidosCount={lidosNaSala}
             totalCards={cards.length}
             pecas={pecas}
             totalPecas={TOTAL_PECAS}
+            serie={estado.serie}
+            expressao={expressaoHud}
+            fala={overlayVisivel && falaVisivel ? sala.fala : null}
+            onDispensarFala={() => setFalaVisivel(false)}
             onRecomecar={recomecar}
           />
         </>
+      )}
+
+      {/* Passagem entre salas: cobre a tela, troca a sala no meio e libera no fim */}
+      {emTransicao && estado.origemTransicao === 'saida' && (
+        <Passagem
+          key={`passagem-${sala.id}`}
+          tipo={sala.saida.passagem}
+          onMeio={() => dispatch({ type: 'TRANSICAO_MEIO' })}
+          onFim={() => {
+            if (estado.destino === EXPEDICAO) registrarFim()
+            dispatch({ type: 'TRANSICAO_CONCLUIDA' })
+          }}
+        />
       )}
 
       {estado.estado === 'card' && hotspotAtivo && (
         <CardPainel
           hotspot={hotspotAtivo}
           origem={origemRef.current}
+          lateral={painelLateral}
+          lado={ladoPainel}
           jaLido={estado.lidos.includes(hotspotAtivo.id)}
           onEntendi={(id) => dispatch({ type: 'ENTENDI', id })}
           onFechar={() => dispatch({ type: 'FECHAR' })}
@@ -340,17 +384,22 @@ function Jogo({ jogo }) {
           hotspot={hotspotAtivo}
           salaId={sala.id}
           origem={origemRef.current}
+          lateral={painelLateral}
+          lado={ladoPainel}
           jaConcluido={estado.quizzes.includes(sala.id)}
           onAcertou={(salaId) => {
             dispatch({ type: 'QUIZ_ACERTOU', salaId })
             registrarEstacaoConcluida(salaId)
-            if (estado.salaAtual === SALAS.length - 1) registrarFim()
           }}
           onFechar={() => dispatch({ type: 'FECHAR' })}
         />
       )}
 
-      <div role="status" aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-6">
+      <div
+        role="status"
+        aria-live="polite"
+        className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-6"
+      >
         {aviso && (
           <p
             className="rounded-full px-4 py-2 text-sm shadow-lg"
@@ -363,7 +412,7 @@ function Jogo({ jogo }) {
 
       {DEBUG && (
         <div className="pointer-events-none fixed bottom-3 left-3 z-40 rounded-md bg-black/80 px-3 py-2 font-mono text-xs text-emerald-300">
-          mundo {MUNDO.largura}x{MUNDO.altura} · zoom {geral.zoom.toFixed(3)}
+          mundo {MUNDO.largura}×{MUNDO.altura} · base {geral.zoom.toFixed(3)}
           {debugToque && ` · toque x:${debugToque.x} y:${debugToque.y}`}
         </div>
       )}
@@ -378,7 +427,7 @@ function GradeDebug() {
   for (let y = 0; y <= MUNDO.altura; y += 120) horizontais.push(y)
 
   return (
-    <div className="pointer-events-none absolute inset-0" data-profundidade="1">
+    <div className="pointer-events-none absolute inset-0">
       {verticais.map((x) => (
         <div key={`v${x}`} className="absolute top-0 h-full w-px bg-red-500/40" style={{ left: x }}>
           <span className="absolute left-1 top-1 font-mono text-[11px] text-red-300">{x}</span>
@@ -395,28 +444,31 @@ function GradeDebug() {
 
 function App() {
   const jogo = useJogo()
-  const [retrato, setRetrato] = useState(() => ehRetrato())
-  const [ignorarRetrato, setIgnorarRetrato] = useState(false)
+  const { retrato, mostrarAviso, ignorar } = useOrientacao()
 
+  // Assim que a fachada aparece, o resto das salas carrega em segundo plano.
   useEffect(() => {
-    const avaliar = () => setRetrato(ehRetrato())
-    window.addEventListener('resize', avaliar)
-    window.addEventListener('orientationchange', avaliar)
-    return () => {
-      window.removeEventListener('resize', avaliar)
-      window.removeEventListener('orientationchange', avaliar)
-    }
-  }, [])
+    if (jogo.estado.estado === 'fachada') precarregarEmSegundoPlano()
+  }, [jogo.estado.estado])
 
-  if (retrato && !ignorarRetrato) {
-    return <GirarCelular onJogarAssimMesmo={() => setIgnorarRetrato(true)} />
+  if (jogo.estado.estado === 'carregando') {
+    return <Preloader onPronto={() => jogo.dispatch({ type: 'ASSETS_PRONTOS' })} />
   }
 
-  if (jogo.estado.estado === EXPEDICAO) {
-    return <Expedicao onRecomecar={jogo.recomecar} />
-  }
+  return (
+    <>
+      {jogo.estado.estado === EXPEDICAO ? (
+        <Expedicao serie={jogo.estado.serie} onRecomecar={jogo.recomecar} />
+      ) : (
+        <Jogo jogo={jogo} />
+      )}
 
-  return <Jogo jogo={jogo} />
+      {/* Camada por cima, não é estado da máquina (seção 5) */}
+      {mostrarAviso && retrato && <AvisoOrientacao onContinuar={ignorar} />}
+    </>
+  )
 }
 
 export default App
+
+export { TOTAL_SALAS }
