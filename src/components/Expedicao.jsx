@@ -116,7 +116,7 @@ function Expedicao({ serie, onRecomecar }) {
 
         <div className="flex items-end gap-3">
           <img src={ZINOS_CORPO.acenando} alt="" aria-hidden="true" className="h-24 select-none" draggable="false" />
-          <BalaoFala texto={t.falaZinos} expressao="feliz" compacto className="max-w-xs text-left" />
+          <BalaoFala texto={t.falaZinos} semAvatar compacto className="max-w-xs text-left" />
         </div>
 
         {confirmando ? (

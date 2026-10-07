@@ -18,7 +18,9 @@ function Rotulo({ rotulo }) {
       style={{
         left: rotulo.x,
         top: rotulo.y,
-        transform: 'translate(-50%, -50%)',
+        // O anel do hotspot fica centrado na mesma coordenada; o rótulo de tela
+        // sobe um pouco para os dois não se sobreporem.
+        transform: ehTela ? 'translate(-50%, -112%)' : 'translate(-50%, -50%)',
         fontFamily: ehTela ? "'IBM Plex Mono', ui-monospace, monospace" : "'IBM Plex Sans', system-ui, sans-serif",
         fontSize: ehTela ? 72 : 34,
         fontWeight: ehTela ? 500 : 600,

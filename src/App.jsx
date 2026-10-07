@@ -14,7 +14,7 @@ import {
 import { useOrientacao, tentarPaisagem } from './hooks/useOrientacao'
 import { aplicarAmbiente } from './hooks/useAmbiente'
 import { registrarEstacaoConcluida, registrarFim } from './lib/metricas'
-import { abrirPortao } from './lib/transicoes'
+import { abrirPortao, comSalvaguarda } from './lib/transicoes'
 import { PECAS } from './lib/assets'
 import { ABERTURA, SALAS, TOTAL_SALAS, cardsDaSala, salaPorIndice } from './lib/conteudo'
 import { precarregarEmSegundoPlano } from './lib/precarregar'
@@ -154,11 +154,15 @@ function Jogo({ jogo }) {
   // Foco: câmera vai até o hotspot e, ao chegar, o painel abre.
   useEffect(() => {
     if (estado.estado !== 'foco' || !hotspotAtivo) return undefined
+    const pronto = comSalvaguarda(() => dispatch({ type: 'FOCO_PRONTO', tipo: hotspotAtivo.tipo }), 2600)
     const tl = camera.ir(camera.alvo(hotspotAtivo), {
       ancoraX: estado.ancoraPainel,
-      onComplete: () => dispatch({ type: 'FOCO_PRONTO', tipo: hotspotAtivo.tipo }),
+      onComplete: pronto.concluir,
     })
-    return () => tl.kill()
+    return () => {
+      pronto.cancelar()
+      tl.kill()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estado.estado, estado.hotspotAtivo])
 
@@ -196,13 +200,17 @@ function Jogo({ jogo }) {
     const d = prefereMovimentoReduzido() ? 0 : 1
     const alvoVao = alvoDe(ABERTURA.fachada.saida, tela.vw, tela.vh)
 
-    const tl = gsap.timeline({ onComplete: () => dispatch({ type: 'TRANSICAO_CONCLUIDA' }) })
+    const entrou = comSalvaguarda(() => dispatch({ type: 'TRANSICAO_CONCLUIDA' }), 3200)
+    const tl = gsap.timeline({ onComplete: entrou.concluir })
     tl.to([logoRef.current, zinosRef.current], { opacity: 0, duration: 0.25 * d }, 0)
       .add(abrirPortao(portaoRef.current), 0.2 * d)
       .to(mundo, { ...camera.enquadrar(alvoVao), duration: 0.6 * d, ease: 'power2.in' }, 0.9 * d)
       .to(mundo, { opacity: 0, duration: 0.25 * d }, `>-${0.25 * d}`)
 
-    return () => tl.kill()
+    return () => {
+      entrou.cancelar()
+      tl.kill()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estado.estado, estado.origemTransicao])
 

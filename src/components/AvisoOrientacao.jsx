@@ -15,9 +15,12 @@ function AvisoOrientacao({ onContinuar }) {
       aria-modal="false"
       aria-label={ABERTURA.orientacao.titulo}
     >
-      <div className="girar-dica flex items-center gap-4">
-        <Mascote expressao="indicando" className="w-28" titulo="Zinos pedindo para girar o celular" />
-        <svg viewBox="0 0 48 72" className="h-16" aria-hidden="true">
+      {/* A rotação aumenta a caixa do grupo: a altura fixa evita que ele
+          encoste no texto abaixo. */}
+      <div className="flex h-40 items-center justify-center">
+        <div className="girar-dica flex items-center gap-4">
+          <Mascote expressao="indicando" className="w-24" titulo="Zinos pedindo para girar o celular" />
+          <svg viewBox="0 0 48 72" className="h-14" aria-hidden="true">
           <rect
             x="4"
             y="2"
@@ -31,7 +34,8 @@ function AvisoOrientacao({ onContinuar }) {
           />
           <rect x="10" y="10" width="28" height="48" rx="3" fill="var(--marca-ciano)" opacity=".25" />
           <circle cx="24" cy="64" r="2.5" fill="var(--marca-creme)" opacity=".75" />
-        </svg>
+          </svg>
+        </div>
       </div>
 
       <h1 className="max-w-xs text-lg font-bold" style={{ color: 'var(--marca-ciano)' }}>

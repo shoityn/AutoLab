@@ -106,3 +106,31 @@ export function abrirPortao(portaoEl) {
   }
   return gsap.to(portaoEl, { scaleY: 0, duration: 0.55, ease: 'power2.inOut', transformOrigin: '50% 0%' })
 }
+
+/**
+ * Salvaguarda para os pontos em que o estado do jogo depende do fim de uma
+ * animação. Se o navegador congelar o rAF (aba em segundo plano, celular
+ * economizando bateria), a timeline do GSAP para no meio e o `onComplete`
+ * nunca chega — e o jogo trava. Aqui o callback roda no fim da animação OU
+ * depois de `limiteMs` de relógio, o que vier primeiro, e só uma vez.
+ */
+export function comSalvaguarda(aoTerminar, limiteMs) {
+  let feito = false
+
+  const concluir = () => {
+    if (feito) return
+    feito = true
+    window.clearTimeout(temporizador)
+    aoTerminar()
+  }
+
+  const temporizador = window.setTimeout(concluir, limiteMs)
+
+  return {
+    concluir,
+    cancelar: () => {
+      feito = true
+      window.clearTimeout(temporizador)
+    },
+  }
+}

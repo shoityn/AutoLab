@@ -4,6 +4,7 @@ import Mascote from './Mascote'
 import { useLinhasCodigo } from '../hooks/useLinhasCodigo'
 import { ABERTURA } from '../lib/conteudo'
 import { assetsEssenciais, espera, precarregar } from '../lib/precarregar'
+import { comSalvaguarda } from '../lib/transicoes'
 import { prefereMovimentoReduzido } from '../hooks/useCamera'
 
 const TEMPO_MINIMO = 1200
@@ -54,15 +55,25 @@ function Preloader({ onPronto }) {
     }, passo)
 
     temporizadores.push(window.setTimeout(() => setFase('feliz'), 1200))
+
+    // A saída do preloader NÃO pode depender do onComplete do GSAP: se o rAF
+    // estiver congelado, o fade nunca termina e o jogo trava na primeira tela.
+    const saida = comSalvaguarda(onPronto, 2600)
     temporizadores.push(
       window.setTimeout(() => {
-        gsap.to(containerRef.current, { opacity: 0, duration: 0.5, ease: 'power1.inOut', onComplete: onPronto })
+        gsap.to(containerRef.current, {
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power1.inOut',
+          onComplete: saida.concluir,
+        })
       }, 1600),
     )
 
     return () => {
       window.clearInterval(escrever)
       temporizadores.forEach(window.clearTimeout)
+      saida.cancelar()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fase])
