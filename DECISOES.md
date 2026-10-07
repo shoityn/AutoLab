@@ -1,176 +1,148 @@
-# Decisões tomadas sem o Shoity — integração da arte (06/10/2026)
+# Decisões tomadas sem o Shoity
 
-Sessão de trabalho autônoma a partir da pasta `tt/`, que trouxe a marca, o mascote, a fachada e a Sala 1 prontas. Branch: **`feat/salas-arte`** (nada foi enviado para a `main` nem publicado).
+Branch **`feat/visual`** (nada enviado para a `main` nem publicado).
 
-Este documento lista **o que foi decidido sem aprovação** e **o que foi construído**. As decisões marcadas com ⚠️ divergem do `PLANO.md` e merecem uma conferência antes de seguir.
+Duas sessões autônomas:
+
+1. **06/10, manhã** — integração da marca, do mascote, da fachada e da Sala 1 (pasta `tt/`).
+2. **06/10, noite** — entrega da `ENTREGA-CODIGO`: preloader, fachada em camadas, salas 2 a 5 com arte, transições e Expedição, seguindo o `PROMPT-AGENTE.md`, o `PLANO_v2.1.md` e as discussões 03, 04 e 07.
+
+As decisões marcadas com ⚠️ divergem de algum documento e merecem conferência.
 
 ---
 
-## 1. O que a pasta `tt/` entregou
+## Parte 2 — o que foi feito na segunda sessão (a mais recente)
 
-| Arquivo | O que é |
+### O que veio na entrega
+
+| Novo | Detalhe |
 |---|---|
-| `marca/*.svg` (11) | Logotipo AutoLab: horizontal, vertical, mono preto/branco e símbolo isolado |
-| `mascote/corpo-*.webp` (3) | Zinos de corpo inteiro: acenando, neutro, desligado |
-| `mascote/zinos-cabeca.svg` | Folha com **8 expressões** da cabeça (neutro, feliz, triste, explicando, indicando, pensando, carregando, desligado) |
-| `mascote/pecas/*.svg` (6) | As 5 peças do robô, numeradas, + variante da cabeça ligada |
-| `fachada/cena.webp` + `portao.webp` | Fachada em 1920 × 1080, com o vão do portão e a placa deixados em branco |
-| `salas/1/cena.webp` | Sala 1 (Recebimento & Ingestão) em 1920 × 1080 |
-| `coordenadas.json` | Posição exata de cada hotspot da Sala 1 e de cada encaixe da fachada |
-| `favicon.svg`, `favicon.ico`, `apple-touch-icon.png` | Ícones com o símbolo da marca |
+| `salas/2,3,4/cena.webp` | Arte final (1920 × 1080, 66 a 134 KB) |
+| `salas/5/cena-provisoria.png` | Blockout cinza — a arte da Sala 5 saiu repetindo a Sala 4 e será corrigida por edição (roteiro em `pendente-sala5/`) |
+| `fachada/cena.webp` | Agora **com furo transparente no portão** (a versão anterior era opaca) |
+| `fachada/portao.webp` | Portão recortado, para subir por `clip-path` |
+| `og-image.png` | 1200 × 630, pronta |
+| `src-data/estacoes.json` | **Formato v3**: um objeto com `versao`, `mundo`, `abertura`, `salas[]` e `expedicao` |
 
-Tudo foi copiado para `public/`. A pasta `tt/` ficou intacta no disco e entrou no `.gitignore` (é duplicata) — **pode apagar quando quiser**.
+### Implementado
 
----
+- **Preloader** com progresso real dos assets (tabelas A e B do roteiro 04): caracteres rolando na tela do Zinos, porcentagem, barra, olhos que acendem, "Sistema pronto!" escrito letra a letra, sorriso e saída. Mínimo de 1,2 s na tela. As Salas 2 a 5 carregam em segundo plano depois que a fachada aparece.
+- **Fachada em camadas** exatamente como a discussão 03 descreve: o vão do portão mostra a própria Sala 1, a fachada entra por cima com o furo, o portão sobe por `clip-path` e a câmera mergulha pelo vão (`aproximacao` 3,8). Logo sobre a placa, Zinos flutuando, fumaça na chaminé.
+- **Chamada "Como uma máquina aprende?"**, botões, e a **cópia ZN-xx** aparecendo ao lado quando há progresso salvo. "Recomeçar" confirma **dentro da página**.
+- **Aviso de orientação** como camada por cima (não é estado da máquina), com a cabeça do Zinos e o ícone de celular girando juntos e o "Continuar assim mesmo" gravado em `sessionStorage`.
+- **Salas 2 a 5** a partir do JSON, com os hotspots nas coordenadas corrigidas do doc 07.
+- **Rótulo "Por quê?"** da Sala 5 em HTML por cima da tela da parede (ciano, IBM Plex Mono) — texto nunca vem da imagem gerada.
+- **`<Passagem>`** com os 5 efeitos do roteiro (`tunel`, `elevador`, `portaDupla`, `vidro`, `luz`), só CSS/SVG, com `onMeio` trocando a sala e `onFim` liberando os toques.
+- **Painel lateral** no celular deitado: ocupa ~55% da largura, do lado oposto ao objeto, e a câmera desloca o enquadramento para a metade livre. No PC e em retrato abre centralizado.
+- **Expedição**: fundo da Sala 5 desfocado sob véu escuro, a cópia com a cabeça desligada que **liga** com flash ciano, número de série, Zinos acenando com o balão, Compartilhar (Web Share API com fallback de copiar o link) e Recomeçar com confirmação inline.
+- **Mascote** com as 8 expressões, piscada aleatória a cada 3–5 s e troca de expressão por crossfade; aparece no preloader, no HUD, nos cards, no quiz e na Expedição.
+- **Parallax do PC** (`hover: hover` + `pointer: fine`), desligado com movimento reduzido e durante foco/card/quiz/transição.
+- **`aproximacao` relativa** à visão geral, com clamp do pan — foi a mudança da v2 para a v2.1 na câmera.
+- **Progresso v3** com `serie` (ZN-01 a ZN-99, sorteado por jogador). Progresso de outra versão é descartado.
+- **index.html**: favicon SVG + ICO 48, apple-touch-icon, `theme-color #1E222A`, og/twitter completos com URL absoluta, IBM Plex Sans 400/600 e IBM Plex Mono 400.
 
-## 2. Decisões que divergem do PLANO.md
+### ⚠️ Decisões e divergências desta sessão
 
-### ⚠️ 2.1 O mundo virou 1920 × 1080 (paisagem). Era 1000 × 1600 (retrato)
+**1. Os SVGs da entrega não foram copiados — os do repositório já eram iguais.**
+Todos os 19 SVGs (`marca/`, `mascote/`, `favicon`) são idênticos aos que já estavam no repo, exceto por um bloco `<metadata>` de proveniência C2PA que cada arquivo carrega (~16 KB cada, ~300 KB no total). Mantive as versões limpas e copiei só os arquivos realmente novos (as cenas, a fachada, o portão, a og-image e o apple-touch-icon). Se quiserem a proveniência no repositório, é só copiar a pasta por cima.
 
-**Motivo:** toda a arte entregue é 16:9 deitada, e o `coordenadas.json` usa esse espaço (hotspots de x = 240 a x = 1760).
+**2. O `Mascote` é uma transcrição em JSX, não o SVG injetado em runtime.**
+O prompt pedia para injetar `zinos-cabeca.svg` inline. O preloader precisa desenhar o Zinos **antes** de qualquer asset carregar, e um fetch ali atrasaria justamente a primeira tela. Os grupos continuam acessíveis (expressão e `[data-olhos]` para a piscada), que é o que as animações pedem. Se o arquivo mudar, a transcrição precisa ser atualizada junto.
 
-**Consequência:** o `PLANO.md` seção 2 dizia "celular em pé, que é como se escaneia QR code". Com a arte deitada isso não fecha: num celular em pé a sala inteira caberia numa faixa de ~220 px de altura, e os anéis de 44 px dos hotspots ficariam sobrepostos (dois deles têm só 45 px de distância entre si nessa escala).
+**3. A URL do site continua `shoityn.github.io`.**
+O `PLANO_v2.1.md` e o `PROMPT-AGENTE.md` dizem `glaubershoity.github.io`, mas o repositório e o `index.html` sempre usaram `shoityn`. **Confira qual é a certa** — está em dois lugares: `index.html` (meta tags) e `SITE_URL` em `src/components/Expedicao.jsx`.
 
-### ⚠️ 2.2 O jogo pede o celular deitado
+**4. O GoatCounter ficou atrás de uma constante vazia.**
+`window.GOATCOUNTER_CODE` no `index.html`. Enquanto estiver `''`, o script nem é carregado (nada de requisição para um domínio que não existe). Basta preencher com o código da conta.
 
-Em retrato (proporção menor que 1,2) aparece uma tela **"Gire o celular"**, com o Zinos girando e um botão **"Jogar assim mesmo"** — ninguém fica bloqueado.
+**5. O id da Sala 5 é `expedicao` e o estado final também se chama `expedicao`.**
+Vieram assim no JSON da entrega. Não colidem (um é `sala.id`, o outro é `estado.estado`), mas é uma pegadinha se alguém mexer no reducer.
 
-**Como reverter, se preferirem retrato:** ou re-gerar as cenas em 1080 × 1920, ou implementar panorâmica horizontal na visão geral (o jogador arrasta a sala). As duas são mudanças grandes; por isso a tela de aviso, que é a opção reversível.
+**6. O torso da cópia tem "ZN-07" impresso no próprio SVG.**
+O número de série sorteado (ex.: ZN-42) aparece abaixo da cópia, mas o `2-tronco.svg` tem "ZN-07" desenhado. Fica estranho lado a lado. Não mexi no asset: ou se apaga o texto do SVG, ou se aceita que ZN-07 é o "modelo" e ZN-42 é a unidade.
 
-### 2.3 Visão geral com faixas laterais (contain), não corte
+**7. O rótulo "Por quê?" sobe um pouco em relação à coordenada do JSON.**
+O anel do hotspot e o rótulo compartilham o mesmo x/y (960, 320) e ficavam um em cima do outro. O rótulo de estilo `tela` é desenhado deslocado para cima, para os dois se lerem. Quando a arte final da Sala 5 chegar e os x/y forem reconferidos, vale revisar.
 
-A sala inteira sempre cabe na tela; a sobra vira faixa na cor `--bg`. Num celular deitado de 19,5:9 ficam ~75 px de faixa de cada lado. A alternativa (preencher a tela cortando) escondia a saída em telas 4:3.
+### Dois bugs encontrados e corrigidos
 
-### 2.4 Câmera limitada às bordas do mundo
+**O preloader travava na própria saída.** A sequência final agendava "sorrir" (1,2 s) e "sair" (1,6 s) no mesmo efeito, com a fase como dependência. Ao sorrir, a fase mudava, o React limpava o efeito — e com ele o temporizador da saída, que ainda não tinha disparado. O jogo ficava preso na primeira tela, com o Zinos sorrindo para sempre. Agora o que dispara a saída é um estado que muda **uma única vez**, e o sorriso é um estado separado.
 
-Ao aproximar de um objeto perto da borda (as caixas em x = 240, por exemplo), a câmera **para na borda** em vez de mostrar o vazio. O objeto fica descentralizado, o que é o comportamento certo e o que todo jogo do gênero faz.
+**Transições presas quando o navegador congela o rAF.** Vários pontos do jogo dependiam do `onComplete` de uma timeline do GSAP para avançar de estado (abrir o painel, trocar de sala, entrar pelo portão). Se a aba vai para segundo plano — alguém escaneia o QR e troca de app — o rAF congela, a timeline para no meio e o `onComplete` nunca chega. Criei `comSalvaguarda()` em `src/lib/transicoes.js`: o callback roda no fim da animação **ou** depois de um limite de relógio, o que vier primeiro, e só uma vez.
 
-### ⚠️ 2.5 As peças do robô mudaram de nome
+### Como foi testado
 
-O plano previa `base, tronco, nucleo, olhos, antena`. Os arquivos entregues são `1-base, 2-tronco, 3-nucleo, 4-bracos, 5-cabeca`. **Adotei os nomes dos arquivos**, e a ordem numérica virou a ordem das salas:
+Fluxo completo no navegador: preloader → fachada → mergulho pelo portão → Sala 1 → ler os 4 registros → quiz errando e acertando (Zinos triste → feliz, dica no balão) → peça montada no HUD → saída → passagem túnel → Sala 2. Depois, por progresso salvo: Sala 3, Sala 4 e Sala 5 (com o "Por quê?"), e a Expedição com a cópia ligando e o número de série.
 
-| Sala | Peça |
-|---|---|
-| 1 — Recebimento & Ingestão | base (flutuação) |
-| 2 — Linha de Processamento | tronco |
-| 3 — Processamento Neural | núcleo |
-| 4 — Inspeção de Qualidade | braços |
-| 5 — Expedição & Análise | cabeça |
+Também conferidos: "Continuar turno" com a cópia na fachada, confirmação inline do "Recomeçar", painel lateral num viewport de 820 × 390, aviso de girar num viewport de 400 × 720, e persistência em `localStorage`.
 
-Na Expedição a cabeça é trocada pela variante **ligada** (`5-cabeca-ligada.svg`, rosto feliz): o robô literalmente acorda no fim. Esse uso do arquivo extra foi dedução minha, mas é claramente para o que ele existe.
-
-### 2.6 O ciano da marca virou a cor da interação
-
-Criei um token `--hotspot`, fixo em `#67E8F9` (a cor dos olhos do Zinos), usado em **todos os ambientes**. O `--acento` de cada ambiente ficou para os estados já concluídos.
-
-**Motivo:** no Ambiente 1 o `--acento` é laranja queimado `#B45309`, quase a mesma cor da luz do galpão — um anel pulsante nessa cor sumiria. O ciano é complementar, salta, e lê como "o robô está apontando".
-
-### 2.7 O id da Sala 5 virou `entrega`
-
-Era `expedicao`, que colidia com o nome do estado final da máquina de estados. Nada visível muda.
-
-### 2.8 A fonte continua a do sistema
-
-O `PLANO.md` deixa a escolha (Orbitron / Chakra Petch / Inter / Space Grotesk) para a Fase C, como pendência do Shoity. **Não escolhi** — a pilha é `Inter, ui-sans-serif, system-ui, …`, então basta carregar a Inter (ou trocar o nome) quando decidirem. Nenhuma fonte externa é baixada hoje.
+`npm run lint` e `npm run build` limpos.
 
 ---
 
-## 3. O que foi construído
+## Parte 1 — decisões da primeira sessão (ainda valem)
 
-### 3.1 Fundação
+### Mundo em paisagem 1920 × 1080
 
-- **Mundo e câmera** (`useCamera.js`) reescritos para 1920 × 1080, com limite de borda, `contain` na visão geral e detecção de retrato.
-- **Medida real do viewport**: a câmera e o overlay de hotspots usam a mesma medida (`getBoundingClientRect` do viewport), porque em celular `100dvh` nem sempre bate com `innerHeight` — se divergirem, os anéis param deslocados dos objetos.
-- **Dois slots de mundo** (`Mundo.jsx`): durante a transição entre salas as duas cenas ficam montadas. O transform inicial já sai pronto no primeiro paint, para a cena nunca piscar em escala 1:1.
+Confirmado pelo `PLANO_v2.1.md`, que adotou a mesma mudança: o mundo 1000 × 1600 em retrato da v2 foi descartado porque toda a arte é 16:9.
 
-### 3.2 Recepção — fachada jogável
+### O jogo pede o celular deitado
 
-A fachada deixou de ser uma tela de texto e virou cena de verdade, montada nas coordenadas entregues:
+Em retrato aparece o aviso para girar, com "Continuar assim mesmo". Igual ao que a v2.1 descreve na seção 4.5.
 
-- portão de rolo encaixado no vão, com interior escuro atrás dele;
-- logotipo na placa luminosa;
-- Zinos acenando na calçada, flutuando de leve;
-- fumaça saindo da chaminé.
+### Visão geral com faixas laterais (contain)
 
-**"Iniciar turno"** executa a transição do plano (seção 4.4): o portão enrola para cima, a câmera mergulha pelo vão até zoom 3,8 (o valor `aproximacao` que veio no `coordenadas.json`), a fachada some e a Sala 1 entra vinda de uma escala menor.
+A parede inteira sempre cabe na tela; a sobra vira faixa na cor `--bg`.
 
-### 3.3 Salas
+### Câmera limitada às bordas do mundo
 
-- **Sala 1** com a arte final e os 5 hotspots exatamente em cima dos objetos (caixas, etiqueta rasgada, balança, contador, prancheta).
-- **Salas 2 a 5** com cenário provisório desenhado em SVG no mesmo enquadramento de 1920 × 1080, com os objetos nas coordenadas já definidas. **O jogo é jogável do início ao fim.** Quando a arte final de cada sala chegar, basta acrescentar `"cena": "salas/<n>/cena.webp"` no JSON e conferir as coordenadas no `?debug=1`.
-- **Transição entre salas** implementada conforme a seção 6.6: pan até a saída → zoom através dela → a próxima sala chega.
+Ao aproximar de um objeto perto da borda a câmera para na borda em vez de mostrar o vazio.
 
-### 3.4 Conteúdo
+### Peças da cópia
 
-`src/data/estacoes.json` reescrito: **5 salas, 20 cards e 5 quizzes**, distribuídos pelos objetos da tabela da seção 7 do plano. Textos de ~60 palavras, terminologia técnica.
+`base, tronco, nucleo, bracos, cabeca`, seguindo os nomes dos arquivos de `public/mascote/pecas/`, uma por sala na ordem 1–5. Na Expedição a cabeça apagada vira a acesa (`5-cabeca-ligada.svg`).
 
-⚠️ **Os textos das salas 2 a 5 foram escritos por mim**, a partir dos temas definidos no plano (limpeza, outliers, normalização, seleção de atributos; perceptron, pesos, bias, ativação; matriz de confusão, precisão, revocação, gerações; aplicações, limitações, XAI, monitoramento). **Precisam da revisão técnica da Kamilla e do Wellington**, e devem ser conferidos contra o relatório PACEX quando ele chegar — o plano prevê isso até 17/10.
+### O ciano da marca é a cor da interação
 
-### 3.5 Robô e mascote
+Token `--hotspot`, fixo em `#67E8F9` em todos os ambientes. No Ambiente 1 o `--acento` é laranja queimado, quase a mesma cor da luz do galpão: um anel pulsante nessa cor sumiria.
 
-- `Robo.jsx` monta as 5 peças reais empilhadas (base → braços → tronco → núcleo → cabeça). Cada peça nova entra com `bounce.out`.
-- `Zinos.jsx` transcreve a folha de expressões para React: a cabeça aparece na Recepção (feliz), no cabeçalho de cada card (explicando), no quiz (pensando → triste ao errar → feliz ao acertar) e na Expedição.
+### Um bug corrigido na primeira sessão
 
-### 3.6 Interface
-
-- **Hotspots** redesenhados: anel pulsante em CSS, 44 × 44 px de toque, e um ícone diferente por estado (ℹ novo, ✓ lido, 🔒 trancado, ? liberado, → saída) — a sinalização nunca depende só de cor.
-- **HUD** com símbolo da marca, nome da sala, contador numérico + pontinhos, robô em miniatura e botão de recomeçar.
-- **Card e quiz** no estilo da marca, com cabeçalho do Zinos. No quiz as alternativas são rotuladas A–D e viram ✓/✕ ao responder.
-- **Expedição** com o robô completo e aceso, fala do Zinos, compartilhar (Web Share API com `wa.me` de reserva) e créditos.
-
-### 3.7 Acessibilidade
-
-- Foco preso dentro do painel aberto (Tab e Shift+Tab circulam), `Esc` fecha, foco volta ao hotspot ao fechar.
-- Ordem de tabulação conferida: hotspots da esquerda para a direita → saída → menu do HUD.
-- `prefers-reduced-motion` desliga câmera, parallax, fumaça e pulso — e o jogo continua inteiro.
-- `aria-live` no aviso de "sala trancada" e no contador de peças.
-
-### 3.8 Marca e metadados
-
-- Favicon, `favicon.ico` e `apple-touch-icon` ligados; `theme-color` com a cor do galpão.
-- **`og-image` refeita**: a antiga ainda era do visual v1 (robô laranja genérico). A nova usa a fachada, o logotipo e o Zinos acenando. A página que a gera ficou versionada em `ferramentas/og.html`, com as instruções para regerar.
-
-### 3.9 Um bug corrigido no caminho
-
-Os painéis abriam com `autoAlpha` do GSAP, que aplica `visibility: hidden`. Elemento invisível **não recebe foco**, então o foco inicial no título do card nunca funcionava — a acessibilidade exigida na seção 11 estava quebrada sem aparecer. Trocado por `opacity`.
+Os painéis abriam com `autoAlpha` do GSAP, que aplica `visibility: hidden`. Elemento invisível não recebe foco, então o foco inicial no título do card nunca funcionava — a acessibilidade exigida na seção 11 estava quebrada sem aparecer. Trocado por `opacity`.
 
 ---
 
-## 4. Como foi testado
-
-Testado no navegador, de ponta a ponta: fachada → mergulho pelo portão → Sala 1 → ler os 4 registros → quiz (errando e acertando) → peça montada no HUD → saída → Sala 2 → ... → Expedição com o robô completo. Verificados também: persistência em `localStorage`, "Continuar o turno", bloqueio de toques durante a transição, tela de retrato (em viewport de 430 × 800) e `Esc` fechando o painel.
-
-`npm run lint` e `npm run build` limpos. Console do navegador sem erros.
-
----
-
-## 5. O que ficou pendente (e por quê)
+## O que ficou pendente
 
 | Item | Situação |
 |---|---|
-| **Arte das salas 2 a 5** | Cenário provisório no lugar. É a entrega da Fase C (Kamilla/Wellington, até 22/10). |
-| **Revisão técnica dos textos novos** | Salas 2 a 5 escritas por mim; precisam do relatório PACEX e da revisão da dupla. |
-| **Fonte** | Não escolhi, é decisão de vocês (pendência do plano, até 18/10). |
-| **GoatCounter** | `index.html` ainda tem `seucodigo` no lugar do código real (a conta ainda não existe). |
-| **Parallax entre camadas** | A infraestrutura (`data-profundidade`) está pronta, mas a Sala 1 veio como uma imagem única, sem camadas. Só entra se a arte final vier separada em fundo/meio/objetos/frente. |
-| **Merge na `main`** | Deixei na branch `feat/salas-arte`. A `main` continua como estava, e o Pages não publicou nada. |
+| **Arte da Sala 5** | Blockout provisório. O roteiro de edição está em `ENTREGA-CODIGO/pendente-sala5/PROMPT-sala5-edicao.txt`. Quando sair: salvar como `public/salas/5/cena.webp` e trocar `camadas.cena` da sala `expedicao` no JSON. |
+| **Camada `frente` e parallax forte** | O código já lê `camadas.frente` e move a camada no PC, mas nenhuma sala tem esse arquivo ainda. Hoje o parallax move só a cena, de leve. |
+| **GoatCounter** | `GOATCOUNTER_CODE` vazio no `index.html`. |
+| **URL do Pages** | `shoityn` × `glaubershoity` — conferir (item ⚠️ 3). |
+| **Revisão do conteúdo** | Os textos vieram prontos na entrega; a revisão do grupo continua valendo. |
+| **Teste no Galaxy A12** | Não dá para fazer daqui. É o critério de aceite do plano. |
+| **Lighthouse mobile** | Não medido. |
+| **Merge na `main`** | A branch `feat/visual` está pronta; a `main` continua como estava. |
 
 ---
 
-## 6. Para retomar
+## Para retomar
 
 ```bash
-git checkout feat/salas-arte
+git checkout feat/visual
 npm run dev          # http://localhost:5173/AutoLab/
 ```
 
-Depois de conferir, para levar para a `main`:
+Modo debug: `?debug=1` liga a grade do mundo e mostra a coordenada de cada toque.
+
+Depois de conferir:
 
 ```bash
-git checkout main && git merge feat/salas-arte
+git checkout main && git merge feat/visual
 ```
 
-Commits da sessão:
+Commits das duas sessões, do mais antigo para o mais novo:
 
 ```
 31d618f chore: adiciona os assets finais (marca, mascote Zinos, fachada, sala 1) ao public
@@ -179,4 +151,9 @@ f7b2d97 feat: robo montado com as 5 pecas entregues e mascote Zinos com expresso
 baf9055 feat: fachada jogavel, transicoes de camera entre salas e as 5 salas no jogo
 65e780c content: nova og-image com o Zinos, icones da marca e meta tags revisadas
 46c770d fix: painel usa opacity em vez de autoAlpha (visibility hidden impedia o foco)
+d681d09 docs: README atualizado e DECISOES.md
+03b3b75 chore: assets das salas 2 a 5, fachada com vao transparente e conteudo v3
+3bb81e5 feat: preloader, fachada em camadas, passagens entre salas e expedicao com a copia ZN-xx
+ece82b2 fix: salvaguarda de tempo nas transicoes que dependem do fim da animacao
+332d04c fix: preloader nao travava mais na saida
 ```

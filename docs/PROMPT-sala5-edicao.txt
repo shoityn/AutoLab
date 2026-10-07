@@ -1,0 +1,15 @@
+SALA 5 — corrigir por EDIÇÃO (não gerar do zero)
+
+A imagem que saiu para a Sala 5 é quase uma cópia da Sala 4 (gaveteiro, monitor com a matriz verde/vermelha,
+porta de vidro). Ela serve como BASE, mas os objetos da Sala 5 precisam aparecer.
+
+Na mesma conversa em que ela foi gerada (ou numa nova, anexando sala5-BASE-para-editar.jpg),
+peça UMA edição de cada vez, nesta ordem:
+
+1) Replace the window on the left wall with a cork notice board with six blank pinned papers (no writing). Keep everything else.
+2) Replace the white drawer cabinet with one sealed cardboard shipping box with tape, sitting on a small wooden pallet on the floor. Keep everything else.
+3) Make the big wall screen completely blank and dark, with no colored squares and no lines. Keep everything else.
+4) Replace the glass sliding door on the right with an open loading dock doorway with bright white daylight coming from outside. Keep everything else.
+
+Deixe o totem (terminal com tela pequena) como está: ele é o quiz.
+Se uma edição estragar o resto da imagem, desfaça e repita só aquela.
