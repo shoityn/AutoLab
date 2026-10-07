@@ -54,8 +54,8 @@ O prompt pedia para injetar `zinos-cabeca.svg` inline. O preloader precisa desen
 
 **Sobre o QR: os três arquivos que estão no repositório estão corretos.** Decodifiquei `cartaz/qrcode.svg`, `cartaz/qrcode.png` e `cartaz/qr-autolab.svg` em 07/10 — todos devolvem `https://shoityn.github.io/AutoLab/` (versão 4, correção de erro H). Uma anotação da sessão anterior falava de um `qr-autolab.png` apontando para `glaubershoity`; esse arquivo **não existe no repositório** e não pude conferir. Se houver uma cópia solta fora do repo, é ela que deve ser descartada. Para o flyer, use `cartaz/qr-autolab.svg`.
 
-**4. O GoatCounter ficou atrás de uma constante vazia.**
-`window.GOATCOUNTER_CODE` no `index.html`. Enquanto estiver `''`, o script nem é carregado (nada de requisição para um domínio que não existe). Basta preencher com o código da conta.
+**4. ✅ O GoatCounter está ligado.**
+`window.GOATCOUNTER_CODE = 'glaubershoity'` no `index.html` — a constante guarda só o subdomínio, e a URL `https://<código>.goatcounter.com/count` é montada ali mesmo. Enquanto estava vazia o script nem era baixado: **nada foi medido antes de 07/10.**
 
 **5. O id da Sala 5 é `expedicao` e o estado final também se chama `expedicao`.**
 Vieram assim no JSON da entrega. Não colidem (um é `sala.id`, o outro é `estado.estado`), mas é uma pegadinha se alguém mexer no reducer.
@@ -65,6 +65,17 @@ O `2-tronco.svg` tinha "ZN-07" desenhado no peito, enquanto cada jogador recebe 
 
 **7. O rótulo "Por quê?" sobe um pouco em relação à coordenada do JSON.**
 O anel do hotspot e o rótulo compartilham o mesmo x/y (960, 320) e ficavam um em cima do outro. O rótulo de estilo `tela` é desenhado deslocado para cima, para os dois se lerem. Quando a arte final da Sala 5 chegar e os x/y forem reconferidos, vale revisar.
+
+**8. O som começa desligado, e é sintetizado.**
+Duas decisões numa só, ambas por causa do contexto de uso.
+
+*Desligado:* o jogo é aberto por QR num cartaz, quase sempre num corredor e sem fone. Áudio tocando sozinho ali faz fechar a página. O botão fica visível na fachada, e a escolha é guardada em `autolab:som` — chave separada de `autolab:progresso`, que é versionada e some quando o formato muda. Ver PERGUNTAS-ABERTAS 1.6.
+
+*Sintetizado:* nenhum arquivo de áudio. Osciladores e ruído filtrado na Web Audio custam **0 KB e 0 requisições**, contra dezenas de KB de samples — e o alvo é celular de entrada no 4G. O bundle cresceu 1,9 KB gzip no total. A voz do Zinos é um bipe por sílaba, não fala gravada: gravação travaria a revisão de texto da dupla (item 2.1) e envelheceria mal.
+
+*O que ficou de fora:* ambiente em loop por sala. É o que mais pesa, o que mais incomoda sem fone e o que menos faz falta.
+
+---
 
 ### Dois bugs encontrados e corrigidos
 
@@ -119,8 +130,9 @@ Os painéis abriam com `autoAlpha` do GSAP, que aplica `visibility: hidden`. Ele
 | Item | Situação |
 |---|---|
 | ~~Arte da Sala 5~~ | **Pronta.** Instalada em 06/10 e os 5 hotspots reposicionados sobre os objetos com o `?debug=1`. Ficou em JPEG (205 KB) e não WebP, porque não há codificador WebP na máquina — se quiserem padronizar, dá para converter depois sem mexer em código, só trocando `camadas.cena`. |
+| **Som** | Pronto e desligado por padrão. Falta vocês decidirem se continua assim (PERGUNTAS-ABERTAS 1.6). |
 | **Camada `frente` e parallax forte** | O código já lê `camadas.frente` e move a camada no PC, mas nenhuma sala tem esse arquivo ainda. Hoje o parallax move só a cena, de leve. |
-| **GoatCounter** | `GOATCOUNTER_CODE` vazio no `index.html`. |
+| ~~GoatCounter~~ | **Ligado** em 07/10, conta `glaubershoity`. Mede visita, estação concluída e turno concluído. |
 | ~~URL do Pages~~ | **Resolvida:** `shoityn.github.io/AutoLab` (item 3 acima). |
 | **QR do flyer** | Os QRs do repositório estão corretos (conferidos por decodificação em 07/10). Use `cartaz/qr-autolab.svg`. |
 | **Marca da UNIPAR no flyer** | Área de 80 × 30 mm reservada no rodapé, ainda vazia. |

@@ -34,15 +34,25 @@ Todos em versão 4 (33 módulos), correção de erro **H** (30%), como a discuss
 
 ---
 
-### 1.3 🕓 ABERTO — quando criar a conta do GoatCounter?
+### 1.3 ✅ RESOLVIDO — o GoatCounter está contando
 
-**A pergunta:** posso deixar sem métricas, ou vocês criam a conta antes de distribuir?
+Conta criada em 07/10 e `GOATCOUNTER_CODE = 'glaubershoity'` preenchido no `index.html`. A constante guarda só o subdomínio; a URL `https://<código>.goatcounter.com/count` é montada ali mesmo. Painel em `https://glaubershoity.goatcounter.com`.
 
-**Por que importa:** o plano prevê exportar os números do GoatCounter para o relatório (Fase E). Se a conta não existir **antes** dos flyers saírem, as visitas dos primeiros dias se perdem — e são justamente as que mais contam.
+Além da visita, o `src/lib/metricas.js` dispara dois eventos que já estavam escritos: **estação concluída** (um por sala) e **turno concluído**. Isso vira um funil no relatório da Fase E — quantos entraram, até onde foram, quantos terminaram —, que diz bem mais do que um número solto de acessos.
 
-**Estado:** está pronto, atrás de uma constante vazia (`GOATCOUNTER_CODE` no `index.html`). Enquanto estiver vazia, o script nem é baixado. Basta preencher com o código da conta.
+⚠️ **Ressalva para o relatório:** bloqueadores de anúncio derrubam o `gc.zgo.at` em algumas listas, então o medido é **piso**, não total. Vale escrever "no mínimo N visitantes".
 
-**O que eu faria:** criar a conta antes da impressão. É grátis e leva 5 minutos.
+---
+
+### 1.6 🕓 ABERTO — o som começa ligado ou desligado?
+
+**A pergunta:** hoje o jogo abre **mudo**, com um botão "Ligar o som" na fachada. Fica assim?
+
+**Por que importa:** quem chega vem de um QR num cartaz, quase sempre num corredor da faculdade e sem fone. Som tocando sozinho num lugar desses faz a pessoa fechar a página — e fechar a página é o pior resultado possível para um trabalho medido por engajamento. O contra é que a maioria não clica em nada e nunca ouve o que foi feito.
+
+**Estado:** a escolha fica guardada em `autolab:som`, então quem liga uma vez não precisa ligar de novo. O botão aparece na fachada (com rótulo), no HUD de cada sala e na Expedição.
+
+**O que eu faria:** manter desligado. Se vocês quiserem o contrário, é uma linha em `src/lib/som.js` — a leitura inicial de `lerPreferencia()`.
 
 ---
 
@@ -203,8 +213,8 @@ Se algum falhar, me manda o que aconteceu e eu corrijo.
 
 | # | Item | Urgência |
 |---|---|---|
-| 4.1 | **Refazer o flyer com o QR novo** (`cartaz/qr-autolab.svg`) e inserir a marca da UNIPAR | **Alta** — o QR atual leva a 404 |
-| 1.3 | Criar a conta do GoatCounter e preencher `GOATCOUNTER_CODE` | Alta — antes de distribuir |
+| 4.1 | **Fechar o flyer:** inserir a marca da UNIPAR e usar `cartaz/qr-autolab.svg` | **Alta** — trava a impressão |
+| 1.6 | **Decidir se o som começa ligado ou desligado** (hoje: desligado) | Média — muda em uma linha |
 | 6 | Jogar do início ao fim num Galaxy A12 deitado | Alta — é o critério de aceite |
 | 2.1 | Revisão dos textos pela dupla | Média — até 17/10 |
 | 4.2 | Cronometrar uma partida e ajustar o tempo prometido no flyer | Média |
