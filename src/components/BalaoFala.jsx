@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import Mascote from './Mascote'
 import { prefereMovimentoReduzido } from '../hooks/useCamera'
+import { useVozDoZinos } from '../hooks/useSom'
 
 /**
  * Avatar do Zinos + balão de fala. Usado no HUD (fala de entrada da sala),
@@ -17,6 +18,10 @@ function BalaoFala({
   aoFechar,
 }) {
   const balaoRef = useRef(null)
+
+  // Um bipe por sílaba enquanto o balão entra — vale para a fala de entrada da
+  // sala, a dica do quiz, a explicação e a despedida da Expedição.
+  useVozDoZinos(texto)
 
   useLayoutEffect(() => {
     if (!balaoRef.current || prefereMovimentoReduzido()) return

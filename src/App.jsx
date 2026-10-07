@@ -13,6 +13,8 @@ import {
 } from './hooks/useCamera'
 import { useOrientacao, tentarPaisagem } from './hooks/useOrientacao'
 import { aplicarAmbiente } from './hooks/useAmbiente'
+import { useSomDoJogo } from './hooks/useSom'
+import { desbloquear, estaLigado, tocar } from './lib/som'
 import { registrarEstacaoConcluida, registrarFim } from './lib/metricas'
 import { abrirPortao, comSalvaguarda } from './lib/transicoes'
 import { PECAS } from './lib/assets'
@@ -241,9 +243,12 @@ function Jogo({ jogo }) {
     if (estado.estado !== 'visao-geral') return
 
     if (hotspot.tipo === 'quiz' && !todosCardsLidos(sala, estado.lidos)) {
+      tocar('negado')
       mostrarAviso('Leia todos os registros desta sala primeiro.')
       return
     }
+
+    tocar('toque')
 
     const lado = painelLateral ? (hotspot.x < MUNDO.largura / 2 ? 0.225 : 0.775) : 0.5
     const centro = pontoParaTela(hotspot, camera.alvo(hotspot), tela.vw, tela.vh, lado)
@@ -261,9 +266,11 @@ function Jogo({ jogo }) {
   const tocarSaida = contextSafe(() => {
     if (estado.estado !== 'visao-geral') return
     if (!saidaLiberada) {
+      tocar('negado')
       mostrarAviso('Responda ao registro final desta sala antes de seguir.')
       return
     }
+    tocar('toque')
     dispatch({ type: 'TOCAR_SAIDA' })
   })
 
@@ -277,6 +284,10 @@ function Jogo({ jogo }) {
   }
 
   async function iniciar(acao) {
+    // Quem já tinha ligado o som numa visita anterior destrava o áudio aqui: é
+    // o primeiro gesto da sessão, e no iOS o contexto só nasce dentro de um.
+    // O `await` abaixo já sairia do gesto, então vem antes dele.
+    if (estaLigado()) desbloquear()
     await tentarPaisagem()
     dispatch({ type: acao })
   }
@@ -453,6 +464,10 @@ function GradeDebug() {
 function App() {
   const jogo = useJogo()
   const { retrato, mostrarAviso, ignorar } = useOrientacao()
+
+  // Som dos grandes momentos (portão, passagem, peça, fanfarra). Fica aqui, e
+  // não dentro de <Jogo>, porque a Expedição é irmã dele na árvore.
+  useSomDoJogo(jogo.estado)
 
   // Assim que a fachada aparece, o resto das salas carrega em segundo plano.
   useEffect(() => {

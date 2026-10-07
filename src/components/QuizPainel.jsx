@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { abrirPainel, fecharPainel } from '../lib/transicoes'
 import { usePainelAcessivel } from '../hooks/usePainelAcessivel'
+import { tocar } from '../lib/som'
 import Mascote from './Mascote'
 import BalaoFala from './BalaoFala'
 
@@ -30,8 +31,15 @@ function QuizPainel({ hotspot, salaId, origem, lateral, lado, jaConcluido, onAce
   function responder(indice) {
     if (acertou) return
     setSelecionada(indice)
-    if (indice === hotspot.correta) setAcertou(true)
-    else setTentativas((n) => n + 1)
+    // Soa no toque, não no reducer: a resposta é estado local do painel, e o
+    // retorno precisa chegar junto com a cor da alternativa.
+    if (indice === hotspot.correta) {
+      setAcertou(true)
+      tocar('acerto')
+    } else {
+      setTentativas((n) => n + 1)
+      tocar('erro')
+    }
   }
 
   const errou = selecionada !== null && !acertou
